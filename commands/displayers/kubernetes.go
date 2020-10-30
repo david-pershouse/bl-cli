@@ -4,8 +4,8 @@ import (
 	"io"
 	"strings"
 
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/go-binarylane"
 )
 
 type KubernetesClusters struct {
@@ -89,7 +89,7 @@ func (clusters *KubernetesClusters) KV() []map[string]interface{} {
 			nodePools = append(nodePools, pool.Name)
 		}
 		if cluster.Status == nil {
-			cluster.Status = new(godo.KubernetesClusterStatus)
+			cluster.Status = new(binarylane.KubernetesClusterStatus)
 		}
 
 		o := map[string]interface{}{

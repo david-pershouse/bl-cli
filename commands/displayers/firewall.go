@@ -19,7 +19,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli/do"
 )
 
 type Firewall struct {

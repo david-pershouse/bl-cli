@@ -16,10 +16,10 @@ package commands
 import (
 	"fmt"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -51,7 +51,7 @@ resources attribute with information about resources that have been tagged.`,
 	cmdRunTagDelete := CmdBuilder(cmd, RunCmdTagDelete, "delete <tag-name>...", "Delete a tag", `Use this command to delete a tag.
 
 Deleting a tag also removes the tag from all the resources that had been tagged with it.`, Writer)
-	AddBoolFlag(cmdRunTagDelete, doctl.ArgForce, doctl.ArgShortForce, false, "Delete tag without confirmation prompt")
+	AddBoolFlag(cmdRunTagDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Delete tag without confirmation prompt")
 
 	return cmd
 }
@@ -106,10 +106,10 @@ func RunCmdTagList(c *CmdConfig) error {
 // RunCmdTagDelete runs tag delete.
 func RunCmdTagDelete(c *CmdConfig) error {
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}

@@ -16,9 +16,9 @@ package commands
 import (
 	"testing"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -98,10 +98,10 @@ func TestVolumeCreate(t *testing.T) {
 
 		config.Args = append(config.Args, "test-volume")
 
-		config.Doit.Set(config.NS, doctl.ArgVolumeRegion, "atlantis")
-		config.Doit.Set(config.NS, doctl.ArgVolumeSize, "100GiB")
-		config.Doit.Set(config.NS, doctl.ArgVolumeDesc, "test description")
-		config.Doit.Set(config.NS, doctl.ArgTag, []string{"one", "two"})
+		config.Doit.Set(config.NS, blcli.ArgVolumeRegion, "atlantis")
+		config.Doit.Set(config.NS, blcli.ArgVolumeSize, "100GiB")
+		config.Doit.Set(config.NS, blcli.ArgVolumeDesc, "test description")
+		config.Doit.Set(config.NS, blcli.ArgTag, []string{"one", "two"})
 
 		err := RunVolumeCreate(config)
 		assert.NoError(t, err)
@@ -121,10 +121,10 @@ func TestVolumeCreateFromSnapshot(t *testing.T) {
 
 		config.Args = append(config.Args, "test-volume")
 
-		config.Doit.Set(config.NS, doctl.ArgVolumeSnapshot, "ed6414f7-7873-4dd2-90cf-f4f354c293e6")
-		config.Doit.Set(config.NS, doctl.ArgVolumeSize, "100GiB")
-		config.Doit.Set(config.NS, doctl.ArgVolumeDesc, "test description")
-		config.Doit.Set(config.NS, doctl.ArgTag, []string{"one", "two"})
+		config.Doit.Set(config.NS, blcli.ArgVolumeSnapshot, "ed6414f7-7873-4dd2-90cf-f4f354c293e6")
+		config.Doit.Set(config.NS, blcli.ArgVolumeSize, "100GiB")
+		config.Doit.Set(config.NS, blcli.ArgVolumeDesc, "test description")
+		config.Doit.Set(config.NS, blcli.ArgTag, []string{"one", "two"})
 
 		err := RunVolumeCreate(config)
 		assert.NoError(t, err)
@@ -137,7 +137,7 @@ func TestVolumesDelete(t *testing.T) {
 
 		config.Args = append(config.Args, "test-volume")
 
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunVolumeDelete(config)
 		assert.NoError(t, err)
@@ -155,9 +155,9 @@ func TestVolumesSnapshot(t *testing.T) {
 		tm.volumes.EXPECT().CreateSnapshot(&tcr).Return(nil, nil)
 
 		config.Args = append(config.Args, testVolume.ID)
-		config.Doit.Set(config.NS, doctl.ArgSnapshotName, "test-volume-snapshot")
-		config.Doit.Set(config.NS, doctl.ArgSnapshotDesc, "test description")
-		config.Doit.Set(config.NS, doctl.ArgTag, []string{"one", "two"})
+		config.Doit.Set(config.NS, blcli.ArgSnapshotName, "test-volume-snapshot")
+		config.Doit.Set(config.NS, blcli.ArgSnapshotDesc, "test description")
+		config.Doit.Set(config.NS, blcli.ArgTag, []string{"one", "two"})
 
 		err := RunVolumeSnapshot(config)
 		assert.NoError(t, err)

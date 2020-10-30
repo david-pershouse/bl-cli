@@ -19,7 +19,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/digitalocean/godo"
+	godo "git.mammoth.com.au/github/go-binarylane"
 )
 
 const maxFetchPages = 5

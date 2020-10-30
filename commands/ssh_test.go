@@ -17,9 +17,9 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/pkg/runner"
-	"github.com/digitalocean/doctl/pkg/ssh"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/pkg/runner"
+	"git.mammoth.com.au/github/bl-cli/pkg/ssh"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
 )
@@ -81,7 +81,7 @@ func TestSSH_CustomPort(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		tm.sshRunner.EXPECT().Run().Return(nil)
 
-		tc := config.Doit.(*doctl.TestConfig)
+		tc := config.Doit.(*blcli.TestConfig)
 		tc.SSHFn = func(user, host, keyPath string, port int, opts ssh.Options) runner.Runner {
 			assert.Equal(t, 2222, port)
 			return tm.sshRunner
@@ -89,7 +89,7 @@ func TestSSH_CustomPort(t *testing.T) {
 
 		tm.droplets.EXPECT().List().Return(testDropletList, nil)
 
-		config.Doit.Set(config.NS, doctl.ArgsSSHPort, "2222")
+		config.Doit.Set(config.NS, blcli.ArgsSSHPort, "2222")
 		config.Args = append(config.Args, testDroplet.Name)
 
 		err := RunSSH(config)
@@ -101,7 +101,7 @@ func TestSSH_CustomUser(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		tm.sshRunner.EXPECT().Run().Return(nil)
 
-		tc := config.Doit.(*doctl.TestConfig)
+		tc := config.Doit.(*blcli.TestConfig)
 		tc.SSHFn = func(user, host, keyPath string, port int, opts ssh.Options) runner.Runner {
 			assert.Equal(t, "foobar", user)
 			return tm.sshRunner
@@ -109,7 +109,7 @@ func TestSSH_CustomUser(t *testing.T) {
 
 		tm.droplets.EXPECT().List().Return(testDropletList, nil)
 
-		config.Doit.Set(config.NS, doctl.ArgSSHUser, "foobar")
+		config.Doit.Set(config.NS, blcli.ArgSSHUser, "foobar")
 		config.Args = append(config.Args, testDroplet.Name)
 
 		err := RunSSH(config)
@@ -121,15 +121,15 @@ func TestSSH_AgentForwarding(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		tm.sshRunner.EXPECT().Run().Return(nil)
 
-		tc := config.Doit.(*doctl.TestConfig)
+		tc := config.Doit.(*blcli.TestConfig)
 		tc.SSHFn = func(user, host, keyPath string, port int, opts ssh.Options) runner.Runner {
-			assert.Equal(t, true, opts[doctl.ArgsSSHAgentForwarding])
+			assert.Equal(t, true, opts[blcli.ArgsSSHAgentForwarding])
 			return tm.sshRunner
 		}
 
 		tm.droplets.EXPECT().List().Return(testDropletList, nil)
 
-		config.Doit.Set(config.NS, doctl.ArgsSSHAgentForwarding, true)
+		config.Doit.Set(config.NS, blcli.ArgsSSHAgentForwarding, true)
 		config.Args = append(config.Args, testDroplet.Name)
 
 		err := RunSSH(config)
@@ -141,14 +141,14 @@ func TestSSH_CommandExecuting(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		tm.sshRunner.EXPECT().Run().Return(nil)
 
-		tc := config.Doit.(*doctl.TestConfig)
+		tc := config.Doit.(*blcli.TestConfig)
 		tc.SSHFn = func(user, host, keyPath string, port int, opts ssh.Options) runner.Runner {
-			assert.Equal(t, "uptime", opts[doctl.ArgSSHCommand])
+			assert.Equal(t, "uptime", opts[blcli.ArgSSHCommand])
 			return tm.sshRunner
 		}
 
 		tm.droplets.EXPECT().List().Return(testDropletList, nil)
-		config.Doit.Set(config.NS, doctl.ArgSSHCommand, "uptime")
+		config.Doit.Set(config.NS, blcli.ArgSSHCommand, "uptime")
 		config.Args = append(config.Args, testDroplet.Name)
 
 		err := RunSSH(config)

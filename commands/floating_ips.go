@@ -17,10 +17,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -41,22 +41,22 @@ Floating IPs are bound to a specific region.`,
 
 A floating IP address must be either assigned to a Droplet or reserved to a region.`, Writer,
 		aliasOpt("c"), displayerType(&displayers.FloatingIP{}))
-	AddStringFlag(cmdFloatingIPCreate, doctl.ArgRegionSlug, "", "",
+	AddStringFlag(cmdFloatingIPCreate, blcli.ArgRegionSlug, "", "",
 		fmt.Sprintf("Region where to create the floating IP address. (mutually exclusive with `--%s`)",
-			doctl.ArgDropletID))
-	AddIntFlag(cmdFloatingIPCreate, doctl.ArgDropletID, "", 0,
+			blcli.ArgDropletID))
+	AddIntFlag(cmdFloatingIPCreate, blcli.ArgDropletID, "", 0,
 		fmt.Sprintf("The ID of the Droplet to assign the floating IP to (mutually exclusive with `--%s`).",
-			doctl.ArgRegionSlug))
+			blcli.ArgRegionSlug))
 
 	CmdBuilder(cmd, RunFloatingIPGet, "get <floating-ip>", "Retrieve information about a floating IP address", "Use this command to retrieve detailed information about a floating IP address.", Writer,
 		aliasOpt("g"), displayerType(&displayers.FloatingIP{}))
 
 	cmdRunFloatingIPDelete := CmdBuilder(cmd, RunFloatingIPDelete, "delete <floating-ip>", "Permanently delete a floating IP address", "Use this command to permanently delete a floating IP address. This is irreversible.", Writer, aliasOpt("d", "rm"))
-	AddBoolFlag(cmdRunFloatingIPDelete, doctl.ArgForce, doctl.ArgShortForce, false, "Force floating IP delete")
+	AddBoolFlag(cmdRunFloatingIPDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Force floating IP delete")
 
 	cmdFloatingIPList := CmdBuilder(cmd, RunFloatingIPList, "list", "List all floating IP addresses on your account", "Use this command to list all the floating IP addresses on your account.", Writer,
 		aliasOpt("ls"), displayerType(&displayers.FloatingIP{}))
-	AddStringFlag(cmdFloatingIPList, doctl.ArgRegionSlug, "", "", "The region the floating IP address resides in")
+	AddStringFlag(cmdFloatingIPList, blcli.ArgRegionSlug, "", "", "The region the floating IP address resides in")
 
 	return cmd
 }
@@ -66,11 +66,11 @@ func RunFloatingIPCreate(c *CmdConfig) error {
 	fis := c.FloatingIPs()
 
 	// ignore errors since we don't know which one is valid
-	region, _ := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
-	dropletID, _ := c.Doit.GetInt(c.NS, doctl.ArgDropletID)
+	region, _ := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
+	dropletID, _ := c.Doit.GetInt(c.NS, blcli.ArgDropletID)
 
 	if region == "" && dropletID == 0 {
-		return doctl.NewMissingArgsErr("Region and Droplet ID can't both be blank.")
+		return blcli.NewMissingArgsErr("Region and Droplet ID can't both be blank.")
 	}
 
 	if region != "" && dropletID != 0 {
@@ -125,7 +125,7 @@ func RunFloatingIPDelete(c *CmdConfig) error {
 		return err
 	}
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func RunFloatingIPDelete(c *CmdConfig) error {
 func RunFloatingIPList(c *CmdConfig) error {
 	fis := c.FloatingIPs()
 
-	region, err := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
+	region, err := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
 	if err != nil {
 		return err
 	}

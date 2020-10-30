@@ -17,7 +17,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/digitalocean/godo"
+	godo "git.mammoth.com.au/github/go-binarylane"
 )
 
 // RegistryHostname is the hostname for the DO registry

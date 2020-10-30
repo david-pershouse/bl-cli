@@ -11,7 +11,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package doctl
+package blcli
 
 import (
 	"bytes"
@@ -27,10 +27,10 @@ import (
 	"strconv"
 	"strings"
 
+	"git.mammoth.com.au/github/bl-cli/pkg/runner"
+	"git.mammoth.com.au/github/bl-cli/pkg/ssh"
+	"git.mammoth.com.au/github/go-binarylane"
 	"github.com/blang/semver"
-	"github.com/digitalocean/doctl/pkg/runner"
-	"github.com/digitalocean/doctl/pkg/ssh"
-	"github.com/digitalocean/godo"
 	"github.com/spf13/viper"
 	"golang.org/x/oauth2"
 )
@@ -169,7 +169,7 @@ func (glv *GithubLatestVersioner) LatestVersion() (string, error) {
 
 // Config is an interface that represent doit's config.
 type Config interface {
-	GetGodoClient(trace bool, accessToken string) (*godo.Client, error)
+	GetGodoClient(trace bool, accessToken string) (*binarylane.Client, error)
 	SSH(user, host, keyPath string, port int, opts ssh.Options) runner.Runner
 	Set(ns, key string, val interface{})
 	IsSet(key string) bool
@@ -190,7 +190,7 @@ type LiveConfig struct {
 var _ Config = &LiveConfig{}
 
 // GetGodoClient returns a GodoClient.
-func (c *LiveConfig) GetGodoClient(trace bool, accessToken string) (*godo.Client, error) {
+func (c *LiveConfig) GetGodoClient(trace bool, accessToken string) (*binarylane.Client, error) {
 	if accessToken == "" {
 		return nil, fmt.Errorf("access token is required. (hint: run 'doctl auth init')")
 	}
@@ -215,14 +215,14 @@ func (c *LiveConfig) GetGodoClient(trace bool, accessToken string) (*godo.Client
 		oauthClient.Transport = r
 	}
 
-	args := []godo.ClientOpt{godo.SetUserAgent(userAgent())}
+	args := []binarylane.ClientOpt{binarylane.SetUserAgent(userAgent())}
 
 	apiURL := viper.GetString("api-url")
 	if apiURL != "" {
-		args = append(args, godo.SetBaseURL(apiURL))
+		args = append(args, binarylane.SetBaseURL(apiURL))
 	}
 
-	return godo.New(oauthClient, args...)
+	return binarylane.New(oauthClient, args...)
 }
 
 func userAgent() string {
@@ -394,10 +394,10 @@ func NewTestConfig() *TestConfig {
 	}
 }
 
-// GetGodoClient mocks a GetGodoClient call. The returned godo client will
+// GetGodoClient mocks a GetGodoClient call. The returned binarylane client will
 // be nil.
-func (c *TestConfig) GetGodoClient(trace bool, accessToken string) (*godo.Client, error) {
-	return &godo.Client{}, nil
+func (c *TestConfig) GetGodoClient(trace bool, accessToken string) (*binarylane.Client, error) {
+	return &binarylane.Client{}, nil
 }
 
 // SSH returns a mock SSH runner.

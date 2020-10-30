@@ -22,9 +22,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
 )
@@ -50,7 +50,7 @@ func Apps() *Command {
 		aliasOpt("c"),
 		displayerType(&displayers.Apps{}),
 	)
-	AddStringFlag(create, doctl.ArgAppSpec, "", "", "Path to an app spec in JSON or YAML format. For more information about app specs, see https://www.digitalocean.com/docs/app-platform/concepts/app-spec", requiredOpt())
+	AddStringFlag(create, blcli.ArgAppSpec, "", "", "Path to an app spec in JSON or YAML format. For more information about app specs, see https://www.digitalocean.com/docs/app-platform/concepts/app-spec", requiredOpt())
 
 	CmdBuilder(
 		cmd,
@@ -88,7 +88,7 @@ Only basic information is included with the text output format. For complete app
 		aliasOpt("u"),
 		displayerType(&displayers.Apps{}),
 	)
-	AddStringFlag(update, doctl.ArgAppSpec, "", "", "Path to an app spec in JSON or YAML format.", requiredOpt())
+	AddStringFlag(update, blcli.ArgAppSpec, "", "", "Path to an app spec in JSON or YAML format.", requiredOpt())
 
 	deleteApp := CmdBuilder(
 		cmd,
@@ -101,7 +101,7 @@ This permanently deletes the app and all its associated deployments.`,
 		Writer,
 		aliasOpt("d"),
 	)
-	AddBoolFlag(deleteApp, doctl.ArgForce, doctl.ArgShortForce, false, "Delete the App without a confirmation prompt")
+	AddBoolFlag(deleteApp, blcli.ArgForce, blcli.ArgShortForce, false, "Delete the App without a confirmation prompt")
 
 	CmdBuilder(
 		cmd,
@@ -149,16 +149,16 @@ Only basic information is included with the text output format. For complete app
 		"Get logs",
 		`Get component logs for a deployment of an app.
 
-Three types of logs are supported and can be configured with --`+doctl.ArgAppLogType+`:
+Three types of logs are supported and can be configured with --`+blcli.ArgAppLogType+`:
 - build
 - deploy
 - run `,
 		Writer,
 		aliasOpt("l"),
 	)
-	AddStringFlag(logs, doctl.ArgAppDeployment, "", "", "The deployment ID. Defaults to current deployment.")
-	AddStringFlag(logs, doctl.ArgAppLogType, "", strings.ToLower(string(godo.AppLogTypeRun)), "The type of logs.")
-	AddBoolFlag(logs, doctl.ArgAppLogFollow, "f", false, "Follow logs as they are emitted.")
+	AddStringFlag(logs, blcli.ArgAppDeployment, "", "", "The deployment ID. Defaults to current deployment.")
+	AddStringFlag(logs, blcli.ArgAppLogType, "", strings.ToLower(string(godo.AppLogTypeRun)), "The type of logs.")
+	AddBoolFlag(logs, blcli.ArgAppLogFollow, "f", false, "Follow logs as they are emitted.")
 
 	CmdBuilder(
 		cmd,
@@ -178,7 +178,7 @@ Three types of logs are supported and can be configured with --`+doctl.ArgAppLog
 
 // RunAppsCreate creates an app.
 func RunAppsCreate(c *CmdConfig) error {
-	specPath, err := c.Doit.GetString(c.NS, doctl.ArgAppSpec)
+	specPath, err := c.Doit.GetString(c.NS, blcli.ArgAppSpec)
 	if err != nil {
 		return err
 	}
@@ -214,7 +214,7 @@ func RunAppsCreate(c *CmdConfig) error {
 // RunAppsGet gets an app.
 func RunAppsGet(c *CmdConfig) error {
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 	id := c.Args[0]
 
@@ -239,11 +239,11 @@ func RunAppsList(c *CmdConfig) error {
 // RunAppsUpdate updates an app.
 func RunAppsUpdate(c *CmdConfig) error {
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 	id := c.Args[0]
 
-	specPath, err := c.Doit.GetString(c.NS, doctl.ArgAppSpec)
+	specPath, err := c.Doit.GetString(c.NS, blcli.ArgAppSpec)
 	if err != nil {
 		return err
 	}
@@ -279,11 +279,11 @@ func RunAppsUpdate(c *CmdConfig) error {
 // RunAppsDelete deletes an app.
 func RunAppsDelete(c *CmdConfig) error {
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 	id := c.Args[0]
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
@@ -304,7 +304,7 @@ func RunAppsDelete(c *CmdConfig) error {
 // RunAppsCreateDeployment creates a deployment for an app.
 func RunAppsCreateDeployment(c *CmdConfig) error {
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 	appID := c.Args[0]
 
@@ -320,7 +320,7 @@ func RunAppsCreateDeployment(c *CmdConfig) error {
 // RunAppsGetDeployment gets a deployment for an app.
 func RunAppsGetDeployment(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 	appID := c.Args[0]
 	deploymentID := c.Args[1]
@@ -336,7 +336,7 @@ func RunAppsGetDeployment(c *CmdConfig) error {
 // RunAppsListDeployments lists deployments for an app.
 func RunAppsListDeployments(c *CmdConfig) error {
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 	appID := c.Args[0]
 
@@ -351,7 +351,7 @@ func RunAppsListDeployments(c *CmdConfig) error {
 // RunAppsGetLogs gets app logs for a given component.
 func RunAppsGetLogs(c *CmdConfig) error {
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 	appID := c.Args[0]
 	var component string
@@ -359,7 +359,7 @@ func RunAppsGetLogs(c *CmdConfig) error {
 		component = c.Args[1]
 	}
 
-	deploymentID, err := c.Doit.GetString(c.NS, doctl.ArgAppDeployment)
+	deploymentID, err := c.Doit.GetString(c.NS, blcli.ArgAppDeployment)
 	if err != nil {
 		return err
 	}
@@ -377,7 +377,7 @@ func RunAppsGetLogs(c *CmdConfig) error {
 		}
 	}
 
-	logTypeStr, err := c.Doit.GetString(c.NS, doctl.ArgAppLogType)
+	logTypeStr, err := c.Doit.GetString(c.NS, blcli.ArgAppLogType)
 	if err != nil {
 		return err
 	}
@@ -392,7 +392,7 @@ func RunAppsGetLogs(c *CmdConfig) error {
 	default:
 		return fmt.Errorf("Invalid log type %s", logTypeStr)
 	}
-	logFollow, err := c.Doit.GetBool(c.NS, doctl.ArgAppLogFollow)
+	logFollow, err := c.Doit.GetBool(c.NS, blcli.ArgAppLogFollow)
 	if err != nil {
 		return err
 	}
@@ -452,8 +452,8 @@ func appsSpec() *Command {
 	getCmd := CmdBuilder(cmd, RunAppsSpecGet, "get <app id>", "Retrieve an application's spec", `Use this command to retrieve the latest spec of an app.
 
 Optionally, pass a deployment ID to get the spec of that specific deployment.`, Writer)
-	AddStringFlag(getCmd, doctl.ArgAppDeployment, "", "", "optional: a deployment ID")
-	AddStringFlag(getCmd, doctl.ArgFormat, "", "yaml", `the format to output the spec as; either "yaml" or "json"`)
+	AddStringFlag(getCmd, blcli.ArgAppDeployment, "", "", "optional: a deployment ID")
+	AddStringFlag(getCmd, blcli.ArgFormat, "", "yaml", `the format to output the spec as; either "yaml" or "json"`)
 
 	CmdBuilder(cmd, RunAppsSpecValidate(os.Stdin), "validate <spec file>", "Validate an application spec", `Use this command to check whether a given app spec (YAML or JSON) is valid.
 
@@ -465,16 +465,16 @@ You may pass - as the filename to read from stdin.`, Writer)
 // RunAppsSpecGet gets the spec for an app
 func RunAppsSpecGet(c *CmdConfig) error {
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	appID := c.Args[0]
-	deploymentID, err := c.Doit.GetString(c.NS, doctl.ArgAppDeployment)
+	deploymentID, err := c.Doit.GetString(c.NS, blcli.ArgAppDeployment)
 	if err != nil {
 		return err
 	}
 
-	format, err := c.Doit.GetString(c.NS, doctl.ArgFormat)
+	format, err := c.Doit.GetString(c.NS, blcli.ArgFormat)
 	if err != nil {
 		return err
 	}
@@ -515,7 +515,7 @@ func RunAppsSpecGet(c *CmdConfig) error {
 func RunAppsSpecValidate(stdin io.Reader) func(c *CmdConfig) error {
 	return func(c *CmdConfig) error {
 		if len(c.Args) < 1 {
-			return doctl.NewMissingArgsErr(c.NS)
+			return blcli.NewMissingArgsErr(c.NS)
 		}
 
 		specPath := c.Args[0]
@@ -589,7 +589,7 @@ func RunAppsTierList(c *CmdConfig) error {
 // RunAppsTierGet gets an app tier.
 func RunAppsTierGet(c *CmdConfig) error {
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	slug := c.Args[0]
@@ -630,7 +630,7 @@ func RunAppsTierInstanceSizeList(c *CmdConfig) error {
 // RunAppsTierInstanceSizeGet gets an app tier.
 func RunAppsTierInstanceSizeGet(c *CmdConfig) error {
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	slug := c.Args[0]

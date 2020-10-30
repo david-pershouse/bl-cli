@@ -16,8 +16,8 @@ package do
 import (
 	"context"
 
-	"github.com/digitalocean/godo"
-	"github.com/digitalocean/godo/util"
+	godo "git.mammoth.com.au/github/go-binarylane"
+	"git.mammoth.com.au/github/go-binarylane/util"
 )
 
 // DropletIPTable is a table of interface IPS.

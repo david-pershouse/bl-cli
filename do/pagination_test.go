@@ -17,7 +17,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/digitalocean/godo"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 

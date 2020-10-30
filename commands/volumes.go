@@ -16,10 +16,10 @@ package commands
 import (
 	"fmt"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/dustin/go-humanize"
 	"github.com/gobwas/glob"
 	"github.com/spf13/cobra"
@@ -41,24 +41,24 @@ Volumes function as raw block devices, meaning they appear to the operating syst
 
 	cmdRunVolumeList := CmdBuilder(cmd, RunVolumeList, "list", "List block storage volumes by ID", `Use this command to list all of the block storage volumes on your account.`, Writer,
 		aliasOpt("ls"), displayerType(&displayers.Volume{}))
-	AddStringFlag(cmdRunVolumeList, doctl.ArgRegionSlug, "", "", "Volume region")
+	AddStringFlag(cmdRunVolumeList, blcli.ArgRegionSlug, "", "", "Volume region")
 
 	cmdVolumeCreate := CmdBuilder(cmd, RunVolumeCreate, "create <volume-name>", "Create a block storage volume", `Use this command to create a block storage volume on your account.
 
 You can use flags to specify the volume size, region, description, filesystem type, tags, and to create a volume from an existing volume snapshot.`, Writer,
 		aliasOpt("c"), displayerType(&displayers.Volume{}))
-	AddStringFlag(cmdVolumeCreate, doctl.ArgVolumeSize, "", "4TiB", "Volume size",
+	AddStringFlag(cmdVolumeCreate, blcli.ArgVolumeSize, "", "4TiB", "Volume size",
 		requiredOpt())
-	AddStringFlag(cmdVolumeCreate, doctl.ArgVolumeDesc, "", "", "Volume description")
-	AddStringFlag(cmdVolumeCreate, doctl.ArgVolumeRegion, "", "", "Volume region; should not be specified with a snapshot")
-	AddStringFlag(cmdVolumeCreate, doctl.ArgVolumeSnapshot, "", "", "Volume snapshot; should not be specified with a region")
-	AddStringFlag(cmdVolumeCreate, doctl.ArgVolumeFilesystemType, "", "", "Volume filesystem type (ext4 or xfs)")
-	AddStringFlag(cmdVolumeCreate, doctl.ArgVolumeFilesystemLabel, "", "", "Volume filesystem label")
-	AddStringSliceFlag(cmdVolumeCreate, doctl.ArgTag, "", []string{}, "Tags to apply to the volume; comma separate or repeat `--tag` to add multiple tags at once")
+	AddStringFlag(cmdVolumeCreate, blcli.ArgVolumeDesc, "", "", "Volume description")
+	AddStringFlag(cmdVolumeCreate, blcli.ArgVolumeRegion, "", "", "Volume region; should not be specified with a snapshot")
+	AddStringFlag(cmdVolumeCreate, blcli.ArgVolumeSnapshot, "", "", "Volume snapshot; should not be specified with a region")
+	AddStringFlag(cmdVolumeCreate, blcli.ArgVolumeFilesystemType, "", "", "Volume filesystem type (ext4 or xfs)")
+	AddStringFlag(cmdVolumeCreate, blcli.ArgVolumeFilesystemLabel, "", "", "Volume filesystem label")
+	AddStringSliceFlag(cmdVolumeCreate, blcli.ArgTag, "", []string{}, "Tags to apply to the volume; comma separate or repeat `--tag` to add multiple tags at once")
 
 	cmdRunVolumeDelete := CmdBuilder(cmd, RunVolumeDelete, "delete <volume-id>", "Delete a block storage volume", `Use this command to delete a block storage volume by ID, destroying all of its data and removing it from your account.`, Writer,
 		aliasOpt("rm", "d"))
-	AddBoolFlag(cmdRunVolumeDelete, doctl.ArgForce, doctl.ArgShortForce, false, "Force volume delete")
+	AddBoolFlag(cmdRunVolumeDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Force volume delete")
 
 	CmdBuilder(cmd, RunVolumeGet, "get <volume-id>", "Retrieve an existing block storage volume", `Use this command to retrieve information about a block storage volume using its ID.`, Writer, aliasOpt("g"),
 		displayerType(&displayers.Volume{}))
@@ -67,9 +67,9 @@ You can use flags to specify the volume size, region, description, filesystem ty
 
 You can use a block storage volume snapshot ID as a flag with `+"`"+`doctl volume create`+"`"+` to create a new block storage volume with the same data as the volume the snapshot was taken from.`, Writer,
 		aliasOpt("s"), displayerType(&displayers.Volume{}))
-	AddStringFlag(cmdRunVolumeSnapshot, doctl.ArgSnapshotName, "", "", "Snapshot name", requiredOpt())
-	AddStringFlag(cmdRunVolumeSnapshot, doctl.ArgSnapshotDesc, "", "", "Snapshot description")
-	AddStringSliceFlag(cmdRunVolumeSnapshot, doctl.ArgTag, "", []string{}, "Tags to apply to the snapshot; comma separate or repeat `--tag` to add multiple tags at once")
+	AddStringFlag(cmdRunVolumeSnapshot, blcli.ArgSnapshotName, "", "", "Snapshot name", requiredOpt())
+	AddStringFlag(cmdRunVolumeSnapshot, blcli.ArgSnapshotDesc, "", "", "Snapshot description")
+	AddStringSliceFlag(cmdRunVolumeSnapshot, blcli.ArgTag, "", []string{}, "Tags to apply to the snapshot; comma separate or repeat `--tag` to add multiple tags at once")
 
 	return cmd
 
@@ -80,7 +80,7 @@ func RunVolumeList(c *CmdConfig) error {
 
 	al := c.Volumes()
 
-	region, err := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
+	region, err := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
 	if err != nil {
 		return nil
 	}
@@ -133,12 +133,12 @@ func RunVolumeList(c *CmdConfig) error {
 // RunVolumeCreate creates a volume.
 func RunVolumeCreate(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	name := c.Args[0]
 
-	sizeStr, err := c.Doit.GetString(c.NS, doctl.ArgVolumeSize)
+	sizeStr, err := c.Doit.GetString(c.NS, blcli.ArgVolumeSize)
 	if err != nil {
 		return err
 	}
@@ -147,36 +147,36 @@ func RunVolumeCreate(c *CmdConfig) error {
 		return err
 	}
 
-	desc, err := c.Doit.GetString(c.NS, doctl.ArgVolumeDesc)
+	desc, err := c.Doit.GetString(c.NS, blcli.ArgVolumeDesc)
 	if err != nil {
 		return err
 	}
 
-	region, err := c.Doit.GetString(c.NS, doctl.ArgVolumeRegion)
+	region, err := c.Doit.GetString(c.NS, blcli.ArgVolumeRegion)
 	if err != nil {
 		return err
 	}
 
-	snapshotID, err := c.Doit.GetString(c.NS, doctl.ArgVolumeSnapshot)
+	snapshotID, err := c.Doit.GetString(c.NS, blcli.ArgVolumeSnapshot)
 	if err != nil {
 		return err
 	}
 
 	if region == "" && snapshotID == "" {
-		errorMsg := fmt.Sprintf("%s.%s || %s.%s", c.NS, doctl.ArgVolumeRegion, c.NS, doctl.ArgVolumeSnapshot)
-		return doctl.NewMissingArgsErr(errorMsg)
+		errorMsg := fmt.Sprintf("%s.%s || %s.%s", c.NS, blcli.ArgVolumeRegion, c.NS, blcli.ArgVolumeSnapshot)
+		return blcli.NewMissingArgsErr(errorMsg)
 	}
 
-	fsType, err := c.Doit.GetString(c.NS, doctl.ArgVolumeFilesystemType)
+	fsType, err := c.Doit.GetString(c.NS, blcli.ArgVolumeFilesystemType)
 	if err != nil {
 		return err
 	}
-	fsLabel, err := c.Doit.GetString(c.NS, doctl.ArgVolumeFilesystemLabel)
+	fsLabel, err := c.Doit.GetString(c.NS, blcli.ArgVolumeFilesystemLabel)
 	if err != nil {
 		return err
 	}
 
-	tags, err := c.Doit.GetStringSlice(c.NS, doctl.ArgTag)
+	tags, err := c.Doit.GetStringSlice(c.NS, blcli.ArgTag)
 	if err != nil {
 		return err
 	}
@@ -206,11 +206,11 @@ func RunVolumeCreate(c *CmdConfig) error {
 // RunVolumeDelete deletes a volume.
 func RunVolumeDelete(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 
 	}
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
@@ -225,7 +225,7 @@ func RunVolumeDelete(c *CmdConfig) error {
 // RunVolumeGet gets a volume.
 func RunVolumeGet(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 
 	}
 	id := c.Args[0]
@@ -242,22 +242,22 @@ func RunVolumeGet(c *CmdConfig) error {
 func RunVolumeSnapshot(c *CmdConfig) error {
 	var err error
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
 
-	name, err := c.Doit.GetString(c.NS, doctl.ArgSnapshotName)
+	name, err := c.Doit.GetString(c.NS, blcli.ArgSnapshotName)
 	if err != nil {
 		return err
 	}
 
-	desc, err := c.Doit.GetString(c.NS, doctl.ArgSnapshotDesc)
+	desc, err := c.Doit.GetString(c.NS, blcli.ArgSnapshotDesc)
 	if err != nil {
 		return nil
 	}
 
-	tags, err := c.Doit.GetStringSlice(c.NS, doctl.ArgTag)
+	tags, err := c.Doit.GetStringSlice(c.NS, blcli.ArgTag)
 	if err != nil {
 		return err
 	}

@@ -17,9 +17,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -88,12 +88,12 @@ func Test_filterActions(t *testing.T) {
 
 	for _, c := range cases {
 		withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-			config.Doit.Set(config.NS, doctl.ArgActionResourceType, c.resourceType)
-			config.Doit.Set(config.NS, doctl.ArgActionRegion, c.region)
-			config.Doit.Set(config.NS, doctl.ArgActionAfter, c.after)
-			config.Doit.Set(config.NS, doctl.ArgActionBefore, c.before)
-			config.Doit.Set(config.NS, doctl.ArgActionStatus, c.status)
-			config.Doit.Set(config.NS, doctl.ArgActionType, c.actionType)
+			config.Doit.Set(config.NS, blcli.ArgActionResourceType, c.resourceType)
+			config.Doit.Set(config.NS, blcli.ArgActionRegion, c.region)
+			config.Doit.Set(config.NS, blcli.ArgActionAfter, c.after)
+			config.Doit.Set(config.NS, blcli.ArgActionBefore, c.before)
+			config.Doit.Set(config.NS, blcli.ArgActionStatus, c.status)
+			config.Doit.Set(config.NS, blcli.ArgActionType, c.actionType)
 
 			newActions, err := filterActionList(config, actions)
 			assert.NoError(t, err)

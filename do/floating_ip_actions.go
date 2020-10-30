@@ -16,7 +16,7 @@ package do
 import (
 	"context"
 
-	"github.com/digitalocean/godo"
+	godo "git.mammoth.com.au/github/go-binarylane"
 )
 
 // FloatingIPActionsService is an interface for interacting with

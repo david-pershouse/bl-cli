@@ -19,7 +19,7 @@ import (
 	"os/exec"
 	"strconv"
 
-	"github.com/digitalocean/doctl/pkg/runner"
+	"git.mammoth.com.au/github/bl-cli/pkg/runner"
 	"github.com/fatih/color"
 )
 

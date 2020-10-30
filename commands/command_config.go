@@ -17,16 +17,16 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
 	"github.com/spf13/viper"
 )
 
 // CmdConfig is a command configuration.
 type CmdConfig struct {
 	NS   string
-	Doit doctl.Config
+	Doit blcli.Config
 	Out  io.Writer
 	Args []string
 
@@ -68,7 +68,7 @@ type CmdConfig struct {
 }
 
 // NewCmdConfig creates an instance of a CmdConfig.
-func NewCmdConfig(ns string, dc doctl.Config, out io.Writer, args []string, initGodo bool) (*CmdConfig, error) {
+func NewCmdConfig(ns string, dc blcli.Config, out io.Writer, args []string, initGodo bool) (*CmdConfig, error) {
 
 	cmdConfig := &CmdConfig{
 		NS:   ns,
@@ -125,8 +125,8 @@ func NewCmdConfig(ns string, dc doctl.Config, out io.Writer, args []string, init
 			token := ""
 
 			switch context {
-			case doctl.ArgDefaultContext:
-				token = viper.GetString(doctl.ArgAccessToken)
+			case blcli.ArgDefaultContext:
+				token = viper.GetString(blcli.ArgAccessToken)
 			default:
 				contexts := viper.GetStringMapString("auth-contexts")
 
@@ -143,8 +143,8 @@ func NewCmdConfig(ns string, dc doctl.Config, out io.Writer, args []string, init
 			}
 
 			switch context {
-			case doctl.ArgDefaultContext:
-				viper.Set(doctl.ArgAccessToken, token)
+			case blcli.ArgDefaultContext:
+				viper.Set(blcli.ArgAccessToken, token)
 			default:
 				contexts := viper.GetStringMapString("auth-contexts")
 				contexts[context] = token
@@ -173,12 +173,12 @@ func (c *CmdConfig) Display(d displayers.Displayable) error {
 		Out:  c.Out,
 	}
 
-	columnList, err := c.Doit.GetString(c.NS, doctl.ArgFormat)
+	columnList, err := c.Doit.GetString(c.NS, blcli.ArgFormat)
 	if err != nil {
 		return err
 	}
 
-	withHeaders, err := c.Doit.GetBool(c.NS, doctl.ArgNoHeader)
+	withHeaders, err := c.Doit.GetBool(c.NS, blcli.ArgNoHeader)
 	if err != nil {
 		return err
 	}

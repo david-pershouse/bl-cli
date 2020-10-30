@@ -17,10 +17,10 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 
 	"github.com/spf13/cobra"
 )
@@ -61,17 +61,17 @@ To create a Let's Encrypt certificate, you'll need to add the domain(s) to your 
 To upload a custom certificate, you'll need to provide a certificate name, the path to the certificate, the path to the private key for the certificate, and the path to the certificate chain, all in PEM format:
 
 	doctl compute certificate create --type custom --name mycert --leaf-certificate-path cert.pem --certificate-chain-path fullchain.pem --private-key-path privkey.pem`, Writer, aliasOpt("c"))
-	AddStringFlag(cmdCertificateCreate, doctl.ArgCertificateName, "", "",
+	AddStringFlag(cmdCertificateCreate, blcli.ArgCertificateName, "", "",
 		"Certificate name", requiredOpt())
-	AddStringSliceFlag(cmdCertificateCreate, doctl.ArgCertificateDNSNames, "",
+	AddStringSliceFlag(cmdCertificateCreate, blcli.ArgCertificateDNSNames, "",
 		[]string{}, "Comma-separated list of domains for which the certificate will be issued. The domains must be managed using DigitalOcean's DNS.")
-	AddStringFlag(cmdCertificateCreate, doctl.ArgPrivateKeyPath, "", "",
+	AddStringFlag(cmdCertificateCreate, blcli.ArgPrivateKeyPath, "", "",
 		"The path to a PEM-formatted private-key corresponding to the SSL certificate.")
-	AddStringFlag(cmdCertificateCreate, doctl.ArgLeafCertificatePath, "", "",
+	AddStringFlag(cmdCertificateCreate, blcli.ArgLeafCertificatePath, "", "",
 		"The path to a PEM-formatted public SSL certificate.")
-	AddStringFlag(cmdCertificateCreate, doctl.ArgCertificateChainPath, "", "",
+	AddStringFlag(cmdCertificateCreate, blcli.ArgCertificateChainPath, "", "",
 		"The path to a full PEM-formatted trust chain between the certificate authority's certificate and your domain's SSL certificate.")
-	AddStringFlag(cmdCertificateCreate, doctl.ArgCertificateType, "", "",
+	AddStringFlag(cmdCertificateCreate, blcli.ArgCertificateType, "", "",
 		"Certificate type [custom|lets_encrypt]")
 
 	CmdBuilder(cmd, RunCertificateList, "list", "Retrieve list of the account's stored certificates", `This command retrieves a list of all certificates associated with the account. The following details are shown for each certificate:`+certDetails, Writer,
@@ -81,7 +81,7 @@ To upload a custom certificate, you'll need to provide a certificate name, the p
 		"Delete the specified certificate", `This command deletes the specified certificate.
 
 Use `+"`"+`doctl compute certificate list`+"`"+` to see all available certificates associated with your account.`, Writer, aliasOpt("d", "rm"))
-	AddBoolFlag(cmdCertificateDelete, doctl.ArgForce, doctl.ArgShortForce, false,
+	AddBoolFlag(cmdCertificateDelete, blcli.ArgForce, blcli.ArgShortForce, false,
 		"Delete the certificate without a confirmation prompt")
 
 	return cmd
@@ -107,17 +107,17 @@ func RunCertificateGet(c *CmdConfig) error {
 
 // RunCertificateCreate creates a certificate.
 func RunCertificateCreate(c *CmdConfig) error {
-	name, err := c.Doit.GetString(c.NS, doctl.ArgCertificateName)
+	name, err := c.Doit.GetString(c.NS, blcli.ArgCertificateName)
 	if err != nil {
 		return err
 	}
 
-	domainList, err := c.Doit.GetStringSlice(c.NS, doctl.ArgCertificateDNSNames)
+	domainList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgCertificateDNSNames)
 	if err != nil {
 		return err
 	}
 
-	cType, err := c.Doit.GetString(c.NS, doctl.ArgCertificateType)
+	cType, err := c.Doit.GetString(c.NS, blcli.ArgCertificateType)
 	if err != nil {
 		return err
 	}
@@ -128,7 +128,7 @@ func RunCertificateCreate(c *CmdConfig) error {
 		Type:     cType,
 	}
 
-	pkPath, err := c.Doit.GetString(c.NS, doctl.ArgPrivateKeyPath)
+	pkPath, err := c.Doit.GetString(c.NS, blcli.ArgPrivateKeyPath)
 	if err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func RunCertificateCreate(c *CmdConfig) error {
 		r.PrivateKey = pc
 	}
 
-	lcPath, err := c.Doit.GetString(c.NS, doctl.ArgLeafCertificatePath)
+	lcPath, err := c.Doit.GetString(c.NS, blcli.ArgLeafCertificatePath)
 	if err != nil {
 		return err
 	}
@@ -156,7 +156,7 @@ func RunCertificateCreate(c *CmdConfig) error {
 		r.LeafCertificate = lc
 	}
 
-	ccPath, err := c.Doit.GetString(c.NS, doctl.ArgCertificateChainPath)
+	ccPath, err := c.Doit.GetString(c.NS, blcli.ArgCertificateChainPath)
 	if err != nil {
 		return err
 	}
@@ -200,7 +200,7 @@ func RunCertificateDelete(c *CmdConfig) error {
 	}
 	cID := c.Args[0]
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}

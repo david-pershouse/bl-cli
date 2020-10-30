@@ -16,9 +16,9 @@ package commands
 import (
 	"strconv"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
 	"github.com/spf13/cobra"
 )
 
@@ -32,7 +32,7 @@ func performVolumeAction(c *CmdConfig, fn volumeActionFn) error {
 		return err
 	}
 
-	wait, err := c.Doit.GetBool(c.NS, doctl.ArgCommandWait)
+	wait, err := c.Doit.GetBool(c.NS, blcli.ArgCommandWait)
 	if err != nil {
 		return err
 	}
@@ -65,11 +65,11 @@ Each volume can be attached to only one Droplet at a time. However, up to five v
 
 When you attach a pre-formatted volume to Ubuntu, Debian, Fedora, Fedora Atomic, and CentOS Droplets created on or after April 26, 2018, the volume will be automatically mounted. On older Droplets, additional configuration is required. Visit https://www.digitalocean.com/docs/volumes/how-to/format-and-mount/#mounting-the-filesystems for details`, Writer,
 		aliasOpt("a"))
-	AddBoolFlag(cmdRunVolumeAttach, doctl.ArgCommandWait, "", false, "Wait for volume to attach")
+	AddBoolFlag(cmdRunVolumeAttach, blcli.ArgCommandWait, "", false, "Wait for volume to attach")
 
 	cmdRunVolumeDetach := CmdBuilder(cmd, RunVolumeDetach, "detach <volume-id> <droplet-id>", "Detach a volume from a Droplet", `Use this command to detach a block storage volume from a Droplet.`, Writer,
 		aliasOpt("d"))
-	AddBoolFlag(cmdRunVolumeDetach, doctl.ArgCommandWait, "", false, "Wait for volume to detach")
+	AddBoolFlag(cmdRunVolumeDetach, blcli.ArgCommandWait, "", false, "Wait for volume to detach")
 
 	CmdBuilder(cmd, RunVolumeDetach, "detach-by-droplet-id <volume-id> <droplet-id>", "(Deprecated) Detach a volume. Use `detach` instead.", "This command detaches a volume. This command is deprecated. Use `doctl compute volume-action detach` instead.",
 		Writer)
@@ -78,11 +78,11 @@ When you attach a pre-formatted volume to Ubuntu, Debian, Fedora, Fedora Atomic,
 
 Volumes may only be resized upwards. The maximum size for a volume is 16TiB.`, Writer,
 		aliasOpt("r"))
-	AddIntFlag(cmdRunVolumeResize, doctl.ArgSizeSlug, "", 0, "New size in GiB",
+	AddIntFlag(cmdRunVolumeResize, blcli.ArgSizeSlug, "", 0, "New size in GiB",
 		requiredOpt())
-	AddStringFlag(cmdRunVolumeResize, doctl.ArgRegionSlug, "", "", "Volume region",
+	AddStringFlag(cmdRunVolumeResize, blcli.ArgRegionSlug, "", "", "Volume region",
 		requiredOpt())
-	AddBoolFlag(cmdRunVolumeResize, doctl.ArgCommandWait, "", false, "Wait for volume to resize")
+	AddBoolFlag(cmdRunVolumeResize, blcli.ArgCommandWait, "", false, "Wait for volume to resize")
 
 	return cmd
 
@@ -92,7 +92,7 @@ Volumes may only be resized upwards. The maximum size for a volume is 16TiB.`, W
 func RunVolumeAttach(c *CmdConfig) error {
 	fn := func(das do.VolumeActionsService) (*do.Action, error) {
 		if len(c.Args) != 2 {
-			return nil, doctl.NewMissingArgsErr(c.NS)
+			return nil, blcli.NewMissingArgsErr(c.NS)
 		}
 		volumeID := c.Args[0]
 		dropletID, err := strconv.Atoi(c.Args[1])
@@ -110,7 +110,7 @@ func RunVolumeAttach(c *CmdConfig) error {
 func RunVolumeDetach(c *CmdConfig) error {
 	fn := func(das do.VolumeActionsService) (*do.Action, error) {
 		if len(c.Args) != 2 {
-			return nil, doctl.NewMissingArgsErr(c.NS)
+			return nil, blcli.NewMissingArgsErr(c.NS)
 		}
 		volumeID := c.Args[0]
 		dropletID, err := strconv.Atoi(c.Args[1])
@@ -132,12 +132,12 @@ func RunVolumeResize(c *CmdConfig) error {
 		}
 		volumeID := c.Args[0]
 
-		size, err := c.Doit.GetInt(c.NS, doctl.ArgSizeSlug)
+		size, err := c.Doit.GetInt(c.NS, blcli.ArgSizeSlug)
 		if err != nil {
 			return nil, err
 		}
 
-		region, err := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
+		region, err := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
 		if err != nil {
 			return nil, err
 		}

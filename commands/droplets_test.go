@@ -20,9 +20,9 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -105,13 +105,13 @@ func TestDropletCreate(t *testing.T) {
 
 		config.Args = append(config.Args, "droplet")
 
-		config.Doit.Set(config.NS, doctl.ArgRegionSlug, "dev0")
-		config.Doit.Set(config.NS, doctl.ArgSizeSlug, "1gb")
-		config.Doit.Set(config.NS, doctl.ArgImage, "image")
-		config.Doit.Set(config.NS, doctl.ArgUserData, "#cloud-config")
-		config.Doit.Set(config.NS, doctl.ArgVPCUUID, vpcUUID)
-		config.Doit.Set(config.NS, doctl.ArgVolumeList, []string{"test-volume", volumeUUID})
-		config.Doit.Set(config.NS, doctl.ArgTagNames, []string{"one", "two"})
+		config.Doit.Set(config.NS, blcli.ArgRegionSlug, "dev0")
+		config.Doit.Set(config.NS, blcli.ArgSizeSlug, "1gb")
+		config.Doit.Set(config.NS, blcli.ArgImage, "image")
+		config.Doit.Set(config.NS, blcli.ArgUserData, "#cloud-config")
+		config.Doit.Set(config.NS, blcli.ArgVPCUUID, vpcUUID)
+		config.Doit.Set(config.NS, blcli.ArgVolumeList, []string{"test-volume", volumeUUID})
+		config.Doit.Set(config.NS, blcli.ArgTagNames, []string{"one", "two"})
 
 		err := RunDropletCreate(config)
 		assert.NoError(t, err)
@@ -135,11 +135,11 @@ func TestDropletCreateWithTag(t *testing.T) {
 
 		config.Args = append(config.Args, "droplet")
 
-		config.Doit.Set(config.NS, doctl.ArgRegionSlug, "dev0")
-		config.Doit.Set(config.NS, doctl.ArgSizeSlug, "1gb")
-		config.Doit.Set(config.NS, doctl.ArgImage, "image")
-		config.Doit.Set(config.NS, doctl.ArgUserData, "#cloud-config")
-		config.Doit.Set(config.NS, doctl.ArgTagName, "my-tag")
+		config.Doit.Set(config.NS, blcli.ArgRegionSlug, "dev0")
+		config.Doit.Set(config.NS, blcli.ArgSizeSlug, "1gb")
+		config.Doit.Set(config.NS, blcli.ArgImage, "image")
+		config.Doit.Set(config.NS, blcli.ArgUserData, "#cloud-config")
+		config.Doit.Set(config.NS, blcli.ArgTagName, "my-tag")
 
 		err := RunDropletCreate(config)
 		assert.NoError(t, err)
@@ -191,10 +191,10 @@ coreos:
 
 		config.Args = append(config.Args, "droplet")
 
-		config.Doit.Set(config.NS, doctl.ArgRegionSlug, "dev0")
-		config.Doit.Set(config.NS, doctl.ArgSizeSlug, "1gb")
-		config.Doit.Set(config.NS, doctl.ArgImage, "image")
-		config.Doit.Set(config.NS, doctl.ArgUserDataFile, tmpFile.Name())
+		config.Doit.Set(config.NS, blcli.ArgRegionSlug, "dev0")
+		config.Doit.Set(config.NS, blcli.ArgSizeSlug, "1gb")
+		config.Doit.Set(config.NS, blcli.ArgImage, "image")
+		config.Doit.Set(config.NS, blcli.ArgUserDataFile, tmpFile.Name())
 
 		err = RunDropletCreate(config)
 		assert.NoError(t, err)
@@ -206,7 +206,7 @@ func TestDropletDelete(t *testing.T) {
 		tm.droplets.EXPECT().Delete(1).Return(nil)
 
 		config.Args = append(config.Args, strconv.Itoa(testDroplet.ID))
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunDropletDelete(config)
 		assert.NoError(t, err)
@@ -219,8 +219,8 @@ func TestDropletDeleteByTag_DropletsExist(t *testing.T) {
 		tm.droplets.EXPECT().ListByTag("my-tag").Return(testDropletList, nil)
 		tm.droplets.EXPECT().DeleteByTag("my-tag").Return(nil)
 
-		config.Doit.Set(config.NS, doctl.ArgTagName, "my-tag")
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgTagName, "my-tag")
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunDropletDelete(config)
 		assert.NoError(t, err)
@@ -233,8 +233,8 @@ func TestDropletDeleteByTag_DropletsMissing(t *testing.T) {
 
 		var buf bytes.Buffer
 		config.Out = &buf
-		config.Doit.Set(config.NS, doctl.ArgTagName, "my-tag")
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgTagName, "my-tag")
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunDropletDelete(config)
 		assert.NoError(t, err)
@@ -248,7 +248,7 @@ func TestDropletDeleteRepeatedID(t *testing.T) {
 
 		id := strconv.Itoa(testDroplet.ID)
 		config.Args = append(config.Args, id, id)
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunDropletDelete(config)
 		assert.NoError(t, err)
@@ -261,7 +261,7 @@ func TestDropletDeleteByName(t *testing.T) {
 		tm.droplets.EXPECT().Delete(1).Return(nil)
 
 		config.Args = append(config.Args, testDroplet.Name)
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunDropletDelete(config)
 		assert.NoError(t, err)
@@ -274,7 +274,7 @@ func TestDropletDeleteByName_Ambiguous(t *testing.T) {
 		tm.droplets.EXPECT().List().Return(list, nil)
 
 		config.Args = append(config.Args, testDroplet.Name)
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunDropletDelete(config)
 		t.Log(err)
@@ -289,7 +289,7 @@ func TestDropletDelete_MixedNameAndType(t *testing.T) {
 
 		id := strconv.Itoa(testDroplet.ID)
 		config.Args = append(config.Args, id, testDroplet.Name)
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunDropletDelete(config)
 		assert.NoError(t, err)
@@ -313,7 +313,7 @@ func TestDropletGet_Template(t *testing.T) {
 		tm.droplets.EXPECT().Get(testDroplet.ID).Return(&testDroplet, nil)
 
 		config.Args = append(config.Args, strconv.Itoa(testDroplet.ID))
-		config.Doit.Set(config.NS, doctl.ArgTemplate, "{{.Name}}")
+		config.Doit.Set(config.NS, blcli.ArgTemplate, "{{.Name}}")
 
 		err := RunDropletGet(config)
 		assert.NoError(t, err)
@@ -366,7 +366,7 @@ func TestDropletsListByTag(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		tm.droplets.EXPECT().ListByTag("my-tag").Return(testDropletList, nil)
 
-		config.Doit.Set(config.NS, doctl.ArgTagName, "my-tag")
+		config.Doit.Set(config.NS, blcli.ArgTagName, "my-tag")
 
 		err := RunDropletList(config)
 		assert.NoError(t, err)
@@ -383,7 +383,7 @@ func TestDropletsTag(t *testing.T) {
 		tm.tags.EXPECT().TagResources("my-tag", trr).Return(nil)
 
 		config.Args = append(config.Args, "1")
-		config.Doit.Set(config.NS, doctl.ArgTagName, "my-tag")
+		config.Doit.Set(config.NS, blcli.ArgTagName, "my-tag")
 
 		err := RunDropletTag(config)
 		assert.NoError(t, err)
@@ -402,7 +402,7 @@ func TestDropletsTagMultiple(t *testing.T) {
 
 		config.Args = append(config.Args, "1")
 		config.Args = append(config.Args, "2")
-		config.Doit.Set(config.NS, doctl.ArgTagName, "my-tag")
+		config.Doit.Set(config.NS, blcli.ArgTagName, "my-tag")
 
 		err := RunDropletTag(config)
 		assert.NoError(t, err)
@@ -420,7 +420,7 @@ func TestDropletsTagByName(t *testing.T) {
 		tm.droplets.EXPECT().List().Return(testDropletList, nil)
 
 		config.Args = append(config.Args, testDroplet.Name)
-		config.Doit.Set(config.NS, doctl.ArgTagName, "my-tag")
+		config.Doit.Set(config.NS, blcli.ArgTagName, "my-tag")
 
 		err := RunDropletTag(config)
 		assert.NoError(t, err)
@@ -440,7 +440,7 @@ func TestDropletsTagMultipleNameAndID(t *testing.T) {
 
 		config.Args = append(config.Args, testDroplet.Name)
 		config.Args = append(config.Args, strconv.Itoa(anotherTestDroplet.ID))
-		config.Doit.Set(config.NS, doctl.ArgTagName, "my-tag")
+		config.Doit.Set(config.NS, blcli.ArgTagName, "my-tag")
 
 		err := RunDropletTag(config)
 		assert.NoError(t, err)
@@ -459,7 +459,7 @@ func TestDropletsUntag(t *testing.T) {
 		tm.droplets.EXPECT().List().Return(testDropletList, nil)
 
 		config.Args = []string{testDroplet.Name}
-		config.Doit.Set(config.NS, doctl.ArgTagName, "my-tag")
+		config.Doit.Set(config.NS, blcli.ArgTagName, "my-tag")
 
 		err := RunDropletUntag(config)
 		assert.NoError(t, err)

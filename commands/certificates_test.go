@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -128,26 +128,26 @@ func TestCertificatesCreate(t *testing.T) {
 
 				tm.certificates.EXPECT().Create(&test.certificate).Return(&testCertificate, nil)
 
-				config.Doit.Set(config.NS, doctl.ArgCertificateName, test.certName)
+				config.Doit.Set(config.NS, blcli.ArgCertificateName, test.certName)
 
 				if test.privateKeyPath != "" {
-					config.Doit.Set(config.NS, doctl.ArgPrivateKeyPath, test.privateKeyPath)
+					config.Doit.Set(config.NS, blcli.ArgPrivateKeyPath, test.privateKeyPath)
 				}
 
 				if test.certLeafPath != "" {
-					config.Doit.Set(config.NS, doctl.ArgLeafCertificatePath, test.certLeafPath)
+					config.Doit.Set(config.NS, blcli.ArgLeafCertificatePath, test.certLeafPath)
 				}
 
 				if test.certChainPath != "" {
-					config.Doit.Set(config.NS, doctl.ArgCertificateChainPath, test.certChainPath)
+					config.Doit.Set(config.NS, blcli.ArgCertificateChainPath, test.certChainPath)
 				}
 
 				if test.DNSNames != nil {
-					config.Doit.Set(config.NS, doctl.ArgCertificateDNSNames, test.DNSNames)
+					config.Doit.Set(config.NS, blcli.ArgCertificateDNSNames, test.DNSNames)
 				}
 
 				if test.certType != "" {
-					config.Doit.Set(config.NS, doctl.ArgCertificateType, test.certType)
+					config.Doit.Set(config.NS, blcli.ArgCertificateType, test.certType)
 				}
 
 				err := RunCertificateCreate(config)
@@ -172,7 +172,7 @@ func TestCertificateDelete(t *testing.T) {
 		tm.certificates.EXPECT().Delete(cID).Return(nil)
 
 		config.Args = append(config.Args, cID)
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunCertificateDelete(config)
 		assert.NoError(t, err)

@@ -18,9 +18,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
 	"github.com/spf13/cobra"
 )
 
@@ -52,18 +52,18 @@ This can be filtered to a specific action. For example, while ` + "`" + `doctl c
 
 	cmdActionList := CmdBuilder(cmd, RunCmdActionList, "list", "Retrieve a  list of all recent actions taken on your resources", `This command retrieves a list of all actions taken on your resources. The following details are provided:`+actionDetails, Writer,
 		aliasOpt("ls"), displayerType(&displayers.Action{}))
-	AddStringFlag(cmdActionList, doctl.ArgActionResourceType, "", "", "Action resource type")
-	AddStringFlag(cmdActionList, doctl.ArgActionRegion, "", "", "Action region")
-	AddStringFlag(cmdActionList, doctl.ArgActionAfter, "", "", "Action completed after in RFC3339 format")
-	AddStringFlag(cmdActionList, doctl.ArgActionBefore, "", "", "Action completed before in RFC3339 format")
-	AddStringFlag(cmdActionList, doctl.ArgActionStatus, "", "", "Action status")
-	AddStringFlag(cmdActionList, doctl.ArgActionType, "", "", "Action type")
+	AddStringFlag(cmdActionList, blcli.ArgActionResourceType, "", "", "Action resource type")
+	AddStringFlag(cmdActionList, blcli.ArgActionRegion, "", "", "Action region")
+	AddStringFlag(cmdActionList, blcli.ArgActionAfter, "", "", "Action completed after in RFC3339 format")
+	AddStringFlag(cmdActionList, blcli.ArgActionBefore, "", "", "Action completed before in RFC3339 format")
+	AddStringFlag(cmdActionList, blcli.ArgActionStatus, "", "", "Action status")
+	AddStringFlag(cmdActionList, blcli.ArgActionType, "", "", "Action type")
 
 	cmdActionWait := CmdBuilder(cmd, RunCmdActionWait, "wait <action-id>", "Block thread until an action completes", `The command blocks the current thread, returning when an action completes.
 
 For example, if you find an action when calling `+"`"+`doctl compute action list`+"`"+` that has a status of `+"`"+`in-progress`+"`"+`, you can note the action ID and call `+"`"+`doctl compute action wait <action-id>`+"`"+`, and doctl will appear to "hang" until the action has completed. This can be useful for scripting purposes.`, Writer,
 		aliasOpt("w"), displayerType(&displayers.Action{}))
-	AddIntFlag(cmdActionWait, doctl.ArgPollTime, "", 5, "Re-poll time in seconds")
+	AddIntFlag(cmdActionWait, blcli.ArgPollTime, "", 5, "Re-poll time in seconds")
 
 	return cmd
 }
@@ -99,28 +99,28 @@ func (a actionsByCompletedAt) Less(i, j int) bool {
 }
 
 func filterActionList(c *CmdConfig, in do.Actions) (do.Actions, error) {
-	resourceType, err := c.Doit.GetString(c.NS, doctl.ArgActionResourceType)
+	resourceType, err := c.Doit.GetString(c.NS, blcli.ArgActionResourceType)
 	if err != nil {
 		return nil, err
 	}
 
-	region, err := c.Doit.GetString(c.NS, doctl.ArgActionRegion)
+	region, err := c.Doit.GetString(c.NS, blcli.ArgActionRegion)
 	if err != nil {
 		return nil, err
 	}
 
-	status, err := c.Doit.GetString(c.NS, doctl.ArgActionStatus)
+	status, err := c.Doit.GetString(c.NS, blcli.ArgActionStatus)
 	if err != nil {
 		return nil, err
 	}
 
-	actionType, err := c.Doit.GetString(c.NS, doctl.ArgActionType)
+	actionType, err := c.Doit.GetString(c.NS, blcli.ArgActionType)
 	if err != nil {
 		return nil, err
 	}
 
 	var before, after time.Time
-	beforeStr, err := c.Doit.GetString(c.NS, doctl.ArgActionBefore)
+	beforeStr, err := c.Doit.GetString(c.NS, blcli.ArgActionBefore)
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +131,7 @@ func filterActionList(c *CmdConfig, in do.Actions) (do.Actions, error) {
 		}
 	}
 
-	afterStr, err := c.Doit.GetString(c.NS, doctl.ArgActionAfter)
+	afterStr, err := c.Doit.GetString(c.NS, blcli.ArgActionAfter)
 	if err != nil {
 		return nil, err
 	}
@@ -220,7 +220,7 @@ func RunCmdActionWait(c *CmdConfig) error {
 		return err
 	}
 
-	pollTime, err := c.Doit.GetInt(c.NS, doctl.ArgPollTime)
+	pollTime, err := c.Doit.GetInt(c.NS, blcli.ArgPollTime)
 	if err != nil {
 		return err
 	}

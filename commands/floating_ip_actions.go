@@ -17,9 +17,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
 	"github.com/spf13/cobra"
 )
 
@@ -62,7 +62,7 @@ func FloatingIPAction() *Command {
 // RunFloatingIPActionsGet retrieves an action for a floating IP.
 func RunFloatingIPActionsGet(c *CmdConfig) error {
 	if len(c.Args) != 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	ip := c.Args[0]
@@ -86,7 +86,7 @@ func RunFloatingIPActionsGet(c *CmdConfig) error {
 // RunFloatingIPActionsAssign assigns a floating IP to a droplet.
 func RunFloatingIPActionsAssign(c *CmdConfig) error {
 	if len(c.Args) != 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	ip := c.Args[0]

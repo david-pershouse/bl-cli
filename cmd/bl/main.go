@@ -16,10 +16,10 @@ package main
 import (
 	"log"
 
-	"github.com/digitalocean/doctl/commands"
+	"git.mammoth.com.au/github/bl-cli/commands"
 )
 
 func main() {
-	log.SetPrefix("doctl: ")
+	log.SetPrefix("bl: ")
 	commands.Execute()
 }

@@ -21,8 +21,8 @@ import (
 
 	"errors"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/do"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
@@ -35,7 +35,7 @@ func TestAuthCommand(t *testing.T) {
 
 func TestAuthInit(t *testing.T) {
 	cfw := cfgFileWriter
-	viper.Set(doctl.ArgAccessToken, nil)
+	viper.Set(blcli.ArgAccessToken, nil)
 	defer func() {
 		cfgFileWriter = cfw
 	}()
@@ -56,10 +56,10 @@ func TestAuthInit(t *testing.T) {
 
 func TestAuthInitWithProvidedToken(t *testing.T) {
 	cfw := cfgFileWriter
-	viper.Set(doctl.ArgAccessToken, "valid-token")
+	viper.Set(blcli.ArgAccessToken, "valid-token")
 	defer func() {
 		cfgFileWriter = cfw
-		viper.Set(doctl.ArgAccessToken, nil)
+		viper.Set(blcli.ArgAccessToken, nil)
 	}()
 
 	retrieveUserTokenFunc := func() (string, error) {
@@ -95,18 +95,18 @@ func Test_displayAuthContexts(t *testing.T) {
 		{
 			Name:    "default context only",
 			Out:     &bytes.Buffer{},
-			Context: doctl.ArgDefaultContext,
+			Context: blcli.ArgDefaultContext,
 			Contexts: map[string]interface{}{
-				doctl.ArgDefaultContext: true,
+				blcli.ArgDefaultContext: true,
 			},
 			Expected: "default (current)\n",
 		},
 		{
 			Name:    "default context and additional context",
 			Out:     &bytes.Buffer{},
-			Context: doctl.ArgDefaultContext,
+			Context: blcli.ArgDefaultContext,
 			Contexts: map[string]interface{}{
-				doctl.ArgDefaultContext: true,
+				blcli.ArgDefaultContext: true,
 				"test":                  true,
 			},
 			Expected: "default (current)\ntest\n",
@@ -116,7 +116,7 @@ func Test_displayAuthContexts(t *testing.T) {
 			Out:     &bytes.Buffer{},
 			Context: "test",
 			Contexts: map[string]interface{}{
-				doctl.ArgDefaultContext: true,
+				blcli.ArgDefaultContext: true,
 				"test":                  true,
 			},
 			Expected: "default\ntest (current)\n",
@@ -126,7 +126,7 @@ func Test_displayAuthContexts(t *testing.T) {
 			Out:     &bytes.Buffer{},
 			Context: "missing",
 			Contexts: map[string]interface{}{
-				doctl.ArgDefaultContext: true,
+				blcli.ArgDefaultContext: true,
 				"test":                  true,
 			},
 			Expected: "default\ntest\n",

@@ -20,7 +20,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/digitalocean/doctl"
+	"git.mammoth.com.au/github/bl-cli"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -70,15 +70,15 @@ func init() {
 	rootPFlagSet.StringVarP(&APIURL, "api-url", "u", "", "Override default API endpoint")
 	viper.BindPFlag("api-url", rootPFlagSet.Lookup("api-url"))
 
-	rootPFlagSet.StringVarP(&Token, doctl.ArgAccessToken, "t", "", "API V2 access token")
-	viper.BindPFlag(doctl.ArgAccessToken, rootPFlagSet.Lookup(doctl.ArgAccessToken))
+	rootPFlagSet.StringVarP(&Token, blcli.ArgAccessToken, "t", "", "API V2 access token")
+	viper.BindPFlag(blcli.ArgAccessToken, rootPFlagSet.Lookup(blcli.ArgAccessToken))
 
-	rootPFlagSet.StringVarP(&Output, doctl.ArgOutput, "o", "text", "Desired output format [text|json]")
-	viper.BindPFlag("output", rootPFlagSet.Lookup(doctl.ArgOutput))
+	rootPFlagSet.StringVarP(&Output, blcli.ArgOutput, "o", "text", "Desired output format [text|json]")
+	viper.BindPFlag("output", rootPFlagSet.Lookup(blcli.ArgOutput))
 
-	rootPFlagSet.StringVarP(&Context, doctl.ArgContext, "", "", "Specify a custom authentication context name")
+	rootPFlagSet.StringVarP(&Context, blcli.ArgContext, "", "", "Specify a custom authentication context name")
 	rootPFlagSet.BoolVarP(&Trace, "trace", "", false, "Show a log of network activity while performing a command")
-	rootPFlagSet.BoolVarP(&Verbose, doctl.ArgVerbose, "v", false, "Enable verbose output")
+	rootPFlagSet.BoolVarP(&Verbose, blcli.ArgVerbose, "v", false, "Enable verbose output")
 
 	addCommands()
 
@@ -95,7 +95,7 @@ func initConfig() {
 	viper.SetConfigFile(cfgFile)
 
 	viper.SetDefault("output", "text")
-	viper.SetDefault(doctl.ArgContext, doctl.ArgDefaultContext)
+	viper.SetDefault(blcli.ArgContext, blcli.ArgDefaultContext)
 
 	if _, err := os.Stat(cfgFile); err == nil {
 		if err := viper.ReadInConfig(); err != nil {
@@ -109,7 +109,7 @@ func defaultConfigHome() string {
 	cfgDir, err := os.UserConfigDir()
 	checkErr(err)
 
-	return filepath.Join(cfgDir, "doctl")
+	return filepath.Join(cfgDir, "bl")
 }
 
 func configHome() string {

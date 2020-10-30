@@ -3,9 +3,9 @@ package commands
 import (
 	"testing"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -74,10 +74,10 @@ func TestProjectsCreate(t *testing.T) {
 		}
 		tm.projects.EXPECT().Create(projectCreateRequest).Return(&testProject, nil)
 
-		config.Doit.Set(config.NS, doctl.ArgProjectName, "project name")
-		config.Doit.Set(config.NS, doctl.ArgProjectDescription, "project description")
-		config.Doit.Set(config.NS, doctl.ArgProjectPurpose, "personal use")
-		config.Doit.Set(config.NS, doctl.ArgProjectEnvironment, "Staging")
+		config.Doit.Set(config.NS, blcli.ArgProjectName, "project name")
+		config.Doit.Set(config.NS, blcli.ArgProjectDescription, "project description")
+		config.Doit.Set(config.NS, blcli.ArgProjectPurpose, "personal use")
+		config.Doit.Set(config.NS, blcli.ArgProjectEnvironment, "Staging")
 
 		err := RunProjectsCreate(config)
 		assert.NoError(t, err)
@@ -97,11 +97,11 @@ func TestProjectsUpdateAllAttributes(t *testing.T) {
 		tm.projects.EXPECT().Update(projectUUID, updateReq).Return(&testProject, nil)
 
 		config.Args = append(config.Args, projectUUID)
-		config.Doit.Set(config.NS, doctl.ArgProjectName, "project name")
-		config.Doit.Set(config.NS, doctl.ArgProjectDescription, "project description")
-		config.Doit.Set(config.NS, doctl.ArgProjectPurpose, "project purpose")
-		config.Doit.Set(config.NS, doctl.ArgProjectEnvironment, "Production")
-		config.Doit.Set(config.NS, doctl.ArgProjectIsDefault, false)
+		config.Doit.Set(config.NS, blcli.ArgProjectName, "project name")
+		config.Doit.Set(config.NS, blcli.ArgProjectDescription, "project description")
+		config.Doit.Set(config.NS, blcli.ArgProjectPurpose, "project purpose")
+		config.Doit.Set(config.NS, blcli.ArgProjectEnvironment, "Production")
+		config.Doit.Set(config.NS, blcli.ArgProjectIsDefault, false)
 
 		err := RunProjectsUpdate(config)
 		assert.NoError(t, err)
@@ -121,8 +121,8 @@ func TestProjectsUpdateSomeAttributes(t *testing.T) {
 		tm.projects.EXPECT().Update(projectUUID, updateReq).Return(&testProject, nil)
 
 		config.Args = append(config.Args, projectUUID)
-		config.Doit.Set(config.NS, doctl.ArgProjectName, "project name")
-		config.Doit.Set(config.NS, doctl.ArgProjectDescription, "project description")
+		config.Doit.Set(config.NS, blcli.ArgProjectName, "project name")
+		config.Doit.Set(config.NS, blcli.ArgProjectDescription, "project description")
 
 		err := RunProjectsUpdate(config)
 		assert.NoError(t, err)
@@ -142,7 +142,7 @@ func TestProjectsUpdateOneAttribute(t *testing.T) {
 		tm.projects.EXPECT().Update(projectUUID, updateReq).Return(&testProject, nil)
 
 		config.Args = append(config.Args, projectUUID)
-		config.Doit.Set(config.NS, doctl.ArgProjectName, "project name")
+		config.Doit.Set(config.NS, blcli.ArgProjectName, "project name")
 
 		err := RunProjectsUpdate(config)
 		assert.NoError(t, err)
@@ -155,7 +155,7 @@ func TestProjectsDelete(t *testing.T) {
 		tm.projects.EXPECT().Delete(projectUUID).Return(nil)
 
 		config.Args = append(config.Args, projectUUID)
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunProjectsDelete(config)
 		assert.NoError(t, err)
@@ -205,7 +205,7 @@ func TestProjectResourcesAssignOneResource(t *testing.T) {
 		tm.projects.EXPECT().AssignResources(projectUUID, []string{urn}).Return(testProjectResourcesListSingle, nil)
 
 		config.Args = append(config.Args, projectUUID)
-		config.Doit.Set(config.NS, doctl.ArgProjectResource, []string{urn})
+		config.Doit.Set(config.NS, blcli.ArgProjectResource, []string{urn})
 
 		err := RunProjectResourcesAssign(config)
 		assert.NoError(t, err)
@@ -220,7 +220,7 @@ func TestProjectResourcesAssignMultipleResources(t *testing.T) {
 		tm.projects.EXPECT().AssignResources(projectUUID, []string{urn, otherURN}).Return(testProjectResourcesList, nil)
 
 		config.Args = append(config.Args, projectUUID)
-		config.Doit.Set(config.NS, doctl.ArgProjectResource, []string{urn, otherURN})
+		config.Doit.Set(config.NS, blcli.ArgProjectResource, []string{urn, otherURN})
 
 		err := RunProjectResourcesAssign(config)
 		assert.NoError(t, err)

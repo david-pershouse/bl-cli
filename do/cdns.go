@@ -3,7 +3,7 @@ package do
 import (
 	"context"
 
-	"github.com/digitalocean/godo"
+	godo "git.mammoth.com.au/github/go-binarylane"
 )
 
 // CDN is a wrapper for godo.CDN.

@@ -19,8 +19,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/pluginhost"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/pluginhost"
 	"github.com/spf13/cobra"
 )
 

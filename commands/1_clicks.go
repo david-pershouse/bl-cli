@@ -14,8 +14,8 @@ limitations under the License.
 package commands
 
 import (
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
 	"github.com/spf13/cobra"
 )
 
@@ -25,21 +25,21 @@ func OneClicks() *Command {
 		Command: &cobra.Command{
 			Use:   "1-click",
 			Short: "Display commands that pertain to 1-click applications",
-			Long:  "The commands under `doctl 1-click` are for interacting with DigitalOcean 1-Click applications.",
+			Long:  "The commands under `bl 1-click` are for interacting with DigitalOcean 1-Click applications.",
 		},
 	}
 
 	cmdOneClickList := CmdBuilder(cmd, RunOneClickList, "list", "Retrieve a list of 1-Click applications", "Use this command to retrieve a list of 1-Click applications. You can narrow it by type, current types: kubernetes, droplet", Writer,
 		aliasOpt("ls"), displayerType(&displayers.OneClick{}))
 
-	AddStringFlag(cmdOneClickList, doctl.ArgOneClickType, "", "", "The 1-Click type. Valid types are one of the following: kubernetes, droplet")
+	AddStringFlag(cmdOneClickList, blcli.ArgOneClickType, "", "", "The 1-Click type. Valid types are one of the following: kubernetes, droplet")
 
 	return cmd
 }
 
 // RunOneClickList retrieves a list of 1-clicks by type. If no type is specified then all types are returned.
 func RunOneClickList(c *CmdConfig) error {
-	oneClickType, err := c.Doit.GetString(c.NS, doctl.ArgOneClickType)
+	oneClickType, err := c.Doit.GetString(c.NS, blcli.ArgOneClickType)
 	if err != nil {
 		return err
 	}

@@ -17,8 +17,8 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
 	"github.com/spf13/cobra"
 )
 
@@ -76,7 +76,7 @@ Use the ` + "`" + `doctl invoice list` + "`" + ` command to find the UUID of the
 
 func getInvoiceUUIDArg(ns string, args []string) (string, error) {
 	if len(args) < 1 {
-		return "", doctl.NewMissingArgsErr(ns)
+		return "", blcli.NewMissingArgsErr(ns)
 	}
 
 	return args[0], nil

@@ -19,10 +19,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 
 	"github.com/spf13/cobra"
 )
@@ -63,45 +63,45 @@ Inbound access rules specify the protocol (TCP, UDP, or ICMP), ports, and source
 	CmdBuilder(cmd, RunFirewallGet, "get <id>", "Retrieve information about a cloud firewall", `Use this command to get information about an existing cloud firewall, including:`+fwDetail, Writer, aliasOpt("g"), displayerType(&displayers.Firewall{}))
 
 	cmdFirewallCreate := CmdBuilder(cmd, RunFirewallCreate, "create", "Create a new cloud firewall", `Use this command to create a cloud firewall. This command must contain at least one inbound or outbound access rule.`, Writer, aliasOpt("c"), displayerType(&displayers.Firewall{}))
-	AddStringFlag(cmdFirewallCreate, doctl.ArgFirewallName, "", "", "Firewall name", requiredOpt())
-	AddStringFlag(cmdFirewallCreate, doctl.ArgInboundRules, "", "", inboundRulesTxt)
-	AddStringFlag(cmdFirewallCreate, doctl.ArgOutboundRules, "", "", outboundRulesTxt)
-	AddStringSliceFlag(cmdFirewallCreate, doctl.ArgDropletIDs, "", []string{}, dropletIDRulesTxt)
-	AddStringSliceFlag(cmdFirewallCreate, doctl.ArgTagNames, "", []string{}, tagNameRulesTxt)
+	AddStringFlag(cmdFirewallCreate, blcli.ArgFirewallName, "", "", "Firewall name", requiredOpt())
+	AddStringFlag(cmdFirewallCreate, blcli.ArgInboundRules, "", "", inboundRulesTxt)
+	AddStringFlag(cmdFirewallCreate, blcli.ArgOutboundRules, "", "", outboundRulesTxt)
+	AddStringSliceFlag(cmdFirewallCreate, blcli.ArgDropletIDs, "", []string{}, dropletIDRulesTxt)
+	AddStringSliceFlag(cmdFirewallCreate, blcli.ArgTagNames, "", []string{}, tagNameRulesTxt)
 
 	cmdFirewallUpdate := CmdBuilder(cmd, RunFirewallUpdate, "update <id>", "Update a cloud firewall's configuration", `Use this command to update the configuration of an existing cloud firewall. The request should contain a full representation of the Firewall, including existing attributes. Note: Any attributes that are not provided will be reset to their default values.`, Writer, aliasOpt("u"), displayerType(&displayers.Firewall{}))
-	AddStringFlag(cmdFirewallUpdate, doctl.ArgFirewallName, "", "", "Firewall name", requiredOpt())
-	AddStringFlag(cmdFirewallUpdate, doctl.ArgInboundRules, "", "", inboundRulesTxt)
-	AddStringFlag(cmdFirewallUpdate, doctl.ArgOutboundRules, "", "", outboundRulesTxt)
-	AddStringSliceFlag(cmdFirewallUpdate, doctl.ArgDropletIDs, "", []string{}, dropletIDRulesTxt)
-	AddStringSliceFlag(cmdFirewallUpdate, doctl.ArgTagNames, "", []string{}, tagNameRulesTxt)
+	AddStringFlag(cmdFirewallUpdate, blcli.ArgFirewallName, "", "", "Firewall name", requiredOpt())
+	AddStringFlag(cmdFirewallUpdate, blcli.ArgInboundRules, "", "", inboundRulesTxt)
+	AddStringFlag(cmdFirewallUpdate, blcli.ArgOutboundRules, "", "", outboundRulesTxt)
+	AddStringSliceFlag(cmdFirewallUpdate, blcli.ArgDropletIDs, "", []string{}, dropletIDRulesTxt)
+	AddStringSliceFlag(cmdFirewallUpdate, blcli.ArgTagNames, "", []string{}, tagNameRulesTxt)
 
 	CmdBuilder(cmd, RunFirewallList, "list", "List the cloud firewalls on your account", `Use this command to retrieve a list of cloud firewalls.`, Writer, aliasOpt("ls"), displayerType(&displayers.Firewall{}))
 
 	CmdBuilder(cmd, RunFirewallListByDroplet, "list-by-droplet <droplet_id>", "List firewalls by Droplet", `Use this command to list cloud firewalls by the ID of a Droplet assigned to the firewall.`, Writer, displayerType(&displayers.Firewall{}))
 
 	cmdRunRecordDelete := CmdBuilder(cmd, RunFirewallDelete, "delete <id>...", "Permanently delete a cloud firewall", `Use this command to permanently delete a cloud firewall. This is irreversable, but does not delete any Droplets assigned to the cloud firewall.`, Writer, aliasOpt("d", "rm"))
-	AddBoolFlag(cmdRunRecordDelete, doctl.ArgForce, doctl.ArgShortForce, false, "Delete firewall without confirmation prompt")
+	AddBoolFlag(cmdRunRecordDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Delete firewall without confirmation prompt")
 
 	cmdAddDroplets := CmdBuilder(cmd, RunFirewallAddDroplets, "add-droplets <id>", "Add Droplets to a cloud firewall", `Use this command to add Droplets to the cloud firewall.`, Writer)
-	AddStringSliceFlag(cmdAddDroplets, doctl.ArgDropletIDs, "", []string{}, dropletIDRulesTxt)
+	AddStringSliceFlag(cmdAddDroplets, blcli.ArgDropletIDs, "", []string{}, dropletIDRulesTxt)
 
 	cmdRemoveDroplets := CmdBuilder(cmd, RunFirewallRemoveDroplets, "remove-droplets <id>", "Remove Droplets from a cloud firewall", `Use this command to remove Droplets from a cloud firewall.`, Writer)
-	AddStringSliceFlag(cmdRemoveDroplets, doctl.ArgDropletIDs, "", []string{}, dropletIDRulesTxt)
+	AddStringSliceFlag(cmdRemoveDroplets, blcli.ArgDropletIDs, "", []string{}, dropletIDRulesTxt)
 
 	cmdAddTags := CmdBuilder(cmd, RunFirewallAddTags, "add-tags <id>", "Add tags to a cloud firewall", `Use this command to add tags to a cloud firewall. This adds all assets using that tag to the firewall`, Writer)
-	AddStringSliceFlag(cmdAddTags, doctl.ArgTagNames, "", []string{}, tagNameRulesTxt)
+	AddStringSliceFlag(cmdAddTags, blcli.ArgTagNames, "", []string{}, tagNameRulesTxt)
 
 	cmdRemoveTags := CmdBuilder(cmd, RunFirewallRemoveTags, "remove-tags <id>", "Remove tags from a cloud firewall", `Use this command to remove tags from a cloud firewall. This removes all assets using that tag from the firewall.`, Writer)
-	AddStringSliceFlag(cmdRemoveTags, doctl.ArgTagNames, "", []string{}, tagNameRulesTxt)
+	AddStringSliceFlag(cmdRemoveTags, blcli.ArgTagNames, "", []string{}, tagNameRulesTxt)
 
 	cmdAddRules := CmdBuilder(cmd, RunFirewallAddRules, "add-rules <id>", "Add inbound or outbound rules to a cloud firewall", `Use this command to add inbound or outbound rules to a cloud firewall.`, Writer)
-	AddStringFlag(cmdAddRules, doctl.ArgInboundRules, "", "", inboundRulesTxt)
-	AddStringFlag(cmdAddRules, doctl.ArgOutboundRules, "", "", outboundRulesTxt)
+	AddStringFlag(cmdAddRules, blcli.ArgInboundRules, "", "", inboundRulesTxt)
+	AddStringFlag(cmdAddRules, blcli.ArgOutboundRules, "", "", outboundRulesTxt)
 
 	cmdRemoveRules := CmdBuilder(cmd, RunFirewallRemoveRules, "remove-rules <id>", "Remove inbound or outbound rules from a cloud firewall", `Use this command to remove inbound or outbound rules from a cloud firewall.`, Writer)
-	AddStringFlag(cmdRemoveRules, doctl.ArgInboundRules, "", "", inboundRulesTxt)
-	AddStringFlag(cmdRemoveRules, doctl.ArgOutboundRules, "", "", outboundRulesTxt)
+	AddStringFlag(cmdRemoveRules, blcli.ArgInboundRules, "", "", inboundRulesTxt)
+	AddStringFlag(cmdRemoveRules, blcli.ArgOutboundRules, "", "", outboundRulesTxt)
 
 	return cmd
 }
@@ -144,7 +144,7 @@ func RunFirewallCreate(c *CmdConfig) error {
 // RunFirewallUpdate updates an existing Firewall with new configuration.
 func RunFirewallUpdate(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 	fID := c.Args[0]
 
@@ -199,10 +199,10 @@ func RunFirewallListByDroplet(c *CmdConfig) error {
 // RunFirewallDelete deletes a Firewall by its identifier.
 func RunFirewallDelete(c *CmdConfig) error {
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
@@ -229,7 +229,7 @@ func RunFirewallAddDroplets(c *CmdConfig) error {
 	}
 	fID := c.Args[0]
 
-	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, doctl.ArgDropletIDs)
+	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgDropletIDs)
 	if err != nil {
 		return err
 	}
@@ -250,7 +250,7 @@ func RunFirewallRemoveDroplets(c *CmdConfig) error {
 	}
 	fID := c.Args[0]
 
-	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, doctl.ArgDropletIDs)
+	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgDropletIDs)
 	if err != nil {
 		return err
 	}
@@ -271,7 +271,7 @@ func RunFirewallAddTags(c *CmdConfig) error {
 	}
 	fID := c.Args[0]
 
-	tagList, err := c.Doit.GetStringSlice(c.NS, doctl.ArgTagNames)
+	tagList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgTagNames)
 	if err != nil {
 		return err
 	}
@@ -287,7 +287,7 @@ func RunFirewallRemoveTags(c *CmdConfig) error {
 	}
 	fID := c.Args[0]
 
-	tagList, err := c.Doit.GetStringSlice(c.NS, doctl.ArgTagNames)
+	tagList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgTagNames)
 	if err != nil {
 		return err
 	}
@@ -328,13 +328,13 @@ func RunFirewallRemoveRules(c *CmdConfig) error {
 }
 
 func buildFirewallRequestFromArgs(c *CmdConfig, r *godo.FirewallRequest) error {
-	name, err := c.Doit.GetString(c.NS, doctl.ArgFirewallName)
+	name, err := c.Doit.GetString(c.NS, blcli.ArgFirewallName)
 	if err != nil {
 		return err
 	}
 	r.Name = name
 
-	ira, err := c.Doit.GetString(c.NS, doctl.ArgInboundRules)
+	ira, err := c.Doit.GetString(c.NS, blcli.ArgInboundRules)
 	if err != nil {
 		return err
 	}
@@ -345,7 +345,7 @@ func buildFirewallRequestFromArgs(c *CmdConfig, r *godo.FirewallRequest) error {
 	}
 	r.InboundRules = inboundRules
 
-	ora, err := c.Doit.GetString(c.NS, doctl.ArgOutboundRules)
+	ora, err := c.Doit.GetString(c.NS, blcli.ArgOutboundRules)
 	if err != nil {
 		return err
 	}
@@ -356,7 +356,7 @@ func buildFirewallRequestFromArgs(c *CmdConfig, r *godo.FirewallRequest) error {
 	}
 	r.OutboundRules = outboundRules
 
-	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, doctl.ArgDropletIDs)
+	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgDropletIDs)
 	if err != nil {
 		return err
 	}
@@ -367,7 +367,7 @@ func buildFirewallRequestFromArgs(c *CmdConfig, r *godo.FirewallRequest) error {
 	}
 	r.DropletIDs = dropletIDs
 
-	tagsList, err := c.Doit.GetStringSlice(c.NS, doctl.ArgTagNames)
+	tagsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgTagNames)
 	if err != nil {
 		return err
 	}
@@ -377,7 +377,7 @@ func buildFirewallRequestFromArgs(c *CmdConfig, r *godo.FirewallRequest) error {
 }
 
 func buildFirewallRulesRequestFromArgs(c *CmdConfig, rr *godo.FirewallRulesRequest) error {
-	ira, err := c.Doit.GetString(c.NS, doctl.ArgInboundRules)
+	ira, err := c.Doit.GetString(c.NS, blcli.ArgInboundRules)
 	if err != nil {
 		return err
 	}
@@ -388,7 +388,7 @@ func buildFirewallRulesRequestFromArgs(c *CmdConfig, rr *godo.FirewallRulesReque
 	}
 	rr.InboundRules = inboundRules
 
-	ora, err := c.Doit.GetString(c.NS, doctl.ArgOutboundRules)
+	ora, err := c.Doit.GetString(c.NS, blcli.ArgOutboundRules)
 	if err != nil {
 		return err
 	}

@@ -16,7 +16,7 @@ package displayers
 import (
 	"io"
 
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli/do"
 )
 
 // OneClick is the struct with the OneClickService on it.

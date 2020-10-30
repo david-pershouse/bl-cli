@@ -13,7 +13,7 @@ limitations under the License.
 
 package commands
 
-import "github.com/digitalocean/doctl/commands/displayers"
+import "git.mammoth.com.au/github/bl-cli/commands/displayers"
 
 // cmdOption allow configuration of a command.
 type cmdOption func(*Command)

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli/do"
 
 	"github.com/stretchr/testify/assert"
 )

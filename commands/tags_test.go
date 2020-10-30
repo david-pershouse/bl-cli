@@ -17,9 +17,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -85,7 +85,7 @@ func TestTagDelete(t *testing.T) {
 		tm.tags.EXPECT().Delete("my-tag").Return(nil)
 		config.Args = append(config.Args, "my-tag")
 
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunCmdTagDelete(config)
 		assert.NoError(t, err)
@@ -98,7 +98,7 @@ func TestTagDeleteMultiple(t *testing.T) {
 		tm.tags.EXPECT().Delete("my-tag-secondary").Return(nil)
 		config.Args = append(config.Args, "my-tag", "my-tag-secondary")
 
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunCmdTagDelete(config)
 		assert.NoError(t, err)

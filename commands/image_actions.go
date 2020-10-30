@@ -17,10 +17,10 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -47,13 +47,13 @@ func ImageAction() *Command {
 	cmdImageActionsGet := CmdBuilder(cmd, RunImageActionsGet,
 		"get <image-id>", "Retrieve the status of an image action", `Use this command to retrieve the status of an image action, including the following details:`+actionDetail, Writer,
 		displayerType(&displayers.Action{}))
-	AddIntFlag(cmdImageActionsGet, doctl.ArgActionID, "", 0, "action id", requiredOpt())
+	AddIntFlag(cmdImageActionsGet, blcli.ArgActionID, "", 0, "action id", requiredOpt())
 
 	cmdImageActionsTransfer := CmdBuilder(cmd, RunImageActionsTransfer,
 		"transfer <image-id>", "Transfer an image to another datacenter region", `Use this command to transfer an image to a different datacenter region. Also outputs the following details:`+actionDetail, Writer,
 		displayerType(&displayers.Action{}))
-	AddStringFlag(cmdImageActionsTransfer, doctl.ArgRegionSlug, "", "", "region", requiredOpt())
-	AddBoolFlag(cmdImageActionsTransfer, doctl.ArgCommandWait, "", false, "Wait for action to complete")
+	AddStringFlag(cmdImageActionsTransfer, blcli.ArgRegionSlug, "", "", "region", requiredOpt())
+	AddBoolFlag(cmdImageActionsTransfer, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	return cmd
 }
@@ -72,7 +72,7 @@ func RunImageActionsGet(c *CmdConfig) error {
 		return err
 	}
 
-	actionID, err := c.Doit.GetInt(c.NS, doctl.ArgActionID)
+	actionID, err := c.Doit.GetInt(c.NS, blcli.ArgActionID)
 	if err != nil {
 		return err
 	}
@@ -100,7 +100,7 @@ func RunImageActionsTransfer(c *CmdConfig) error {
 		return err
 	}
 
-	region, err := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
+	region, err := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
 	if err != nil {
 		return err
 	}
@@ -115,7 +115,7 @@ func RunImageActionsTransfer(c *CmdConfig) error {
 		checkErr(fmt.Errorf("Could not transfer image: %v", err))
 	}
 
-	wait, err := c.Doit.GetBool(c.NS, doctl.ArgCommandWait)
+	wait, err := c.Doit.GetBool(c.NS, blcli.ArgCommandWait)
 	if err != nil {
 		return err
 	}

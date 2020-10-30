@@ -18,10 +18,10 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/do"
-	domocks "github.com/digitalocean/doctl/do/mocks"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/do"
+	domocks "git.mammoth.com.au/github/bl-cli/do/mocks"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/golang/mock/gomock"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
@@ -219,14 +219,14 @@ func withTestClient(t *testing.T, tFn testFn) {
 
 	config := &CmdConfig{
 		NS:   "test",
-		Doit: doctl.NewTestConfig(),
+		Doit: blcli.NewTestConfig(),
 		Out:  ioutil.Discard,
 
 		// can stub this out, since the return is dictated by the mocks.
 		initServices: func(c *CmdConfig) error { return nil },
 
 		getContextAccessToken: func() string {
-			return viper.GetString(doctl.ArgAccessToken)
+			return viper.GetString(blcli.ArgAccessToken)
 		},
 
 		setContextAccessToken: func(token string) {},

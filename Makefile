@@ -41,17 +41,17 @@ endif
 
 .PHONY: _build
 _build:
-	@echo "=> building doctl via go build"
+	@echo "=> building bl via go build"
 	@echo ""
 	@OUT_D=${OUT_D} GOOS=${GOOS} GOARCH=${GOARCH} scripts/_build.sh
-	@echo "built $(OUT_D)/doctl_$(GOOS)_$(GOARCH)"
+	@echo "built $(OUT_D)/bl_$(GOOS)_$(GOARCH)"
 
 .PHONY: build
 build: _build
 	@echo "==> build local version"
 	@echo ""
-	@mv $(OUT_D)/doctl_$(GOOS)_$(GOARCH) $(OUT_D)/doctl
-	@echo "installed as $(OUT_D)/doctl"
+	@mv $(OUT_D)/bl_$(GOOS)_$(GOARCH) $(OUT_D)/bl
+	@echo "installed as $(OUT_D)/bl"
 
 .PHONY: native
 native: build
@@ -65,22 +65,22 @@ _build_linux_amd64: _build
 
 .PHONY: docker_build
 docker_build:
-	@echo "==> build doctl in local docker container"
+	@echo "==> build bl in local docker container"
 	@echo ""
 	@mkdir -p $(OUT_D)
 	@docker build -f Dockerfile \
 		--build-arg GOARCH=$(GOARCH) \
-		. -t doctl_local
+		. -t bl_local
 	@docker run --rm \
 		-v $(OUT_D):/copy \
 		-it --entrypoint /bin/cp \
-		doctl_local /app/doctl /copy/
+		bl_local /app/bl /copy/
 	@docker run --rm \
 		-v $(OUT_D):/copy \
 		-it --entrypoint /bin/chown \
 		alpine -R $(shell whoami | id -u): /copy
 	@echo "Built binaries to $(OUT_D)"
-	@echo "Created a local Docker container. To use, run: docker run --rm -it doctl_local"
+	@echo "Created a local Docker container. To use, run: docker run --rm -it bl_local"
 
 .PHONY: test_unit
 test_unit:
@@ -115,19 +115,19 @@ _snap_image_version:
 
 .PHONY: build_local_snap
 build_local_snap:
-	@echo "==> build local snap using local image tagged doctl-snap-base"
+	@echo "==> build local snap using local image tagged bl-snap-base"
 	@echo ""
 	@BUILD=local_snap scripts/snap_image.sh
 
 .PHONY: prerelease_snap_image
 prerelease_snap_image:
-	@echo "==> tag doctl-snap-base as a prerelease and push to dockerhub as latest"
+	@echo "==> tag bl-snap-base as a prerelease and push to dockerhub as latest"
 	@echo ""
 	@BUILD=pre scripts/snap_image.sh
 
 .PHONY: finalize_snap_image
 finalize_snap_image:
-	@echo "==> tag latest with most recent doctl version push to dockerhub"
+	@echo "==> tag latest with most recent bl version push to dockerhub"
 	@echo ""
 	@ORIGIN=${ORIGIN} BUILD=finalize scripts/snap_image.sh
 
@@ -169,7 +169,7 @@ vendor:
 clean:
 	@echo "==> remove build / release artifacts"
 	@echo ""
-	@rm -rf builds dist out parts prime stage doctl_v*.snap
+	@rm -rf builds dist out parts prime stage bl_v*.snap
 
 .PHONY: _install_github_release_notes
 _install_github_release_notes:
@@ -187,7 +187,7 @@ changes: _install_github_release_notes
 
 .PHONY: version
 version:
-	@echo "==> doctl version"
+	@echo "==> bl version"
 	@echo ""
 	@ORIGIN=${ORIGIN} scripts/version.sh
 

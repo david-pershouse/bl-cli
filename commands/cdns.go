@@ -17,10 +17,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -59,15 +59,15 @@ The Time To Live (TTL) value is the length of time in seconds that a file is cac
 
 	cmdCDNCreate := CmdBuilder(cmd, RunCDNCreate, "create <cdn-origin>", "Create a CDN", `This command creates a Content Delivery Network (CDN) on the origin server you specify and automatically generates an endpoint. You can also use a custom subdomain you own to create an additional endpoint, which must be secured with SSL.`+CDNnotes, Writer,
 		aliasOpt("c"), displayerType(&displayers.CDN{}))
-	AddIntFlag(cmdCDNCreate, doctl.ArgCDNTTL, "", 3600, TTLDesc)
-	AddStringFlag(cmdCDNCreate, doctl.ArgCDNDomain, "", "", DomainDesc)
-	AddStringFlag(cmdCDNCreate, doctl.ArgCDNCertificateID, "", "", CertIDDesc)
+	AddIntFlag(cmdCDNCreate, blcli.ArgCDNTTL, "", 3600, TTLDesc)
+	AddStringFlag(cmdCDNCreate, blcli.ArgCDNDomain, "", "", DomainDesc)
+	AddStringFlag(cmdCDNCreate, blcli.ArgCDNCertificateID, "", "", CertIDDesc)
 
 	cmdRunCDNDelete := CmdBuilder(cmd, RunCDNDelete, "delete <cdn-id>", "Delete a CDN", `This command deletes the CDN specified by the ID.
 
 You can retrieve the ID by calling `+"`"+`doctl compute cdn list`+"`"+` if needed.`, Writer,
 		aliasOpt("rm"))
-	AddBoolFlag(cmdRunCDNDelete, doctl.ArgForce, doctl.ArgShortForce, false, "Delete the specified CDN without prompting for confirmation")
+	AddBoolFlag(cmdRunCDNDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Delete the specified CDN without prompting for confirmation")
 
 	CmdBuilder(cmd, RunCDNGet, "get <cdn-id>", "Retrieve details about a specific CDN", `This command lists the following details for the Content Delivery Network (CDNs) specified by the ID:`+CDNDetails+CDNnotes, Writer, aliasOpt("g"),
 		displayerType(&displayers.CDN{}))
@@ -76,9 +76,9 @@ You can retrieve the ID by calling `+"`"+`doctl compute cdn list`+"`"+` if neede
 
 Currently, you can only update the custom domain and its certificate ID with this command.`, Writer,
 		aliasOpt("u"), displayerType(&displayers.CDN{}))
-	AddIntFlag(cmdCDNUpdate, doctl.ArgCDNTTL, "", 3600, TTLDesc)
-	AddStringFlag(cmdCDNUpdate, doctl.ArgCDNDomain, "", "", DomainDesc)
-	AddStringFlag(cmdCDNUpdate, doctl.ArgCDNCertificateID, "", "", CertIDDesc)
+	AddIntFlag(cmdCDNUpdate, blcli.ArgCDNTTL, "", 3600, TTLDesc)
+	AddStringFlag(cmdCDNUpdate, blcli.ArgCDNDomain, "", "", DomainDesc)
+	AddStringFlag(cmdCDNUpdate, blcli.ArgCDNCertificateID, "", "", CertIDDesc)
 
 	cmdCDNFlushCache := CmdBuilder(cmd, RunCDNFlushCache, "flush <cdn-id>", "Flush the cache of a CDN", `This command flushes the cache of a Content Delivery Network (CDN), which:
 
@@ -90,7 +90,7 @@ This is useful when you need to ensure that files which were recently changed on
 
 To purge specific files, you can use the the `+"`"+`--files`+"`"+` flag and supply a path. The path may be for a single file or may contain a wildcard (`+"`"+`*`+"`"+`) to recursively purge all files under a directory. When only a wildcard is provided, or no path is provided, all cached files will be purged.`, Writer,
 		aliasOpt("fc"))
-	AddStringSliceFlag(cmdCDNFlushCache, doctl.ArgCDNFiles, "", []string{"*"}, "cdn files")
+	AddStringSliceFlag(cmdCDNFlushCache, blcli.ArgCDNFiles, "", []string{"*"}, "cdn files")
 
 	return cmd
 }
@@ -108,7 +108,7 @@ func RunCDNList(c *CmdConfig) error {
 // RunCDNGet returns an individual CDN.
 func RunCDNGet(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -123,12 +123,12 @@ func RunCDNGet(c *CmdConfig) error {
 // RunCDNCreate creates a cdn.
 func RunCDNCreate(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	origin := c.Args[0]
 
-	ttl, err := c.Doit.GetInt(c.NS, doctl.ArgCDNTTL)
+	ttl, err := c.Doit.GetInt(c.NS, blcli.ArgCDNTTL)
 	if err != nil {
 		return err
 	}
@@ -159,7 +159,7 @@ func RunCDNCreate(c *CmdConfig) error {
 // RunCDNUpdate updates an individual cdn
 func RunCDNUpdate(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -167,8 +167,8 @@ func RunCDNUpdate(c *CmdConfig) error {
 	cs := c.CDNs()
 
 	var item *do.CDN
-	if c.Doit.IsSet(doctl.ArgCDNTTL) {
-		ttl, err := c.Doit.GetInt(c.NS, doctl.ArgCDNTTL)
+	if c.Doit.IsSet(blcli.ArgCDNTTL) {
+		ttl, err := c.Doit.GetInt(c.NS, blcli.ArgCDNTTL)
 		if err != nil {
 			return err
 		}
@@ -184,7 +184,7 @@ func RunCDNUpdate(c *CmdConfig) error {
 		}
 	}
 
-	if c.Doit.IsSet(doctl.ArgCDNDomain) {
+	if c.Doit.IsSet(blcli.ArgCDNDomain) {
 		domain, certID, err := getCDNDomainAndCertID(c)
 		if err != nil {
 			return err
@@ -213,13 +213,13 @@ func getCDNDomainAndCertID(c *CmdConfig) (string, string, error) {
 		domain, certID string
 		err            error
 	)
-	domain, err = c.Doit.GetString(c.NS, doctl.ArgCDNDomain)
+	domain, err = c.Doit.GetString(c.NS, blcli.ArgCDNDomain)
 	if err != nil {
 		return "", "", err
 	}
 
 	if domain != "" {
-		certID, err = c.Doit.GetString(c.NS, doctl.ArgCDNCertificateID)
+		certID, err = c.Doit.GetString(c.NS, blcli.ArgCDNCertificateID)
 		if err != nil {
 			return "", "", err
 		}
@@ -234,10 +234,10 @@ func getCDNDomainAndCertID(c *CmdConfig) (string, string, error) {
 // RunCDNDelete deletes a cdn.
 func RunCDNDelete(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
@@ -253,12 +253,12 @@ func RunCDNDelete(c *CmdConfig) error {
 // RunCDNFlushCache flushes the cache of an individual cdn
 func RunCDNFlushCache(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
 
-	files, err := c.Doit.GetStringSlice(c.NS, doctl.ArgCDNFiles)
+	files, err := c.Doit.GetStringSlice(c.NS, blcli.ArgCDNFiles)
 	if err != nil {
 		return err
 	}

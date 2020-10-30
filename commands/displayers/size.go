@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli/do"
 )
 
 type Size struct {

@@ -19,7 +19,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/digitalocean/doctl/commands"
+	"git.mammoth.com.au/github/bl-cli/commands"
 	"github.com/spf13/cobra"
 	"github.com/spf13/cobra/doc"
 )

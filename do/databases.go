@@ -17,7 +17,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/digitalocean/godo"
+	godo "git.mammoth.com.au/github/go-binarylane"
 )
 
 // Database is a wrapper for godo.Database

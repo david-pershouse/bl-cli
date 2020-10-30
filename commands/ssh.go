@@ -22,9 +22,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/doctl/pkg/ssh"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/pkg/ssh"
 )
 
 var (
@@ -41,15 +41,15 @@ func SSH(parent *Command) *Command {
 	sshDesc := fmt.Sprintf(`Access a Droplet using SSH by providing its ID or name.
 
 You may specify the user to login with by passing the `+"`"+`--%s`+"`"+` flag. To access the Droplet on a non-default port, use the `+"`"+`--%s`+"`"+` flag. By default, the connection will be made to the Droplet's public IP address. In order access it using its private IP address, use the `+"`"+`--%s`+"`"+` flag.
-`, doctl.ArgSSHUser, doctl.ArgsSSHPort, doctl.ArgsSSHPrivateIP)
+`, blcli.ArgSSHUser, blcli.ArgsSSHPort, blcli.ArgsSSHPrivateIP)
 
 	cmdSSH := CmdBuilder(parent, RunSSH, "ssh <droplet-id|name>", "Access a Droplet using SSH", sshDesc, Writer)
-	AddStringFlag(cmdSSH, doctl.ArgSSHUser, "", "root", "SSH user for connection")
-	AddStringFlag(cmdSSH, doctl.ArgsSSHKeyPath, "", path, "Path to SSH private key")
-	AddIntFlag(cmdSSH, doctl.ArgsSSHPort, "", 22, "The remote port sshd is running on")
-	AddBoolFlag(cmdSSH, doctl.ArgsSSHAgentForwarding, "", false, "Enable SSH agent forwarding")
-	AddBoolFlag(cmdSSH, doctl.ArgsSSHPrivateIP, "", false, "SSH to Droplet's private IP address")
-	AddStringFlag(cmdSSH, doctl.ArgSSHCommand, "", "", "Command to execute on Droplet")
+	AddStringFlag(cmdSSH, blcli.ArgSSHUser, "", "root", "SSH user for connection")
+	AddStringFlag(cmdSSH, blcli.ArgsSSHKeyPath, "", path, "Path to SSH private key")
+	AddIntFlag(cmdSSH, blcli.ArgsSSHPort, "", 22, "The remote port sshd is running on")
+	AddBoolFlag(cmdSSH, blcli.ArgsSSHAgentForwarding, "", false, "Enable SSH agent forwarding")
+	AddBoolFlag(cmdSSH, blcli.ArgsSSHPrivateIP, "", false, "SSH to Droplet's private IP address")
+	AddStringFlag(cmdSSH, blcli.ArgSSHCommand, "", "", "Command to execute on Droplet")
 
 	return cmdSSH
 }
@@ -57,42 +57,42 @@ You may specify the user to login with by passing the `+"`"+`--%s`+"`"+` flag. T
 // RunSSH finds a droplet to ssh to given input parameters (name or id).
 func RunSSH(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	dropletID := c.Args[0]
 
 	if dropletID == "" {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	user, err := c.Doit.GetString(c.NS, doctl.ArgSSHUser)
+	user, err := c.Doit.GetString(c.NS, blcli.ArgSSHUser)
 	if err != nil {
 		return err
 	}
 
-	keyPath, err := c.Doit.GetString(c.NS, doctl.ArgsSSHKeyPath)
+	keyPath, err := c.Doit.GetString(c.NS, blcli.ArgsSSHKeyPath)
 	if err != nil {
 		return err
 	}
 
-	port, err := c.Doit.GetInt(c.NS, doctl.ArgsSSHPort)
+	port, err := c.Doit.GetInt(c.NS, blcli.ArgsSSHPort)
 	if err != nil {
 		return err
 	}
 
 	var opts = make(ssh.Options)
-	opts[doctl.ArgsSSHAgentForwarding], err = c.Doit.GetBool(c.NS, doctl.ArgsSSHAgentForwarding)
+	opts[blcli.ArgsSSHAgentForwarding], err = c.Doit.GetBool(c.NS, blcli.ArgsSSHAgentForwarding)
 	if err != nil {
 		return err
 	}
 
-	opts[doctl.ArgSSHCommand], err = c.Doit.GetString(c.NS, doctl.ArgSSHCommand)
+	opts[blcli.ArgSSHCommand], err = c.Doit.GetString(c.NS, blcli.ArgSSHCommand)
 	if err != nil {
 		return nil
 	}
 
-	privateIPChoice, err := c.Doit.GetBool(c.NS, doctl.ArgsSSHPrivateIP)
+	privateIPChoice, err := c.Doit.GetBool(c.NS, blcli.ArgsSSHPrivateIP)
 	if err != nil {
 		return err
 	}

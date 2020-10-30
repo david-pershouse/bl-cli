@@ -16,10 +16,10 @@ package commands
 import (
 	"fmt"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -53,20 +53,20 @@ With the vpcs command, you can list, create, or delete VPCs, and manage their co
 
 	cmdRecordCreate := CmdBuilder(cmd, RunVPCCreate, "create",
 		"Create a new VPC", "Use this command to create a new VPC on your account.", Writer, aliasOpt("c"))
-	AddStringFlag(cmdRecordCreate, doctl.ArgVPCName, "", "",
+	AddStringFlag(cmdRecordCreate, blcli.ArgVPCName, "", "",
 		"The VPC's name", requiredOpt())
-	AddStringFlag(cmdRecordCreate, doctl.ArgVPCDescription, "", "", "The VPC's name")
-	AddStringFlag(cmdRecordCreate, doctl.ArgVPCIPRange, "", "",
+	AddStringFlag(cmdRecordCreate, blcli.ArgVPCDescription, "", "", "The VPC's name")
+	AddStringFlag(cmdRecordCreate, blcli.ArgVPCIPRange, "", "",
 		"The range of IP addresses in the VPC in CIDR notation, e.g.: `10.116.0.0/20`")
-	AddStringFlag(cmdRecordCreate, doctl.ArgRegionSlug, "", "", "The VPC's region slug, e.g.: `nyc1`", requiredOpt())
+	AddStringFlag(cmdRecordCreate, blcli.ArgRegionSlug, "", "", "The VPC's region slug, e.g.: `nyc1`", requiredOpt())
 
 	cmdRecordUpdate := CmdBuilder(cmd, RunVPCUpdate, "update <id>",
 		"Update a VPC's configuration", `Use this command to update the configuration of a specified VPC.`, Writer, aliasOpt("u"))
-	AddStringFlag(cmdRecordUpdate, doctl.ArgVPCName, "", "",
+	AddStringFlag(cmdRecordUpdate, blcli.ArgVPCName, "", "",
 		"The VPC's name", requiredOpt())
-	AddStringFlag(cmdRecordUpdate, doctl.ArgVPCDescription, "", "",
+	AddStringFlag(cmdRecordUpdate, blcli.ArgVPCDescription, "", "",
 		"The VPC's description")
-	AddBoolFlag(cmdRecordUpdate, doctl.ArgVPCDefault, "", false,
+	AddBoolFlag(cmdRecordUpdate, blcli.ArgVPCDefault, "", false,
 		"The VPC's default state")
 
 	CmdBuilder(cmd, RunVPCList, "list", "List VPCs", "Use this command to get a list of the VPCs on your account, including the following information for each:"+vpcDetail, Writer,
@@ -74,7 +74,7 @@ With the vpcs command, you can list, create, or delete VPCs, and manage their co
 
 	cmdRunRecordDelete := CmdBuilder(cmd, RunVPCDelete, "delete <id>",
 		"Permanently delete a VPC", `Use this command to permanently delete the specified VPC. This is irreversible.`, Writer, aliasOpt("d", "rm"))
-	AddBoolFlag(cmdRunRecordDelete, doctl.ArgForce, doctl.ArgShortForce, false,
+	AddBoolFlag(cmdRunRecordDelete, blcli.ArgForce, blcli.ArgShortForce, false,
 		"Delete the VPC without a confirmation prompt")
 
 	return cmd
@@ -113,25 +113,25 @@ func RunVPCList(c *CmdConfig) error {
 // RunVPCCreate creates a new VPC with a given configuration.
 func RunVPCCreate(c *CmdConfig) error {
 	r := new(godo.VPCCreateRequest)
-	name, err := c.Doit.GetString(c.NS, doctl.ArgVPCName)
+	name, err := c.Doit.GetString(c.NS, blcli.ArgVPCName)
 	if err != nil {
 		return err
 	}
 	r.Name = name
 
-	desc, err := c.Doit.GetString(c.NS, doctl.ArgVPCDescription)
+	desc, err := c.Doit.GetString(c.NS, blcli.ArgVPCDescription)
 	if err != nil {
 		return err
 	}
 	r.Description = desc
 
-	ipRange, err := c.Doit.GetString(c.NS, doctl.ArgVPCIPRange)
+	ipRange, err := c.Doit.GetString(c.NS, blcli.ArgVPCIPRange)
 	if err != nil {
 		return err
 	}
 	r.IPRange = ipRange
 
-	rSlug, err := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
+	rSlug, err := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
 	if err != nil {
 		return err
 	}
@@ -150,24 +150,24 @@ func RunVPCCreate(c *CmdConfig) error {
 // RunVPCUpdate updates an existing VPC with new configuration.
 func RunVPCUpdate(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 	vpcUUID := c.Args[0]
 
 	r := new(godo.VPCUpdateRequest)
-	name, err := c.Doit.GetString(c.NS, doctl.ArgVPCName)
+	name, err := c.Doit.GetString(c.NS, blcli.ArgVPCName)
 	if err != nil {
 		return err
 	}
 	r.Name = name
 
-	desc, err := c.Doit.GetString(c.NS, doctl.ArgVPCDescription)
+	desc, err := c.Doit.GetString(c.NS, blcli.ArgVPCDescription)
 	if err != nil {
 		return err
 	}
 	r.Description = desc
 
-	def, err := c.Doit.GetBoolPtr(c.NS, doctl.ArgVPCDefault)
+	def, err := c.Doit.GetBoolPtr(c.NS, blcli.ArgVPCDefault)
 	if err != nil {
 		return err
 	}
@@ -194,7 +194,7 @@ func RunVPCDelete(c *CmdConfig) error {
 	}
 	vpcUUID := c.Args[0]
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}

@@ -19,7 +19,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli/do"
 )
 
 type LoadBalancer struct {

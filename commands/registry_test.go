@@ -21,10 +21,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/doctl/do/mocks"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/do/mocks"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 	k8sapiv1 "k8s.io/api/core/v1"
 	k8sscheme "k8s.io/client-go/kubernetes/scheme"
@@ -119,7 +119,7 @@ func TestRegistryDelete(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		tm.registry.EXPECT().Delete().Return(nil)
 
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunRegistryDelete(config)
 		assert.NoError(t, err)
@@ -184,8 +184,8 @@ func TestDockerConfig(t *testing.T) {
 					test.expect(tm.registry)
 				}
 
-				config.Doit.Set(config.NS, doctl.ArgReadWrite, test.readWrite)
-				config.Doit.Set(config.NS, doctl.ArgRegistryExpirySeconds, test.expirySeconds)
+				config.Doit.Set(config.NS, blcli.ArgReadWrite, test.readWrite)
+				config.Doit.Set(config.NS, blcli.ArgRegistryExpirySeconds, test.expirySeconds)
 
 				var output bytes.Buffer
 				config.Out = &output
@@ -306,7 +306,7 @@ func TestRepositoryDeleteTag(t *testing.T) {
 					test.expect(tm.registry)
 				}
 
-				config.Doit.Set(config.NS, doctl.ArgForce, true)
+				config.Doit.Set(config.NS, blcli.ArgForce, true)
 				config.Args = append(config.Args, test.args...)
 
 				err := RunRepositoryDeleteTag(config)
@@ -404,7 +404,7 @@ func TestRepositoryDeleteManifest(t *testing.T) {
 					test.expect(tm.registry)
 				}
 
-				config.Doit.Set(config.NS, doctl.ArgForce, true)
+				config.Doit.Set(config.NS, blcli.ArgForce, true)
 				config.Args = append(config.Args, test.args...)
 
 				err := RunRepositoryDeleteManifest(config)
@@ -450,8 +450,8 @@ func TestRegistryKubernetesManifest(t *testing.T) {
 
 		// tests
 		for _, tc := range tcs {
-			config.Doit.Set(config.NS, doctl.ArgObjectName, tc.argName)
-			config.Doit.Set(config.NS, doctl.ArgObjectNamespace, tc.argNamespace)
+			config.Doit.Set(config.NS, blcli.ArgObjectName, tc.argName)
+			config.Doit.Set(config.NS, blcli.ArgObjectNamespace, tc.argNamespace)
 
 			var outputBuffer bytes.Buffer
 			config.Out = &outputBuffer
@@ -510,7 +510,7 @@ func TestRegistryLogin(t *testing.T) {
 					test.expect(tm.registry)
 				}
 
-				config.Doit.Set(config.NS, doctl.ArgRegistryExpirySeconds, test.expirySeconds)
+				config.Doit.Set(config.NS, blcli.ArgRegistryExpirySeconds, test.expirySeconds)
 
 				config.Out = os.Stderr
 				err := RunRegistryLogin(config)

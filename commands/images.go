@@ -17,10 +17,10 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -59,39 +59,39 @@ Currently, there are five types of images: snapshots, backups, custom images, di
 `
 	cmdImagesList := CmdBuilder(cmd, RunImagesList, "list", "List images on your account", `Use this command to list all private images on your account. To list public images, use the `+"`"+`--public`+"`"+` flag. This command returns the following information about each image:`+imageDetail, Writer,
 		aliasOpt("ls"), displayerType(&displayers.Image{}))
-	AddBoolFlag(cmdImagesList, doctl.ArgImagePublic, "", false, "List public images")
+	AddBoolFlag(cmdImagesList, blcli.ArgImagePublic, "", false, "List public images")
 
 	cmdImagesListDistribution := CmdBuilder(cmd, RunImagesListDistribution,
 		"list-distribution", "List available distribution images", `Use this command to list the distribution images available from DigitalOcean. This command returns the following information about each image:`+imageDetail, Writer,
 		displayerType(&displayers.Image{}))
-	AddBoolFlag(cmdImagesListDistribution, doctl.ArgImagePublic, "", true, "List public images")
+	AddBoolFlag(cmdImagesListDistribution, blcli.ArgImagePublic, "", true, "List public images")
 
 	cmdImagesListApplication := CmdBuilder(cmd, RunImagesListApplication,
 		"list-application", "List available One-Click Apps", `Use this command to list all public One-Click Apps that are currently available on the DigitalOcean Marketplace. This command returns the following information about each image:`+imageDetail, Writer,
 		displayerType(&displayers.Image{}))
-	AddBoolFlag(cmdImagesListApplication, doctl.ArgImagePublic, "", true, "List public images")
+	AddBoolFlag(cmdImagesListApplication, blcli.ArgImagePublic, "", true, "List public images")
 
 	cmdImagesListUser := CmdBuilder(cmd, RunImagesListUser,
 		"list-user", "List user-created images", `Use this command to list user-created images, such as snapshots or custom images that you have uploaded to your account. This command returns the following information about each image:`+imageDetail, Writer,
 		displayerType(&displayers.Image{}))
-	AddBoolFlag(cmdImagesListUser, doctl.ArgImagePublic, "", false, "List public images")
+	AddBoolFlag(cmdImagesListUser, blcli.ArgImagePublic, "", false, "List public images")
 
 	CmdBuilder(cmd, RunImagesGet, "get <image-id|image-slug>", "Retrieve information about an image", `Use this command to get the following information about the specified image:`+imageDetail, Writer,
 		displayerType(&displayers.Image{}))
 
 	cmdImagesUpdate := CmdBuilder(cmd, RunImagesUpdate, "update <image-id>", "Update an image's metadata", `Use this command to change an image's metadata, including its name, description, and distribution.`, Writer,
 		displayerType(&displayers.Image{}))
-	AddStringFlag(cmdImagesUpdate, doctl.ArgImageName, "", "", "Image name", requiredOpt())
+	AddStringFlag(cmdImagesUpdate, blcli.ArgImageName, "", "", "Image name", requiredOpt())
 
 	cmdRunImagesDelete := CmdBuilder(cmd, RunImagesDelete, "delete <image-id>", "Permanently delete an image from your account", `This command deletes the specified image from your account. This is irreversible.`, Writer)
-	AddBoolFlag(cmdRunImagesDelete, doctl.ArgForce, doctl.ArgShortForce, false, "Force image delete")
+	AddBoolFlag(cmdRunImagesDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Force image delete")
 
 	cmdRunImagesCreate := CmdBuilder(cmd, RunImagesCreate, "create <image-name>", "Create custom image", `This command creates an image in your DigitalOcean account. You can specify a URL for the image contents, the region at which to store the image, and image metadata.`, Writer)
-	AddStringFlag(cmdRunImagesCreate, doctl.ArgImageExternalURL, "", "", "Custom image retrieval URL", requiredOpt())
-	AddStringFlag(cmdRunImagesCreate, doctl.ArgRegionSlug, "", "", "Region slug identifier", requiredOpt())
-	AddStringFlag(cmdRunImagesCreate, doctl.ArgImageDistro, "", "Unknown", "Custom image distribution")
-	AddStringFlag(cmdRunImagesCreate, doctl.ArgImageDescription, "", "", "Description of image")
-	AddStringSliceFlag(cmdRunImagesCreate, doctl.ArgTagNames, "", []string{}, "List of tags applied to image")
+	AddStringFlag(cmdRunImagesCreate, blcli.ArgImageExternalURL, "", "", "Custom image retrieval URL", requiredOpt())
+	AddStringFlag(cmdRunImagesCreate, blcli.ArgRegionSlug, "", "", "Region slug identifier", requiredOpt())
+	AddStringFlag(cmdRunImagesCreate, blcli.ArgImageDistro, "", "Unknown", "Custom image distribution")
+	AddStringFlag(cmdRunImagesCreate, blcli.ArgImageDescription, "", "", "Description of image")
+	AddStringSliceFlag(cmdRunImagesCreate, blcli.ArgTagNames, "", []string{}, "List of tags applied to image")
 
 	return cmd
 }
@@ -100,7 +100,7 @@ Currently, there are five types of images: snapshots, backups, custom images, di
 func RunImagesList(c *CmdConfig) error {
 	is := c.Images()
 
-	public, err := c.Doit.GetBool(c.NS, doctl.ArgImagePublic)
+	public, err := c.Doit.GetBool(c.NS, blcli.ArgImagePublic)
 	if err != nil {
 		return err
 	}
@@ -122,7 +122,7 @@ func RunImagesList(c *CmdConfig) error {
 func RunImagesListDistribution(c *CmdConfig) error {
 	is := c.Images()
 
-	public, err := c.Doit.GetBool(c.NS, doctl.ArgImagePublic)
+	public, err := c.Doit.GetBool(c.NS, blcli.ArgImagePublic)
 	if err != nil {
 		return err
 	}
@@ -141,7 +141,7 @@ func RunImagesListDistribution(c *CmdConfig) error {
 func RunImagesListApplication(c *CmdConfig) error {
 	is := c.Images()
 
-	public, err := c.Doit.GetBool(c.NS, doctl.ArgImagePublic)
+	public, err := c.Doit.GetBool(c.NS, blcli.ArgImagePublic)
 	if err != nil {
 		return err
 	}
@@ -159,7 +159,7 @@ func RunImagesListApplication(c *CmdConfig) error {
 func RunImagesListUser(c *CmdConfig) error {
 	is := c.Images()
 
-	public, err := c.Doit.GetBool(c.NS, doctl.ArgImagePublic)
+	public, err := c.Doit.GetBool(c.NS, blcli.ArgImagePublic)
 	if err != nil {
 		return err
 	}
@@ -218,7 +218,7 @@ func RunImagesUpdate(c *CmdConfig) error {
 		return err
 	}
 
-	name, err := c.Doit.GetString(c.NS, doctl.ArgImageName)
+	name, err := c.Doit.GetString(c.NS, blcli.ArgImageName)
 	if err != nil {
 		return err
 	}
@@ -241,10 +241,10 @@ func RunImagesDelete(c *CmdConfig) error {
 	is := c.Images()
 
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
@@ -288,27 +288,27 @@ func RunImagesCreate(c *CmdConfig) error {
 
 func buildCustomImageRequestFromArgs(c *CmdConfig, r *godo.CustomImageCreateRequest) error {
 	if len(c.Args) != 1 {
-		return doctl.NewMissingArgsErr(fmt.Sprintf("%s.%s", c.NS, doctl.ArgImageName))
+		return blcli.NewMissingArgsErr(fmt.Sprintf("%s.%s", c.NS, blcli.ArgImageName))
 	}
 	name := c.Args[0]
 
-	addr, err := c.Doit.GetString(c.NS, doctl.ArgImageExternalURL)
+	addr, err := c.Doit.GetString(c.NS, blcli.ArgImageExternalURL)
 	if err != nil {
 		return err
 	}
-	region, err := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
+	region, err := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
 	if err != nil {
 		return err
 	}
-	distro, err := c.Doit.GetString(c.NS, doctl.ArgImageDistro)
+	distro, err := c.Doit.GetString(c.NS, blcli.ArgImageDistro)
 	if err != nil {
 		return err
 	}
-	desc, err := c.Doit.GetString(c.NS, doctl.ArgImageDescription)
+	desc, err := c.Doit.GetString(c.NS, blcli.ArgImageDescription)
 	if err != nil {
 		return err
 	}
-	tags, err := c.Doit.GetStringSlice(c.NS, doctl.ArgTagNames)
+	tags, err := c.Doit.GetStringSlice(c.NS, blcli.ArgTagNames)
 	if err != nil {
 		return err
 	}

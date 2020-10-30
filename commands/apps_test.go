@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -93,7 +93,7 @@ func TestRunAppsCreate(t *testing.T) {
 
 		tm.apps.EXPECT().Create(createReq).Times(1).Return(app, nil)
 
-		config.Doit.Set(config.NS, doctl.ArgAppSpec, specFile.Name())
+		config.Doit.Set(config.NS, blcli.ArgAppSpec, specFile.Name())
 
 		err = RunAppsCreate(config)
 		require.NoError(t, err)
@@ -159,7 +159,7 @@ func TestRunAppsUpdate(t *testing.T) {
 		tm.apps.EXPECT().Update(app.ID, updateReq).Times(1).Return(app, nil)
 
 		config.Args = append(config.Args, app.ID)
-		config.Doit.Set(config.NS, doctl.ArgAppSpec, specFile.Name())
+		config.Doit.Set(config.NS, blcli.ArgAppSpec, specFile.Name())
 
 		err = RunAppsUpdate(config)
 		require.NoError(t, err)
@@ -178,7 +178,7 @@ func TestRunAppsDelete(t *testing.T) {
 		tm.apps.EXPECT().Delete(app.ID).Times(1).Return(nil)
 
 		config.Args = append(config.Args, app.ID)
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunAppsDelete(config)
 		require.NoError(t, err)
@@ -312,9 +312,9 @@ func TestRunAppsGetLogs(t *testing.T) {
 			tm.apps.EXPECT().GetLogs(appID, deploymentID, component, logType, true).Times(1).Return(&godo.AppLogs{LiveURL: "https://proxy-apps-prod-ams3-001.ondigitalocean.app/?token=..."}, nil)
 
 			config.Args = append(config.Args, appID, component)
-			config.Doit.Set(config.NS, doctl.ArgAppDeployment, deploymentID)
-			config.Doit.Set(config.NS, doctl.ArgAppLogType, typeStr)
-			config.Doit.Set(config.NS, doctl.ArgAppLogFollow, true)
+			config.Doit.Set(config.NS, blcli.ArgAppDeployment, deploymentID)
+			config.Doit.Set(config.NS, blcli.ArgAppLogType, typeStr)
+			config.Doit.Set(config.NS, blcli.ArgAppLogFollow, true)
 
 			err := RunAppsGetLogs(config)
 			require.NoError(t, err)
@@ -479,7 +479,7 @@ func TestRunAppSpecGet(t *testing.T) {
 
 		t.Run("yaml", func(t *testing.T) {
 			var buf bytes.Buffer
-			config.Doit.Set(config.NS, doctl.ArgFormat, "yaml")
+			config.Doit.Set(config.NS, blcli.ArgFormat, "yaml")
 			config.Args = append(config.Args, app.ID)
 			config.Out = &buf
 
@@ -496,7 +496,7 @@ services:
 
 		t.Run("json", func(t *testing.T) {
 			var buf bytes.Buffer
-			config.Doit.Set(config.NS, doctl.ArgFormat, "json")
+			config.Doit.Set(config.NS, blcli.ArgFormat, "json")
 			config.Args = append(config.Args, app.ID)
 			config.Out = &buf
 
@@ -529,8 +529,8 @@ services:
 			tm.apps.EXPECT().GetDeployment(appID, deployment.ID).Times(1).Return(deployment, nil)
 
 			var buf bytes.Buffer
-			config.Doit.Set(config.NS, doctl.ArgFormat, "yaml")
-			config.Doit.Set(config.NS, doctl.ArgAppDeployment, deployment.ID)
+			config.Doit.Set(config.NS, blcli.ArgFormat, "yaml")
+			config.Doit.Set(config.NS, blcli.ArgAppDeployment, deployment.ID)
 			config.Args = append(config.Args, appID)
 			config.Out = &buf
 

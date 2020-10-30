@@ -7,7 +7,7 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "github.com/digitalocean/doctl/do"
+	do "git.mammoth.com.au/github/bl-cli/do"
 	gomock "github.com/golang/mock/gomock"
 )
 

@@ -17,7 +17,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli/do"
 )
 
 type Balance struct {

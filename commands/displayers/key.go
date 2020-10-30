@@ -16,7 +16,7 @@ package displayers
 import (
 	"io"
 
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli/do"
 )
 
 // Key is used to display the SSH Key results from a `list` operation.

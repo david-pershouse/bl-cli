@@ -17,10 +17,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -69,18 +69,18 @@ func Databases() *Command {
 
 There are a number of flags that customize the configuration, all of which are optional. Without any flags set, a single-node, single-CPU PostgreSQL database cluster will be created.`, Writer,
 		aliasOpt("c"))
-	AddIntFlag(cmdDatabaseCreate, doctl.ArgDatabaseNumNodes, "", defaultDatabaseNodeCount, nodeNumberDetails)
-	AddStringFlag(cmdDatabaseCreate, doctl.ArgRegionSlug, "", defaultDatabaseRegion, "The region where the database cluster will be created, e.g. `nyc1` or `sfo2`")
-	AddStringFlag(cmdDatabaseCreate, doctl.ArgSizeSlug, "", defaultDatabaseNodeSize, nodeSizeDetails)
-	AddStringFlag(cmdDatabaseCreate, doctl.ArgDatabaseEngine, "", defaultDatabaseEngine, "The database engine to be used for the cluster. Possible values are: `pg` for PostgreSQL, `mysql`, and `redis`.")
-	AddStringFlag(cmdDatabaseCreate, doctl.ArgVersion, "", "", "The database engine version, e.g. 11 for PostgreSQL version 11")
-	AddStringFlag(cmdDatabaseCreate, doctl.ArgPrivateNetworkUUID, "", "", "The UUID of a VPC to create the database cluster in; the default VPC for the region will be used if excluded")
+	AddIntFlag(cmdDatabaseCreate, blcli.ArgDatabaseNumNodes, "", defaultDatabaseNodeCount, nodeNumberDetails)
+	AddStringFlag(cmdDatabaseCreate, blcli.ArgRegionSlug, "", defaultDatabaseRegion, "The region where the database cluster will be created, e.g. `nyc1` or `sfo2`")
+	AddStringFlag(cmdDatabaseCreate, blcli.ArgSizeSlug, "", defaultDatabaseNodeSize, nodeSizeDetails)
+	AddStringFlag(cmdDatabaseCreate, blcli.ArgDatabaseEngine, "", defaultDatabaseEngine, "The database engine to be used for the cluster. Possible values are: `pg` for PostgreSQL, `mysql`, and `redis`.")
+	AddStringFlag(cmdDatabaseCreate, blcli.ArgVersion, "", "", "The database engine version, e.g. 11 for PostgreSQL version 11")
+	AddStringFlag(cmdDatabaseCreate, blcli.ArgPrivateNetworkUUID, "", "", "The UUID of a VPC to create the database cluster in; the default VPC for the region will be used if excluded")
 
 	cmdDatabaseDelete := CmdBuilder(cmd, RunDatabaseDelete, "delete <database-id>", "Delete a database cluster", `This command deletes the database cluster with the given ID.
 
 To retrieve a list of your database clusters and their IDs, call `+"`"+`doctl databases list`+"`"+`.`, Writer,
 		aliasOpt("rm"))
-	AddBoolFlag(cmdDatabaseDelete, doctl.ArgForce, doctl.ArgShortForce, false, "Delete the database cluster without a confirmation prompt")
+	AddBoolFlag(cmdDatabaseDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Delete the database cluster without a confirmation prompt")
 
 	CmdBuilder(cmd, RunDatabaseConnectionGet, "connection <database-id>", "Retrieve connection details for a database cluster", `This command retrieves the following connection details for a database cluster:
 
@@ -106,13 +106,13 @@ You must specify the size of the machines you wish to use as nodes as well as ho
 
 	doctl databases resize ca9f591d-9999-5555-a0ef-1c02d1d1e352 --num-nodes 2 --size db-s-16vcpu-64gb`, Writer,
 		aliasOpt("rs"))
-	AddIntFlag(cmdDatabaseResize, doctl.ArgDatabaseNumNodes, "", 0, nodeNumberDetails, requiredOpt())
-	AddStringFlag(cmdDatabaseResize, doctl.ArgSizeSlug, "", "", nodeSizeDetails, requiredOpt())
+	AddIntFlag(cmdDatabaseResize, blcli.ArgDatabaseNumNodes, "", 0, nodeNumberDetails, requiredOpt())
+	AddStringFlag(cmdDatabaseResize, blcli.ArgSizeSlug, "", "", nodeSizeDetails, requiredOpt())
 
 	cmdDatabaseMigrate := CmdBuilder(cmd, RunDatabaseMigrate, "migrate <database-id>", "Migrate a database cluster to a new region", `This command migrates the specified database cluster to a new region`, Writer,
 		aliasOpt("m"))
-	AddStringFlag(cmdDatabaseMigrate, doctl.ArgRegionSlug, "", "", "The region to which the database cluster should be migrated, e.g. `sfo2` or `nyc3`.", requiredOpt())
-	AddStringFlag(cmdDatabaseMigrate, doctl.ArgPrivateNetworkUUID, "", "", "The UUID of a VPC to create the database cluster in; the default VPC for the region will be used if excluded")
+	AddStringFlag(cmdDatabaseMigrate, blcli.ArgRegionSlug, "", "", "The region to which the database cluster should be migrated, e.g. `sfo2` or `nyc3`.", requiredOpt())
+	AddStringFlag(cmdDatabaseMigrate, blcli.ArgPrivateNetworkUUID, "", "", "The UUID of a VPC to create the database cluster in; the default VPC for the region will be used if excluded")
 
 	cmd.AddCommand(databaseReplica())
 	cmd.AddCommand(databaseMaintenanceWindow())
@@ -139,7 +139,7 @@ func RunDatabaseList(c *CmdConfig) error {
 // RunDatabaseGet returns an individual database cluster
 func RunDatabaseGet(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -154,7 +154,7 @@ func RunDatabaseGet(c *CmdConfig) error {
 // RunDatabaseCreate creates a database cluster
 func RunDatabaseCreate(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	r, err := buildDatabaseCreateRequestFromArgs(c)
@@ -173,37 +173,37 @@ func RunDatabaseCreate(c *CmdConfig) error {
 func buildDatabaseCreateRequestFromArgs(c *CmdConfig) (*godo.DatabaseCreateRequest, error) {
 	r := &godo.DatabaseCreateRequest{Name: c.Args[0]}
 
-	region, err := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
+	region, err := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
 	if err != nil {
 		return nil, err
 	}
 	r.Region = region
 
-	numNodes, err := c.Doit.GetInt(c.NS, doctl.ArgDatabaseNumNodes)
+	numNodes, err := c.Doit.GetInt(c.NS, blcli.ArgDatabaseNumNodes)
 	if err != nil {
 		return nil, err
 	}
 	r.NumNodes = numNodes
 
-	size, err := c.Doit.GetString(c.NS, doctl.ArgSizeSlug)
+	size, err := c.Doit.GetString(c.NS, blcli.ArgSizeSlug)
 	if err != nil {
 		return nil, err
 	}
 	r.SizeSlug = size
 
-	engine, err := c.Doit.GetString(c.NS, doctl.ArgDatabaseEngine)
+	engine, err := c.Doit.GetString(c.NS, blcli.ArgDatabaseEngine)
 	if err != nil {
 		return nil, err
 	}
 	r.EngineSlug = engine
 
-	version, err := c.Doit.GetString(c.NS, doctl.ArgVersion)
+	version, err := c.Doit.GetString(c.NS, blcli.ArgVersion)
 	if err != nil {
 		return nil, err
 	}
 	r.Version = version
 
-	privateNetworkUUID, err := c.Doit.GetString(c.NS, doctl.ArgPrivateNetworkUUID)
+	privateNetworkUUID, err := c.Doit.GetString(c.NS, blcli.ArgPrivateNetworkUUID)
 	if err != nil {
 		return nil, err
 	}
@@ -215,10 +215,10 @@ func buildDatabaseCreateRequestFromArgs(c *CmdConfig) (*godo.DatabaseCreateReque
 // RunDatabaseDelete deletes a database cluster
 func RunDatabaseDelete(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
@@ -242,7 +242,7 @@ func displayDatabases(c *CmdConfig, short bool, dbs ...do.Database) error {
 // RunDatabaseConnectionGet gets database connection info
 func RunDatabaseConnectionGet(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -262,7 +262,7 @@ func displayDatabaseConnection(c *CmdConfig, conn do.DatabaseConnection) error {
 // RunDatabaseBackupsList lists all the backups for a database cluster
 func RunDatabaseBackupsList(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -282,7 +282,7 @@ func displayDatabaseBackups(c *CmdConfig, bu do.DatabaseBackups) error {
 // RunDatabaseResize resizes a database cluster
 func RunDatabaseResize(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -298,13 +298,13 @@ func RunDatabaseResize(c *CmdConfig) error {
 func buildDatabaseResizeRequestFromArgs(c *CmdConfig) (*godo.DatabaseResizeRequest, error) {
 	r := &godo.DatabaseResizeRequest{}
 
-	numNodes, err := c.Doit.GetInt(c.NS, doctl.ArgDatabaseNumNodes)
+	numNodes, err := c.Doit.GetInt(c.NS, blcli.ArgDatabaseNumNodes)
 	if err != nil {
 		return nil, err
 	}
 	r.NumNodes = numNodes
 
-	size, err := c.Doit.GetString(c.NS, doctl.ArgSizeSlug)
+	size, err := c.Doit.GetString(c.NS, blcli.ArgSizeSlug)
 	if err != nil {
 		return nil, err
 	}
@@ -316,7 +316,7 @@ func buildDatabaseResizeRequestFromArgs(c *CmdConfig) (*godo.DatabaseResizeReque
 // RunDatabaseMigrate migrates a database cluster to a new region
 func RunDatabaseMigrate(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -332,13 +332,13 @@ func RunDatabaseMigrate(c *CmdConfig) error {
 func buildDatabaseMigrateRequestFromArgs(c *CmdConfig) (*godo.DatabaseMigrateRequest, error) {
 	r := &godo.DatabaseMigrateRequest{}
 
-	region, err := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
+	region, err := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
 	if err != nil {
 		return nil, err
 	}
 	r.Region = region
 
-	privateNetworkUUID, err := c.Doit.GetString(c.NS, doctl.ArgPrivateNetworkUUID)
+	privateNetworkUUID, err := c.Doit.GetString(c.NS, blcli.ArgPrivateNetworkUUID)
 	if err != nil {
 		return nil, err
 	}
@@ -379,9 +379,9 @@ To change the maintenance window for your database cluster, specify a day of the
 	doctl databases maintenance-window ca9f591d-f38h-5555-a0ef-1c02d1d1e35 update --day tuesday --hour 16:00
 
 To see a list of your databases and their IDs, run `+"`"+`doctl databases list`+"`"+`.`, Writer, aliasOpt("u"))
-	AddStringFlag(cmdDatabaseCreate, doctl.ArgDatabaseMaintenanceDay, "", "",
+	AddStringFlag(cmdDatabaseCreate, blcli.ArgDatabaseMaintenanceDay, "", "",
 		"The day of the week the maintenance window occurs (e.g. 'tuesday')", requiredOpt())
-	AddStringFlag(cmdDatabaseCreate, doctl.ArgDatabaseMaintenanceHour, "", "",
+	AddStringFlag(cmdDatabaseCreate, blcli.ArgDatabaseMaintenanceHour, "", "",
 		"The hour in UTC when maintenance updates will be applied, in 24 hour format (e.g. '16:00')", requiredOpt())
 
 	return cmd
@@ -392,7 +392,7 @@ To see a list of your databases and their IDs, run `+"`"+`doctl databases list`+
 // RunDatabaseMaintenanceGet retrieves the maintenance window info for a database cluster
 func RunDatabaseMaintenanceGet(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -413,7 +413,7 @@ func displayDatabaseMaintenanceWindow(c *CmdConfig, mw do.DatabaseMaintenanceWin
 // RunDatabaseMaintenanceUpdate updates the maintenance window info for a database cluster
 func RunDatabaseMaintenanceUpdate(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -428,13 +428,13 @@ func RunDatabaseMaintenanceUpdate(c *CmdConfig) error {
 func buildDatabaseUpdateMaintenanceRequestFromArgs(c *CmdConfig) (*godo.DatabaseUpdateMaintenanceRequest, error) {
 	r := &godo.DatabaseUpdateMaintenanceRequest{}
 
-	day, err := c.Doit.GetString(c.NS, doctl.ArgDatabaseMaintenanceDay)
+	day, err := c.Doit.GetString(c.NS, blcli.ArgDatabaseMaintenanceDay)
 	if err != nil {
 		return nil, err
 	}
 	r.Day = strings.ToLower(day)
 
-	hour, err := c.Doit.GetString(c.NS, doctl.ArgDatabaseMaintenanceHour)
+	hour, err := c.Doit.GetString(c.NS, blcli.ArgDatabaseMaintenanceHour)
 	if err != nil {
 		return nil, err
 	}
@@ -478,7 +478,7 @@ The user will be created with the role set to `+"`"+`normal`+"`"+`, and given an
 
 To retrieve a list of your databases and their IDs, call `+"`"+`doctl databases list`+"`"+`.`, Writer, aliasOpt("c"))
 
-	AddStringFlag(cmdDatabaseUserCreate, doctl.ArgDatabaseUserMySQLAuthPlugin, "", "",
+	AddStringFlag(cmdDatabaseUserCreate, blcli.ArgDatabaseUserMySQLAuthPlugin, "", "",
 		"set auth mode for MySQL users")
 
 	CmdBuilder(cmd, RunDatabaseUserResetAuth, "reset <database-id> <user-name> <new-auth-mode>",
@@ -488,7 +488,7 @@ To retrieve a list of your databases and their IDs, call `+"`"+`doctl databases 
 		"delete <database-id> <user-id>", "Delete a database user", `This command deletes the user with the username you specify, whose account was given access to the database cluster you specify.
 
 To retrieve a list of your databases and their IDs, call `+"`"+`doctl databases list`+"`"+`.`, Writer, aliasOpt("rm"))
-	AddBoolFlag(cmdDatabaseUserDelete, doctl.ArgForce, doctl.ArgShortForce, false, "Delete the user without a confirmation prompt")
+	AddBoolFlag(cmdDatabaseUserDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Delete the user without a confirmation prompt")
 
 	return cmd
 }
@@ -498,7 +498,7 @@ To retrieve a list of your databases and their IDs, call `+"`"+`doctl databases 
 // RunDatabaseUserList retrieves a list of users for specific database cluster
 func RunDatabaseUserList(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -514,7 +514,7 @@ func RunDatabaseUserList(c *CmdConfig) error {
 // RunDatabaseUserGet retrieves a database user for a specific database cluster
 func RunDatabaseUserGet(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	databaseID := c.Args[0]
@@ -531,7 +531,7 @@ func RunDatabaseUserGet(c *CmdConfig) error {
 // RunDatabaseUserCreate creates a database user for a database cluster
 func RunDatabaseUserCreate(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	var (
@@ -541,7 +541,7 @@ func RunDatabaseUserCreate(c *CmdConfig) error {
 
 	req := &godo.DatabaseCreateUserRequest{Name: userName}
 
-	authMode, err := c.Doit.GetString(c.NS, doctl.ArgDatabaseUserMySQLAuthPlugin)
+	authMode, err := c.Doit.GetString(c.NS, blcli.ArgDatabaseUserMySQLAuthPlugin)
 	if err != nil {
 		return err
 	}
@@ -562,7 +562,7 @@ func RunDatabaseUserCreate(c *CmdConfig) error {
 
 func RunDatabaseUserResetAuth(c *CmdConfig) error {
 	if len(c.Args) < 3 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	var (
@@ -587,10 +587,10 @@ func RunDatabaseUserResetAuth(c *CmdConfig) error {
 // RunDatabaseUserDelete deletes a database user
 func RunDatabaseUserDelete(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
@@ -666,19 +666,19 @@ There’s no perfect formula to determine how large your pool should be, but the
 
 We recommend starting with a pool size of about half your available connections and adjusting later based on performance. If you see slow query responses, check the CPU usage on the database’s Overview tab. We recommend decreasing your pool size if CPU usage is high, and increasing your pool size if it’s low.`+getPoolDetails, Writer,
 		aliasOpt("c"))
-	AddStringFlag(cmdDatabasePoolCreate, doctl.ArgDatabasePoolMode, "",
+	AddStringFlag(cmdDatabasePoolCreate, blcli.ArgDatabasePoolMode, "",
 		"transaction", "The pool mode for the connection pool, e.g. `session`, `transaction`, and `statement`")
-	AddIntFlag(cmdDatabasePoolCreate, doctl.ArgSizeSlug, "", 0, "pool size",
+	AddIntFlag(cmdDatabasePoolCreate, blcli.ArgSizeSlug, "", 0, "pool size",
 		requiredOpt())
-	AddStringFlag(cmdDatabasePoolCreate, doctl.ArgDatabasePoolUserName, "", "",
+	AddStringFlag(cmdDatabasePoolCreate, blcli.ArgDatabasePoolUserName, "", "",
 		"The username for the database user", requiredOpt())
-	AddStringFlag(cmdDatabasePoolCreate, doctl.ArgDatabasePoolDBName, "", "",
+	AddStringFlag(cmdDatabasePoolCreate, blcli.ArgDatabasePoolDBName, "", "",
 		"The name of the specific database within the database cluster", requiredOpt())
 
 	cmdDatabasePoolDelete := CmdBuilder(cmd, RunDatabasePoolDelete,
 		"delete <database-id> <pool-name>", "Delete a connection pool for a database", `This command deletes the specified connection pool for the specified database cluster.`+getPoolDetails, Writer,
 		aliasOpt("rm"))
-	AddBoolFlag(cmdDatabasePoolDelete, doctl.ArgForce, doctl.ArgShortForce,
+	AddBoolFlag(cmdDatabasePoolDelete, blcli.ArgForce, blcli.ArgShortForce,
 		false, "Delete connection pool without confirmation prompt")
 
 	return cmd
@@ -689,7 +689,7 @@ We recommend starting with a pool size of about half your available connections 
 // RunDatabasePoolList retrieves a list of pools for specific database cluster
 func RunDatabasePoolList(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -705,7 +705,7 @@ func RunDatabasePoolList(c *CmdConfig) error {
 // RunDatabasePoolGet retrieves a database pool for a specific database cluster
 func RunDatabasePoolGet(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	databaseID := c.Args[0]
@@ -722,7 +722,7 @@ func RunDatabasePoolGet(c *CmdConfig) error {
 // RunDatabasePoolCreate creates a database pool for a database cluster
 func RunDatabasePoolCreate(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	databaseID := c.Args[0]
@@ -742,25 +742,25 @@ func RunDatabasePoolCreate(c *CmdConfig) error {
 func buildDatabaseCreatePoolRequestFromArgs(c *CmdConfig) (*godo.DatabaseCreatePoolRequest, error) {
 	req := &godo.DatabaseCreatePoolRequest{Name: c.Args[1]}
 
-	mode, err := c.Doit.GetString(c.NS, doctl.ArgDatabasePoolMode)
+	mode, err := c.Doit.GetString(c.NS, blcli.ArgDatabasePoolMode)
 	if err != nil {
 		return nil, err
 	}
 	req.Mode = mode
 
-	size, err := c.Doit.GetInt(c.NS, doctl.ArgDatabasePoolSize)
+	size, err := c.Doit.GetInt(c.NS, blcli.ArgDatabasePoolSize)
 	if err != nil {
 		return nil, err
 	}
 	req.Size = size
 
-	db, err := c.Doit.GetString(c.NS, doctl.ArgDatabasePoolDBName)
+	db, err := c.Doit.GetString(c.NS, blcli.ArgDatabasePoolDBName)
 	if err != nil {
 		return nil, err
 	}
 	req.Database = db
 
-	user, err := c.Doit.GetString(c.NS, doctl.ArgDatabasePoolUserName)
+	user, err := c.Doit.GetString(c.NS, blcli.ArgDatabasePoolUserName)
 	if err != nil {
 		return nil, err
 	}
@@ -772,10 +772,10 @@ func buildDatabaseCreatePoolRequestFromArgs(c *CmdConfig) (*godo.DatabaseCreateP
 // RunDatabasePoolDelete deletes a database pool
 func RunDatabasePoolDelete(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
@@ -824,7 +824,7 @@ You can use these commands to create and delete databases within a cluster, or s
 
 	cmdDatabaseDBDelete := CmdBuilder(cmd, RunDatabaseDBDelete,
 		"delete <database-id> <db-name>", "Delete the specified database from the cluster", "This command deletes the specified database from the specified database cluster."+getClusterList+getDBList, Writer, aliasOpt("rm"))
-	AddBoolFlag(cmdDatabaseDBDelete, doctl.ArgForce, doctl.ArgShortForce,
+	AddBoolFlag(cmdDatabaseDBDelete, blcli.ArgForce, blcli.ArgShortForce,
 		false, "Delete the database without a confirmation prompt")
 
 	return cmd
@@ -835,7 +835,7 @@ You can use these commands to create and delete databases within a cluster, or s
 // RunDatabaseDBList retrieves a list of databases for specific database cluster
 func RunDatabaseDBList(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -851,7 +851,7 @@ func RunDatabaseDBList(c *CmdConfig) error {
 // RunDatabaseDBGet retrieves a database for a specific database cluster
 func RunDatabaseDBGet(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	databaseID := c.Args[0]
@@ -868,7 +868,7 @@ func RunDatabaseDBGet(c *CmdConfig) error {
 // RunDatabaseDBCreate creates a database for a database cluster
 func RunDatabaseDBCreate(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	databaseID := c.Args[0]
@@ -885,10 +885,10 @@ func RunDatabaseDBCreate(c *CmdConfig) error {
 // RunDatabaseDBDelete deletes a database
 func RunDatabaseDBDelete(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
@@ -946,18 +946,18 @@ This command requires that you pass in the replica's name, which you can retriev
 	cmdDatabaseReplicaCreate := CmdBuilder(cmd, RunDatabaseReplicaCreate,
 		"create <database-id> <replica-name>", "Create a read-only database replica", `This command creates a read-only database replica for the specified database cluster, giving it the specified name.`+databaseListDetails,
 		Writer, aliasOpt("c"))
-	AddStringFlag(cmdDatabaseReplicaCreate, doctl.ArgRegionSlug, "",
+	AddStringFlag(cmdDatabaseReplicaCreate, blcli.ArgRegionSlug, "",
 		defaultDatabaseRegion, "Specifies the region (e.g. nyc3, sfo2) in which to create the replica")
-	AddStringFlag(cmdDatabaseReplicaCreate, doctl.ArgSizeSlug, "",
+	AddStringFlag(cmdDatabaseReplicaCreate, blcli.ArgSizeSlug, "",
 		defaultDatabaseNodeSize, "Specifies the machine size for the replica (e.g. db-s-1vcpu-1gb). Must be the same or equal to the original.")
-	AddStringFlag(cmdDatabaseReplicaCreate, doctl.ArgPrivateNetworkUUID, "",
+	AddStringFlag(cmdDatabaseReplicaCreate, blcli.ArgPrivateNetworkUUID, "",
 		"", "The UUID of a VPC to create the replica in; the default VPC for the region will be used if excluded")
 
 	cmdDatabaseReplicaDelete := CmdBuilder(cmd, RunDatabaseReplicaDelete,
 		"delete <database-id> <replica-name>", "Delete a read-only database replica",
 		`Delete the specified read-only replica for the specified database cluster.`+howToGetReplica+databaseListDetails,
 		Writer, aliasOpt("rm"))
-	AddBoolFlag(cmdDatabaseReplicaDelete, doctl.ArgForce, doctl.ArgShortForce,
+	AddBoolFlag(cmdDatabaseReplicaDelete, blcli.ArgForce, blcli.ArgShortForce,
 		false, "Deletes the replica without a confirmation prompt")
 
 	CmdBuilder(cmd, RunDatabaseReplicaConnectionGet,
@@ -973,7 +973,7 @@ This command requires that you pass in the replica's name, which you can retriev
 // RunDatabaseReplicaList retrieves a list of replicas for specific database cluster
 func RunDatabaseReplicaList(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	id := c.Args[0]
@@ -989,7 +989,7 @@ func RunDatabaseReplicaList(c *CmdConfig) error {
 // RunDatabaseReplicaGet retrieves a read-only replica for a specific database cluster
 func RunDatabaseReplicaGet(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	databaseID := c.Args[0]
@@ -1006,7 +1006,7 @@ func RunDatabaseReplicaGet(c *CmdConfig) error {
 // RunDatabaseReplicaCreate creates a read-only replica for a database cluster
 func RunDatabaseReplicaCreate(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	databaseID := c.Args[0]
@@ -1026,19 +1026,19 @@ func RunDatabaseReplicaCreate(c *CmdConfig) error {
 func buildDatabaseCreateReplicaRequestFromArgs(c *CmdConfig) (*godo.DatabaseCreateReplicaRequest, error) {
 	r := &godo.DatabaseCreateReplicaRequest{Name: c.Args[1]}
 
-	size, err := c.Doit.GetString(c.NS, doctl.ArgSizeSlug)
+	size, err := c.Doit.GetString(c.NS, blcli.ArgSizeSlug)
 	if err != nil {
 		return nil, err
 	}
 	r.Size = size
 
-	region, err := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
+	region, err := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
 	if err != nil {
 		return nil, err
 	}
 	r.Region = region
 
-	privateNetworkUUID, err := c.Doit.GetString(c.NS, doctl.ArgPrivateNetworkUUID)
+	privateNetworkUUID, err := c.Doit.GetString(c.NS, blcli.ArgPrivateNetworkUUID)
 	if err != nil {
 		return nil, err
 	}
@@ -1050,10 +1050,10 @@ func buildDatabaseCreateReplicaRequestFromArgs(c *CmdConfig) (*godo.DatabaseCrea
 // RunDatabaseReplicaDelete deletes a read-only replica
 func RunDatabaseReplicaDelete(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
@@ -1078,7 +1078,7 @@ func displayDatabaseReplicas(c *CmdConfig, short bool, replicas ...do.DatabaseRe
 // RunDatabaseReplicaConnectionGet gets read-only replica connection info
 func RunDatabaseReplicaConnectionGet(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	databaseID := c.Args[0]
@@ -1144,7 +1144,7 @@ func displaySQLModes(c *CmdConfig, sqlModes []string) error {
 // RunDatabaseSetSQLModes sets the sql modes on the database
 func RunDatabaseSetSQLModes(c *CmdConfig) error {
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	databaseID := c.Args[0]

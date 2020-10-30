@@ -14,7 +14,7 @@ import (
 	"github.com/sclevine/spec/report"
 )
 
-const packagePath string = "github.com/digitalocean/doctl/cmd/doctl"
+const packagePath string = "git.mammoth.com.au/github/bl-cli/cmd/doctl"
 
 var (
 	suite           = spec.New("doctl", spec.Report(report.Terminal{}), spec.Random(), spec.Parallel())

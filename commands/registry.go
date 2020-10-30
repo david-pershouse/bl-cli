@@ -21,10 +21,10 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	dockerconf "github.com/docker/cli/cli/config"
 	configtypes "github.com/docker/cli/cli/config/types"
 	"github.com/spf13/cobra"
@@ -64,12 +64,12 @@ func Registry() *Command {
 	deleteRegDesc := "This command permanently deletes a private container registry and all of its contents."
 	cmdRunRegistryDelete := CmdBuilder(cmd, RunRegistryDelete, "delete",
 		"Delete a container registry", deleteRegDesc, Writer, aliasOpt("d", "del", "rm"))
-	AddBoolFlag(cmdRunRegistryDelete, doctl.ArgForce, doctl.ArgShortForce, false, "Force registry delete")
+	AddBoolFlag(cmdRunRegistryDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Force registry delete")
 
 	loginRegDesc := "This command logs in Docker so that pull and push commands to your private container registry will be authenticated."
 	cmdRegistryLogin := CmdBuilder(cmd, RunRegistryLogin, "login", "Log in Docker to a container registry",
 		loginRegDesc, Writer)
-	AddIntFlag(cmdRegistryLogin, doctl.ArgRegistryExpirySeconds, "", 0,
+	AddIntFlag(cmdRegistryLogin, blcli.ArgRegistryExpirySeconds, "", 0,
 		"The length of time the registry credentials will be valid for in seconds. By default, the credentials do not expire.")
 
 	logoutRegDesc := "This command logs Docker out of the private container registry, revoking access to it."
@@ -85,9 +85,9 @@ Redirect the command's output to a file to save the manifest for later use or pi
 	cmdRunKubernetesManifest := CmdBuilder(cmd, RunKubernetesManifest, "kubernetes-manifest",
 		"Generate a Kubernetes secret manifest for a registry",
 		kubeManifestDesc, Writer, aliasOpt("k8s"))
-	AddStringFlag(cmdRunKubernetesManifest, doctl.ArgObjectName, "", "",
+	AddStringFlag(cmdRunKubernetesManifest, blcli.ArgObjectName, "", "",
 		"The secret name to create. Defaults to the registry name prefixed with \"registry-\"")
-	AddStringFlag(cmdRunKubernetesManifest, doctl.ArgObjectNamespace, "",
+	AddStringFlag(cmdRunKubernetesManifest, blcli.ArgObjectNamespace, "",
 		"default", "The Kubernetes namespace to hold the secret")
 
 	dockerConfigDesc := `This command outputs a JSON-formatted Docker configuration that can be used to configure a Docker client to authenticate with your private container registry. This configuration is useful for configuring third-party tools that need access to your registry. For configuring your local Docker client use "doctl registry login" instead, as it will preserve the configuration of any other registries you have authenticated to.
@@ -97,9 +97,9 @@ By default this command generates read-only credentials. Use the --read-write fl
 	cmdRunDockerConfig := CmdBuilder(cmd, RunDockerConfig, "docker-config",
 		"Generate a docker auth configuration for a registry",
 		dockerConfigDesc, Writer, aliasOpt("config"))
-	AddBoolFlag(cmdRunDockerConfig, doctl.ArgReadWrite, "", false,
+	AddBoolFlag(cmdRunDockerConfig, blcli.ArgReadWrite, "", false,
 		"Generate credentials that can push to your registry")
-	AddIntFlag(cmdRunDockerConfig, doctl.ArgRegistryExpirySeconds, "", 0,
+	AddIntFlag(cmdRunDockerConfig, blcli.ArgRegistryExpirySeconds, "", 0,
 		"The length of time the registry credentials will be valid for in seconds. By default, the credentials do not expire.")
 
 	return cmd
@@ -153,7 +153,7 @@ func Repository() *Command {
 		Writer,
 		aliasOpt("dt"),
 	)
-	AddBoolFlag(cmdRunRepositoryDeleteTag, doctl.ArgForce, doctl.ArgShortForce, false, "Force tag deletion")
+	AddBoolFlag(cmdRunRepositoryDeleteTag, blcli.ArgForce, blcli.ArgShortForce, false, "Force tag deletion")
 
 	deleteManifestDesc := "This command permanently deletes one or more repository manifests by digest."
 	cmdRunRepositoryDeleteManifest := CmdBuilder(
@@ -165,7 +165,7 @@ func Repository() *Command {
 		Writer,
 		aliasOpt("dm"),
 	)
-	AddBoolFlag(cmdRunRepositoryDeleteManifest, doctl.ArgForce, doctl.ArgShortForce, false, "Force manifest deletion")
+	AddBoolFlag(cmdRunRepositoryDeleteManifest, blcli.ArgForce, blcli.ArgShortForce, false, "Force manifest deletion")
 
 	return cmd
 }
@@ -274,7 +274,7 @@ func RunRegistryGet(c *CmdConfig) error {
 
 // RunRegistryDelete delete the registry
 func RunRegistryDelete(c *CmdConfig) error {
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
@@ -291,7 +291,7 @@ var execCommand = exec.Command
 
 // RunRegistryLogin logs in Docker to the registry
 func RunRegistryLogin(c *CmdConfig) error {
-	expirySeconds, err := c.Doit.GetInt(c.NS, doctl.ArgRegistryExpirySeconds)
+	expirySeconds, err := c.Doit.GetInt(c.NS, blcli.ArgRegistryExpirySeconds)
 	if err != nil {
 		return err
 	}
@@ -355,11 +355,11 @@ func RunRegistryLogin(c *CmdConfig) error {
 
 // RunKubernetesManifest prints a Kubernetes manifest that provides read/pull access to the registry
 func RunKubernetesManifest(c *CmdConfig) error {
-	secretName, err := c.Doit.GetString(c.NS, doctl.ArgObjectName)
+	secretName, err := c.Doit.GetString(c.NS, blcli.ArgObjectName)
 	if err != nil {
 		return err
 	}
-	secretNamespace, err := c.Doit.GetString(c.NS, doctl.ArgObjectNamespace)
+	secretNamespace, err := c.Doit.GetString(c.NS, blcli.ArgObjectNamespace)
 	if err != nil {
 		return err
 	}
@@ -412,11 +412,11 @@ func RunKubernetesManifest(c *CmdConfig) error {
 // RunDockerConfig generates credentials and prints a Docker config that can be
 // used to authenticate a Docker client with the registry.
 func RunDockerConfig(c *CmdConfig) error {
-	readWrite, err := c.Doit.GetBool(c.NS, doctl.ArgReadWrite)
+	readWrite, err := c.Doit.GetBool(c.NS, blcli.ArgReadWrite)
 	if err != nil {
 		return err
 	}
-	expirySeconds, err := c.Doit.GetInt(c.NS, doctl.ArgRegistryExpirySeconds)
+	expirySeconds, err := c.Doit.GetInt(c.NS, blcli.ArgRegistryExpirySeconds)
 	if err != nil {
 		return err
 	}
@@ -496,13 +496,13 @@ func RunListRepositoryTags(c *CmdConfig) error {
 
 // RunRepositoryDeleteTag deletes one or more repository tags
 func RunRepositoryDeleteTag(c *CmdConfig) error {
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
 
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	registry, err := c.Registry().Get()
@@ -533,13 +533,13 @@ func RunRepositoryDeleteTag(c *CmdConfig) error {
 
 // RunRepositoryDeleteManifest deletes one or more repository manifests by digest
 func RunRepositoryDeleteManifest(c *CmdConfig) error {
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
 
 	if len(c.Args) < 2 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	registry, err := c.Registry().Get()
@@ -608,7 +608,7 @@ func RunStartGarbageCollection(c *CmdConfig) error {
 	} else if len(c.Args) == 1 {
 		registryName = c.Args[0]
 	} else {
-		return doctl.NewTooManyArgsErr(c.NS)
+		return blcli.NewTooManyArgsErr(c.NS)
 	}
 
 	gc, err := c.Registry().StartGarbageCollection(registryName)
@@ -636,7 +636,7 @@ func RunGetGarbageCollection(c *CmdConfig) error {
 	} else if len(c.Args) == 1 {
 		registryName = c.Args[0]
 	} else {
-		return doctl.NewTooManyArgsErr(c.NS)
+		return blcli.NewTooManyArgsErr(c.NS)
 	}
 
 	gc, err := c.Registry().GetGarbageCollection(registryName)
@@ -664,7 +664,7 @@ func RunListGarbageCollections(c *CmdConfig) error {
 	} else if len(c.Args) == 1 {
 		registryName = c.Args[0]
 	} else {
-		return doctl.NewTooManyArgsErr(c.NS)
+		return blcli.NewTooManyArgsErr(c.NS)
 	}
 
 	gcs, err := c.Registry().ListGarbageCollections(registryName)
@@ -684,14 +684,14 @@ func RunCancelGarbageCollection(c *CmdConfig) error {
 	)
 
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	} else if len(c.Args) == 1 { // <gc-uuid>
 		gcUUID = c.Args[0]
 	} else if len(c.Args) == 2 { // <registry-name> <gc-uuid>
 		registryName = c.Args[0]
 		gcUUID = c.Args[1]
 	} else {
-		return doctl.NewTooManyArgsErr(c.NS)
+		return blcli.NewTooManyArgsErr(c.NS)
 	}
 
 	// we anticipate supporting multiple registries in the future by allowing the

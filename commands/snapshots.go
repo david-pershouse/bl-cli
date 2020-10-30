@@ -16,9 +16,9 @@ package commands
 import (
 	"fmt"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
 	"github.com/gobwas/glob"
 	"github.com/spf13/cobra"
 )
@@ -48,8 +48,8 @@ func Snapshot() *Command {
 	cmdRunSnapshotList := CmdBuilder(cmd, RunSnapshotList, "list [glob]",
 		"List Droplet and volume snapshots", "List information about Droplet and block storage volume snapshots, including:"+snapshotDetail,
 		Writer, aliasOpt("ls"), displayerType(&displayers.Snapshot{}))
-	AddStringFlag(cmdRunSnapshotList, doctl.ArgResourceType, "", "", "Filter by resource type (`droplet` or `volume`)")
-	AddStringFlag(cmdRunSnapshotList, doctl.ArgRegionSlug, "", "", "Filter by regional availability")
+	AddStringFlag(cmdRunSnapshotList, blcli.ArgResourceType, "", "", "Filter by resource type (`droplet` or `volume`)")
+	AddStringFlag(cmdRunSnapshotList, blcli.ArgRegionSlug, "", "", "Filter by regional availability")
 
 	CmdBuilder(cmd, RunSnapshotGet, "get <snapshot-id>...",
 		"Retrieve a Droplet or volume snapshot", "Retrieve information about a Droplet or block storage volume snapshot, including:"+snapshotDetail,
@@ -58,7 +58,7 @@ func Snapshot() *Command {
 	cmdRunSnapshotDelete := CmdBuilder(cmd, RunSnapshotDelete, "delete <snapshot-id>...",
 		"Delete a snapshot of a Droplet or volume", "Delete a snapshot of a Droplet or volume by specifying its ID.",
 		Writer, aliasOpt("d"), displayerType(&displayers.Snapshot{}))
-	AddBoolFlag(cmdRunSnapshotDelete, doctl.ArgForce, doctl.ArgShortForce, false, "Delete the snapshot without confirmation")
+	AddBoolFlag(cmdRunSnapshotDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Delete the snapshot without confirmation")
 
 	return cmd
 }
@@ -68,12 +68,12 @@ func RunSnapshotList(c *CmdConfig) error {
 	var err error
 	ss := c.Snapshots()
 
-	restype, err := c.Doit.GetString(c.NS, doctl.ArgResourceType)
+	restype, err := c.Doit.GetString(c.NS, blcli.ArgResourceType)
 	if err != nil {
 		return err
 	}
 
-	region, err := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
+	region, err := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
 	if err != nil {
 		return err
 	}
@@ -147,7 +147,7 @@ func RunSnapshotList(c *CmdConfig) error {
 // RunSnapshotGet returns a snapshot
 func RunSnapshotGet(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	ss := c.Snapshots()
@@ -169,10 +169,10 @@ func RunSnapshotGet(c *CmdConfig) error {
 // RunSnapshotDelete destroys snapshot(s) by id
 func RunSnapshotDelete(c *CmdConfig) error {
 	if len(c.Args) == 0 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}

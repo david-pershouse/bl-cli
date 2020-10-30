@@ -22,10 +22,10 @@ import (
 	"sync"
 	"text/template"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/commands/displayers"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/gobwas/glob"
 	"github.com/spf13/cobra"
 )
@@ -70,42 +70,42 @@ func Droplet() *Command {
 
 	cmdDropletCreate := CmdBuilder(cmd, RunDropletCreate, "create <droplet-name>...", "Create a new Droplet", dropletCreateLongDesc, Writer,
 		aliasOpt("c"), displayerType(&displayers.Droplet{}))
-	AddStringSliceFlag(cmdDropletCreate, doctl.ArgSSHKeys, "", []string{}, "A list of SSH key fingerprints or IDs of the SSH keys to embed in the Droplet's root account upon creation")
-	AddStringFlag(cmdDropletCreate, doctl.ArgUserData, "", "", "User-data to configure the Droplet on first boot")
-	AddStringFlag(cmdDropletCreate, doctl.ArgUserDataFile, "", "", "The path to a file containing user-data to configure the Droplet on first boot")
-	AddBoolFlag(cmdDropletCreate, doctl.ArgCommandWait, "", false, "Wait for Droplet creation to complete before returning")
-	AddStringFlag(cmdDropletCreate, doctl.ArgRegionSlug, "", "", "A slug indicating the region where the Droplet will be created (e.g. `nyc1`). Run `doctl compute region list` for a list of valid regions.",
+	AddStringSliceFlag(cmdDropletCreate, blcli.ArgSSHKeys, "", []string{}, "A list of SSH key fingerprints or IDs of the SSH keys to embed in the Droplet's root account upon creation")
+	AddStringFlag(cmdDropletCreate, blcli.ArgUserData, "", "", "User-data to configure the Droplet on first boot")
+	AddStringFlag(cmdDropletCreate, blcli.ArgUserDataFile, "", "", "The path to a file containing user-data to configure the Droplet on first boot")
+	AddBoolFlag(cmdDropletCreate, blcli.ArgCommandWait, "", false, "Wait for Droplet creation to complete before returning")
+	AddStringFlag(cmdDropletCreate, blcli.ArgRegionSlug, "", "", "A slug indicating the region where the Droplet will be created (e.g. `nyc1`). Run `doctl compute region list` for a list of valid regions.",
 		requiredOpt())
-	AddStringFlag(cmdDropletCreate, doctl.ArgSizeSlug, "", "", "A slug indicating the size of the Droplet (e.g. `s-1vcpu-1gb`). Run `doctl compute size list` for a list of valid sizes.",
+	AddStringFlag(cmdDropletCreate, blcli.ArgSizeSlug, "", "", "A slug indicating the size of the Droplet (e.g. `s-1vcpu-1gb`). Run `doctl compute size list` for a list of valid sizes.",
 		requiredOpt())
-	AddBoolFlag(cmdDropletCreate, doctl.ArgBackups, "", false, "Enables backups for the Droplet")
-	AddBoolFlag(cmdDropletCreate, doctl.ArgIPv6, "", false, "Enables IPv6 support and assigns an IPv6 address")
-	AddBoolFlag(cmdDropletCreate, doctl.ArgPrivateNetworking, "", false, "Enables private networking for the Droplet by provisioning it inside of your account's default VPC for the region")
-	AddBoolFlag(cmdDropletCreate, doctl.ArgMonitoring, "", false, "Install the DigitalOcean agent for additional monitoring")
-	AddStringFlag(cmdDropletCreate, doctl.ArgImage, "", "", "An ID or slug indicating the image the Droplet will be based-on (e.g. `ubuntu-20-04-x64`). Use the commands under `doctl compute image` to find additional images.",
+	AddBoolFlag(cmdDropletCreate, blcli.ArgBackups, "", false, "Enables backups for the Droplet")
+	AddBoolFlag(cmdDropletCreate, blcli.ArgIPv6, "", false, "Enables IPv6 support and assigns an IPv6 address")
+	AddBoolFlag(cmdDropletCreate, blcli.ArgPrivateNetworking, "", false, "Enables private networking for the Droplet by provisioning it inside of your account's default VPC for the region")
+	AddBoolFlag(cmdDropletCreate, blcli.ArgMonitoring, "", false, "Install the DigitalOcean agent for additional monitoring")
+	AddStringFlag(cmdDropletCreate, blcli.ArgImage, "", "", "An ID or slug indicating the image the Droplet will be based-on (e.g. `ubuntu-20-04-x64`). Use the commands under `doctl compute image` to find additional images.",
 		requiredOpt())
-	AddStringFlag(cmdDropletCreate, doctl.ArgTagName, "", "", "A tag name to be applied to the Droplet")
-	AddStringFlag(cmdDropletCreate, doctl.ArgVPCUUID, "", "", "The UUID of a non-default VPC to create the Droplet in")
-	AddStringSliceFlag(cmdDropletCreate, doctl.ArgTagNames, "", []string{}, "A list of tag names to be applied to the Droplet")
+	AddStringFlag(cmdDropletCreate, blcli.ArgTagName, "", "", "A tag name to be applied to the Droplet")
+	AddStringFlag(cmdDropletCreate, blcli.ArgVPCUUID, "", "", "The UUID of a non-default VPC to create the Droplet in")
+	AddStringSliceFlag(cmdDropletCreate, blcli.ArgTagNames, "", []string{}, "A list of tag names to be applied to the Droplet")
 
-	AddStringSliceFlag(cmdDropletCreate, doctl.ArgVolumeList, "", []string{}, "A list of block storage volume IDs to attach to the Droplet")
+	AddStringSliceFlag(cmdDropletCreate, blcli.ArgVolumeList, "", []string{}, "A list of block storage volume IDs to attach to the Droplet")
 
 	cmdRunDropletDelete := CmdBuilder(cmd, RunDropletDelete, "delete <droplet-id|droplet-name>...", "Permanently delete a Droplet", `Use this command to permanently delete a Droplet. This is irreversible.`, Writer,
 		aliasOpt("d", "del", "rm"))
-	AddBoolFlag(cmdRunDropletDelete, doctl.ArgForce, doctl.ArgShortForce, false, "Delete the Droplet without a confirmation prompt")
-	AddStringFlag(cmdRunDropletDelete, doctl.ArgTagName, "", "", "Tag name")
+	AddBoolFlag(cmdRunDropletDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Delete the Droplet without a confirmation prompt")
+	AddStringFlag(cmdRunDropletDelete, blcli.ArgTagName, "", "", "Tag name")
 
 	cmdRunDropletGet := CmdBuilder(cmd, RunDropletGet, "get <droplet-id|droplet-name>", "Retrieve information about a Droplet", `Use this command to retrieve information about a Droplet, including:`+dropletDetails, Writer,
 		aliasOpt("g"), displayerType(&displayers.Droplet{}))
-	AddStringFlag(cmdRunDropletGet, doctl.ArgTemplate, "", "", "Go template format. Sample values: `{{.ID}}`, `{{.Name}}`, `{{.Memory}}`, `{{.Region.Name}}`, `{{.Image}}`, `{{.Tags}}`")
+	AddStringFlag(cmdRunDropletGet, blcli.ArgTemplate, "", "", "Go template format. Sample values: `{{.ID}}`, `{{.Name}}`, `{{.Memory}}`, `{{.Region.Name}}`, `{{.Image}}`, `{{.Tags}}`")
 
 	CmdBuilder(cmd, RunDropletKernels, "kernels <droplet-id>", "List available Droplet kernels", `Use this command to retrieve a list of all kernels available to a Droplet.`, Writer,
 		aliasOpt("k"), displayerType(&displayers.Kernel{}))
 
 	cmdRunDropletList := CmdBuilder(cmd, RunDropletList, "list [GLOB]", "List Droplets on your account", `Use this command to retrieve a list of Droplets, including the following information about each:`+dropletDetails, Writer,
 		aliasOpt("ls"), displayerType(&displayers.Droplet{}))
-	AddStringFlag(cmdRunDropletList, doctl.ArgRegionSlug, "", "", "Droplet region")
-	AddStringFlag(cmdRunDropletList, doctl.ArgTagName, "", "", "Tag name")
+	AddStringFlag(cmdRunDropletList, blcli.ArgRegionSlug, "", "", "Droplet region")
+	AddStringFlag(cmdRunDropletList, blcli.ArgTagName, "", "", "Tag name")
 
 	CmdBuilder(cmd, RunDropletNeighbors, "neighbors <droplet-id>", "List a Droplet's neighbors on your account", `Use this command to get a list of your Droplets that are on the same physical hardware, including the following details:`+dropletDetails, Writer,
 		aliasOpt("n"), displayerType(&displayers.Droplet{}))
@@ -114,11 +114,11 @@ func Droplet() *Command {
 		aliasOpt("s"), displayerType(&displayers.Image{}))
 
 	cmdRunDropletTag := CmdBuilder(cmd, RunDropletTag, "tag <droplet-id|droplet-name>", "Add a tag to a Droplet", "Use this command to tag a Droplet. Specify the tag with the `--tag-name` flag.", Writer)
-	AddStringFlag(cmdRunDropletTag, doctl.ArgTagName, "", "", "Tag name to use; can be a new or existing tag",
+	AddStringFlag(cmdRunDropletTag, blcli.ArgTagName, "", "", "Tag name to use; can be a new or existing tag",
 		requiredOpt())
 
 	cmdRunDropletUntag := CmdBuilder(cmd, RunDropletUntag, "untag <droplet-id|droplet-name>", "Remove a tag from a Droplet", "Use this command to remove a tag from a Droplet, specified with the `--tag-name` flag.", Writer)
-	AddStringSliceFlag(cmdRunDropletUntag, doctl.ArgTagName, "", []string{}, "Tag name to remove from Droplet")
+	AddStringSliceFlag(cmdRunDropletUntag, blcli.ArgTagName, "", []string{}, "Tag name to remove from Droplet")
 
 	cmd.AddCommand(dropletOneClicks())
 
@@ -166,55 +166,55 @@ func RunDropletBackups(c *CmdConfig) error {
 func RunDropletCreate(c *CmdConfig) error {
 
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	region, err := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
+	region, err := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
 	if err != nil {
 		return err
 	}
 
-	size, err := c.Doit.GetString(c.NS, doctl.ArgSizeSlug)
+	size, err := c.Doit.GetString(c.NS, blcli.ArgSizeSlug)
 	if err != nil {
 		return err
 	}
 
-	backups, err := c.Doit.GetBool(c.NS, doctl.ArgBackups)
+	backups, err := c.Doit.GetBool(c.NS, blcli.ArgBackups)
 	if err != nil {
 		return err
 	}
 
-	ipv6, err := c.Doit.GetBool(c.NS, doctl.ArgIPv6)
+	ipv6, err := c.Doit.GetBool(c.NS, blcli.ArgIPv6)
 	if err != nil {
 		return err
 	}
 
-	privateNetworking, err := c.Doit.GetBool(c.NS, doctl.ArgPrivateNetworking)
+	privateNetworking, err := c.Doit.GetBool(c.NS, blcli.ArgPrivateNetworking)
 	if err != nil {
 		return err
 	}
 
-	monitoring, err := c.Doit.GetBool(c.NS, doctl.ArgMonitoring)
+	monitoring, err := c.Doit.GetBool(c.NS, blcli.ArgMonitoring)
 	if err != nil {
 		return err
 	}
 
-	keys, err := c.Doit.GetStringSlice(c.NS, doctl.ArgSSHKeys)
+	keys, err := c.Doit.GetStringSlice(c.NS, blcli.ArgSSHKeys)
 	if err != nil {
 		return err
 	}
 
-	tagName, err := c.Doit.GetString(c.NS, doctl.ArgTagName)
+	tagName, err := c.Doit.GetString(c.NS, blcli.ArgTagName)
 	if err != nil {
 		return err
 	}
 
-	vpcUUID, err := c.Doit.GetString(c.NS, doctl.ArgVPCUUID)
+	vpcUUID, err := c.Doit.GetString(c.NS, blcli.ArgVPCUUID)
 	if err != nil {
 		return err
 	}
 
-	tagNames, err := c.Doit.GetStringSlice(c.NS, doctl.ArgTagNames)
+	tagNames, err := c.Doit.GetStringSlice(c.NS, blcli.ArgTagNames)
 	if err != nil {
 		return err
 	}
@@ -224,18 +224,18 @@ func RunDropletCreate(c *CmdConfig) error {
 
 	sshKeys := extractSSHKeys(keys)
 
-	userData, err := c.Doit.GetString(c.NS, doctl.ArgUserData)
+	userData, err := c.Doit.GetString(c.NS, blcli.ArgUserData)
 	if err != nil {
 		return err
 	}
 
-	volumeList, err := c.Doit.GetStringSlice(c.NS, doctl.ArgVolumeList)
+	volumeList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgVolumeList)
 	if err != nil {
 		return err
 	}
 	volumes := extractVolumes(volumeList)
 
-	filename, err := c.Doit.GetString(c.NS, doctl.ArgUserDataFile)
+	filename, err := c.Doit.GetString(c.NS, blcli.ArgUserDataFile)
 	if err != nil {
 		return err
 	}
@@ -245,7 +245,7 @@ func RunDropletCreate(c *CmdConfig) error {
 		return err
 	}
 
-	imageStr, err := c.Doit.GetString(c.NS, doctl.ArgImage)
+	imageStr, err := c.Doit.GetString(c.NS, blcli.ArgImage)
 	if err != nil {
 		return err
 	}
@@ -257,7 +257,7 @@ func RunDropletCreate(c *CmdConfig) error {
 		createImage = godo.DropletCreateImage{ID: i}
 	}
 
-	wait, err := c.Doit.GetBool(c.NS, doctl.ArgCommandWait)
+	wait, err := c.Doit.GetBool(c.NS, blcli.ArgCommandWait)
 	if err != nil {
 		return err
 	}
@@ -319,10 +319,10 @@ func RunDropletTag(c *CmdConfig) error {
 	ts := c.Tags()
 
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	tag, err := c.Doit.GetString(c.NS, doctl.ArgTagName)
+	tag, err := c.Doit.GetString(c.NS, blcli.ArgTagName)
 	if err != nil {
 		return err
 	}
@@ -349,12 +349,12 @@ func RunDropletUntag(c *CmdConfig) error {
 	ts := c.Tags()
 
 	if len(c.Args) < 1 {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	}
 
 	dropletIDStrs := c.Args
 
-	tagNames, err := c.Doit.GetStringSlice(c.NS, doctl.ArgTagName)
+	tagNames, err := c.Doit.GetStringSlice(c.NS, blcli.ArgTagName)
 	if err != nil {
 		return err
 	}
@@ -455,18 +455,18 @@ func allInt(in []string) ([]int, error) {
 func RunDropletDelete(c *CmdConfig) error {
 	ds := c.Droplets()
 
-	force, err := c.Doit.GetBool(c.NS, doctl.ArgForce)
+	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
 		return err
 	}
 
-	tagName, err := c.Doit.GetString(c.NS, doctl.ArgTagName)
+	tagName, err := c.Doit.GetString(c.NS, blcli.ArgTagName)
 	if err != nil {
 		return err
 	}
 
 	if len(c.Args) < 1 && tagName == "" {
-		return doctl.NewMissingArgsErr(c.NS)
+		return blcli.NewMissingArgsErr(c.NS)
 	} else if len(c.Args) > 0 && tagName != "" {
 		return fmt.Errorf("Please specify Droplet identifier or a tag name.")
 	} else if tagName != "" {
@@ -561,7 +561,7 @@ func RunDropletGet(c *CmdConfig) error {
 		return err
 	}
 
-	getTemplate, err := c.Doit.GetString(c.NS, doctl.ArgTemplate)
+	getTemplate, err := c.Doit.GetString(c.NS, blcli.ArgTemplate)
 	if err != nil {
 		return err
 	}
@@ -615,12 +615,12 @@ func RunDropletList(c *CmdConfig) error {
 
 	ds := c.Droplets()
 
-	region, err := c.Doit.GetString(c.NS, doctl.ArgRegionSlug)
+	region, err := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
 	if err != nil {
 		return err
 	}
 
-	tagName, err := c.Doit.GetString(c.NS, doctl.ArgTagName)
+	tagName, err := c.Doit.GetString(c.NS, blcli.ArgTagName)
 	if err != nil {
 		return err
 	}
@@ -713,7 +713,7 @@ func RunDropletSnapshots(c *CmdConfig) error {
 
 func getDropletIDArg(ns string, args []string) (int, error) {
 	if len(args) != 1 {
-		return 0, doctl.NewMissingArgsErr(ns)
+		return 0, blcli.NewMissingArgsErr(ns)
 	}
 
 	return strconv.Atoi(args[0])

@@ -17,7 +17,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/digitalocean/godo"
+	godo "git.mammoth.com.au/github/go-binarylane"
 )
 
 // Firewall wraps a godo Firewall.

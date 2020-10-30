@@ -17,9 +17,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/digitalocean/doctl"
-	"github.com/digitalocean/doctl/do"
-	"github.com/digitalocean/godo"
+	"git.mammoth.com.au/github/bl-cli"
+	"git.mammoth.com.au/github/bl-cli/do"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -118,7 +118,7 @@ func TestCDNsCreate(t *testing.T) {
 		tm.cdns.EXPECT().Create(cdncr).Return(&testCDN, nil)
 
 		config.Args = append(config.Args, cdnOrigin)
-		config.Doit.Set(config.NS, doctl.ArgCDNTTL, 3600)
+		config.Doit.Set(config.NS, blcli.ArgCDNTTL, 3600)
 
 		err := RunCDNCreate(config)
 		assert.NoError(t, err)
@@ -136,9 +136,9 @@ func TestCDNsCreateCustomDomain(t *testing.T) {
 		tm.cdns.EXPECT().Create(cdncr).Return(&testCDNWithCustomDomain, nil)
 
 		config.Args = append(config.Args, cdnOrigin)
-		config.Doit.Set(config.NS, doctl.ArgCDNTTL, 3600)
-		config.Doit.Set(config.NS, doctl.ArgCDNDomain, testCDNWithCustomDomain.CustomDomain)
-		config.Doit.Set(config.NS, doctl.ArgCDNCertificateID, testCDNWithCustomDomain.CertificateID)
+		config.Doit.Set(config.NS, blcli.ArgCDNTTL, 3600)
+		config.Doit.Set(config.NS, blcli.ArgCDNDomain, testCDNWithCustomDomain.CustomDomain)
+		config.Doit.Set(config.NS, blcli.ArgCDNCertificateID, testCDNWithCustomDomain.CertificateID)
 
 		err := RunCDNCreate(config)
 		assert.NoError(t, err)
@@ -148,8 +148,8 @@ func TestCDNsCreateCustomDomain(t *testing.T) {
 func TestCDNsCreateCustomDomain_NoCertIDFail(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		config.Args = append(config.Args, cdnOrigin)
-		config.Doit.Set(config.NS, doctl.ArgCDNTTL, 3600)
-		config.Doit.Set(config.NS, doctl.ArgCDNDomain, updatedCDNWithCustomDomain.CustomDomain)
+		config.Doit.Set(config.NS, blcli.ArgCDNTTL, 3600)
+		config.Doit.Set(config.NS, blcli.ArgCDNDomain, updatedCDNWithCustomDomain.CustomDomain)
 
 		err := RunCDNCreate(config)
 		assert.Error(t, err)
@@ -166,7 +166,7 @@ func TestCDNsCreate_RequiredArguments(t *testing.T) {
 func TestCDNsCreate_ZeroFail(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		config.Args = append(config.Args, cdnOrigin)
-		config.Doit.Set(config.NS, doctl.ArgCDNTTL, 0)
+		config.Doit.Set(config.NS, blcli.ArgCDNTTL, 0)
 
 		err := RunCDNCreate(config)
 		assert.Error(t, err)
@@ -181,7 +181,7 @@ func TestCDNsUpdateTTL(t *testing.T) {
 		tm.cdns.EXPECT().UpdateTTL(cdnID, cdnur).Return(&updatedCDN, nil)
 
 		config.Args = append(config.Args, cdnID)
-		config.Doit.Set(config.NS, doctl.ArgCDNTTL, 60)
+		config.Doit.Set(config.NS, blcli.ArgCDNTTL, 60)
 
 		err := RunCDNUpdate(config)
 		assert.NoError(t, err)
@@ -191,7 +191,7 @@ func TestCDNsUpdateTTL(t *testing.T) {
 func TestCDNsUpdateTTL_ZeroFail(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		config.Args = append(config.Args, cdnID)
-		config.Doit.Set(config.NS, doctl.ArgCDNTTL, 0)
+		config.Doit.Set(config.NS, blcli.ArgCDNTTL, 0)
 
 		err := RunCDNUpdate(config)
 		assert.Error(t, err)
@@ -207,8 +207,8 @@ func TestCDNsUpdateCustomDomain(t *testing.T) {
 		tm.cdns.EXPECT().UpdateCustomDomain(cdnID, cdnur).Return(&updatedCDNWithCustomDomain, nil)
 
 		config.Args = append(config.Args, cdnID)
-		config.Doit.Set(config.NS, doctl.ArgCDNDomain, updatedCDNWithCustomDomain.CustomDomain)
-		config.Doit.Set(config.NS, doctl.ArgCDNCertificateID, updatedCDNWithCustomDomain.CertificateID)
+		config.Doit.Set(config.NS, blcli.ArgCDNDomain, updatedCDNWithCustomDomain.CustomDomain)
+		config.Doit.Set(config.NS, blcli.ArgCDNCertificateID, updatedCDNWithCustomDomain.CertificateID)
 
 		err := RunCDNUpdate(config)
 		assert.NoError(t, err)
@@ -218,7 +218,7 @@ func TestCDNsUpdateCustomDomain(t *testing.T) {
 func TestCDNsUpdateCustomDomain_NoCertIDFail(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		config.Args = append(config.Args, cdnID)
-		config.Doit.Set(config.NS, doctl.ArgCDNDomain, updatedCDNWithCustomDomain.CustomDomain)
+		config.Doit.Set(config.NS, blcli.ArgCDNDomain, updatedCDNWithCustomDomain.CustomDomain)
 
 		err := RunCDNUpdate(config)
 		assert.Error(t, err)
@@ -233,7 +233,7 @@ func TestCDNsUpdateRemoveCustomDomain(t *testing.T) {
 		tm.cdns.EXPECT().UpdateCustomDomain(cdnID, cdnur).Return(&testCDN, nil)
 
 		config.Args = append(config.Args, cdnID)
-		config.Doit.Set(config.NS, doctl.ArgCDNDomain, "")
+		config.Doit.Set(config.NS, blcli.ArgCDNDomain, "")
 
 		err := RunCDNUpdate(config)
 		assert.NoError(t, err)
@@ -253,7 +253,7 @@ func TestCDNsDelete(t *testing.T) {
 		tm.cdns.EXPECT().Delete(cdnID).Return(nil)
 
 		config.Args = append(config.Args, cdnID)
-		config.Doit.Set(config.NS, doctl.ArgForce, true)
+		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunCDNDelete(config)
 		assert.NoError(t, err)
@@ -273,7 +273,7 @@ func TestCDNsFlushCache(t *testing.T) {
 		tm.cdns.EXPECT().FlushCache(cdnID, flushReq).Return(nil)
 
 		config.Args = append(config.Args, cdnID)
-		config.Doit.Set(config.NS, doctl.ArgCDNFiles, []string{"*"})
+		config.Doit.Set(config.NS, blcli.ArgCDNFiles, []string{"*"})
 
 		err := RunCDNFlushCache(config)
 		assert.NoError(t, err)

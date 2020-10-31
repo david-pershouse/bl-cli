@@ -3,7 +3,7 @@ module git.mammoth.com.au/github/bl-cli
 go 1.15
 
 require (
-	git.mammoth.com.au/github/go-binarylane v0.0.0-20201030110224-2755d78d32df
+	git.mammoth.com.au/github/go-binarylane v0.0.0-20201031062201-02daef5e4f29
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/creack/pty v1.1.11
 	github.com/digitalocean/doctl v1.49.0

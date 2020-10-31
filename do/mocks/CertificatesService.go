@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	do "git.mammoth.com.au/github/bl-cli/do"
-	godo "github.com/digitalocean/godo"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 

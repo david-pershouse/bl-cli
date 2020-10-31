@@ -7,7 +7,7 @@ package mocks
 import (
 	reflect "reflect"
 
-	godo "github.com/digitalocean/godo"
+	godo "git.mammoth.com.au/github/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 

@@ -1,4 +1,4 @@
-# git.mammoth.com.au/github/go-binarylane v0.0.0-20201030110224-2755d78d32df
+# git.mammoth.com.au/github/go-binarylane v0.0.0-20201031062201-02daef5e4f29
 ## explicit
 git.mammoth.com.au/github/go-binarylane
 git.mammoth.com.au/github/go-binarylane/util

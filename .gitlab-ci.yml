@@ -17,7 +17,7 @@ format:
   script:
     - go fmt $(go list ./... | grep -v /vendor/)
     - go vet -composites=false ./commands/... ./do/... ./pkg/... .
-    - make test
+    - make unit_test
 
 compile:
   stage: build

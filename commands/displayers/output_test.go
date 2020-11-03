@@ -10,8 +10,8 @@ import (
 )
 
 func TestDisplayerDisplay(t *testing.T) {
-	emptyVolumes := make([]do.Volume, 0)
-	var nilVolumes []do.Volume
+	emptyImages := make([]do.Image, 0)
+	var nilImages []do.Image
 
 	tests := []struct {
 		name         string
@@ -20,12 +20,12 @@ func TestDisplayerDisplay(t *testing.T) {
 	}{
 		{
 			name:         "displaying a non-nil slice of Volumes should return an empty JSON array",
-			item:         &Volume{Volumes: emptyVolumes},
+			item:         &Image{Images: emptyImages},
 			expectedJSON: `[]`,
 		},
 		{
 			name:         "displaying a nil slice of Volumes should return an empty JSON array",
-			item:         &Volume{Volumes: nilVolumes},
+			item:         &Image{Images: nilImages},
 			expectedJSON: `[]`,
 		},
 	}

@@ -148,10 +148,8 @@ type testFn func(c *CmdConfig, tm *tcMocks)
 type tcMocks struct {
 	account           *domocks.MockAccountService
 	actions           *domocks.MockActionsService
-	apps              *domocks.MockAppsService
 	balance           *domocks.MockBalanceService
 	billingHistory    *domocks.MockBillingHistoryService
-	databases         *domocks.MockDatabasesService
 	dropletActions    *domocks.MockDropletActionsService
 	droplets          *domocks.MockDropletsService
 	keys              *domocks.MockKeysService
@@ -163,20 +161,13 @@ type tcMocks struct {
 	floatingIPs       *domocks.MockFloatingIPsService
 	floatingIPActions *domocks.MockFloatingIPActionsService
 	domains           *domocks.MockDomainsService
-	volumes           *domocks.MockVolumesService
-	volumeActions     *domocks.MockVolumeActionsService
 	tags              *domocks.MockTagsService
 	snapshots         *domocks.MockSnapshotsService
-	certificates      *domocks.MockCertificatesService
 	loadBalancers     *domocks.MockLoadBalancersService
 	firewalls         *domocks.MockFirewallsService
-	cdns              *domocks.MockCDNsService
 	projects          *domocks.MockProjectsService
-	kubernetes        *domocks.MockKubernetesService
-	registry          *domocks.MockRegistryService
 	sshRunner         *domocks.MockRunner
 	vpcs              *domocks.MockVPCsService
-	oneClick          *domocks.MockOneClickService
 }
 
 func withTestClient(t *testing.T, tFn testFn) {
@@ -186,7 +177,6 @@ func withTestClient(t *testing.T, tFn testFn) {
 	tm := &tcMocks{
 		account:           domocks.NewMockAccountService(ctrl),
 		actions:           domocks.NewMockActionsService(ctrl),
-		apps:              domocks.NewMockAppsService(ctrl),
 		balance:           domocks.NewMockBalanceService(ctrl),
 		billingHistory:    domocks.NewMockBillingHistoryService(ctrl),
 		keys:              domocks.NewMockKeysService(ctrl),
@@ -201,20 +191,12 @@ func withTestClient(t *testing.T, tFn testFn) {
 		dropletActions:    domocks.NewMockDropletActionsService(ctrl),
 		domains:           domocks.NewMockDomainsService(ctrl),
 		tags:              domocks.NewMockTagsService(ctrl),
-		volumes:           domocks.NewMockVolumesService(ctrl),
-		volumeActions:     domocks.NewMockVolumeActionsService(ctrl),
 		snapshots:         domocks.NewMockSnapshotsService(ctrl),
-		certificates:      domocks.NewMockCertificatesService(ctrl),
 		loadBalancers:     domocks.NewMockLoadBalancersService(ctrl),
 		firewalls:         domocks.NewMockFirewallsService(ctrl),
-		cdns:              domocks.NewMockCDNsService(ctrl),
 		projects:          domocks.NewMockProjectsService(ctrl),
-		kubernetes:        domocks.NewMockKubernetesService(ctrl),
-		databases:         domocks.NewMockDatabasesService(ctrl),
-		registry:          domocks.NewMockRegistryService(ctrl),
 		sshRunner:         domocks.NewMockRunner(ctrl),
 		vpcs:              domocks.NewMockVPCsService(ctrl),
-		oneClick:          domocks.NewMockOneClickService(ctrl),
 	}
 
 	config := &CmdConfig{
@@ -247,20 +229,11 @@ func withTestClient(t *testing.T, tFn testFn) {
 		BillingHistory:    func() do.BillingHistoryService { return tm.billingHistory },
 		Invoices:          func() do.InvoicesService { return tm.invoices },
 		Tags:              func() do.TagsService { return tm.tags },
-		Volumes:           func() do.VolumesService { return tm.volumes },
-		VolumeActions:     func() do.VolumeActionsService { return tm.volumeActions },
 		Snapshots:         func() do.SnapshotsService { return tm.snapshots },
-		Certificates:      func() do.CertificatesService { return tm.certificates },
 		LoadBalancers:     func() do.LoadBalancersService { return tm.loadBalancers },
 		Firewalls:         func() do.FirewallsService { return tm.firewalls },
-		CDNs:              func() do.CDNsService { return tm.cdns },
 		Projects:          func() do.ProjectsService { return tm.projects },
-		Kubernetes:        func() do.KubernetesService { return tm.kubernetes },
-		Databases:         func() do.DatabasesService { return tm.databases },
-		Registry:          func() do.RegistryService { return tm.registry },
 		VPCs:              func() do.VPCsService { return tm.vpcs },
-		OneClicks:         func() do.OneClickService { return tm.oneClick },
-		Apps:              func() do.AppsService { return tm.apps },
 	}
 
 	tFn(config, tm)

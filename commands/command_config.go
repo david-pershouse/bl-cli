@@ -52,19 +52,10 @@ type CmdConfig struct {
 	BillingHistory    func() do.BillingHistoryService
 	Invoices          func() do.InvoicesService
 	Tags              func() do.TagsService
-	Volumes           func() do.VolumesService
-	VolumeActions     func() do.VolumeActionsService
 	Snapshots         func() do.SnapshotsService
-	Certificates      func() do.CertificatesService
 	Firewalls         func() do.FirewallsService
-	CDNs              func() do.CDNsService
 	Projects          func() do.ProjectsService
-	Kubernetes        func() do.KubernetesService
-	Databases         func() do.DatabasesService
-	Registry          func() do.RegistryService
 	VPCs              func() do.VPCsService
-	OneClicks         func() do.OneClickService
-	Apps              func() do.AppsService
 }
 
 // NewCmdConfig creates an instance of a CmdConfig.
@@ -99,20 +90,11 @@ func NewCmdConfig(ns string, dc blcli.Config, out io.Writer, args []string, init
 			c.BillingHistory = func() do.BillingHistoryService { return do.NewBillingHistoryService(godoClient) }
 			c.Invoices = func() do.InvoicesService { return do.NewInvoicesService(godoClient) }
 			c.Tags = func() do.TagsService { return do.NewTagsService(godoClient) }
-			c.Volumes = func() do.VolumesService { return do.NewVolumesService(godoClient) }
-			c.VolumeActions = func() do.VolumeActionsService { return do.NewVolumeActionsService(godoClient) }
 			c.Snapshots = func() do.SnapshotsService { return do.NewSnapshotsService(godoClient) }
-			c.Certificates = func() do.CertificatesService { return do.NewCertificatesService(godoClient) }
 			c.LoadBalancers = func() do.LoadBalancersService { return do.NewLoadBalancersService(godoClient) }
 			c.Firewalls = func() do.FirewallsService { return do.NewFirewallsService(godoClient) }
-			c.CDNs = func() do.CDNsService { return do.NewCDNsService(godoClient) }
 			c.Projects = func() do.ProjectsService { return do.NewProjectsService(godoClient) }
-			c.Kubernetes = func() do.KubernetesService { return do.NewKubernetesService(godoClient) }
-			c.Databases = func() do.DatabasesService { return do.NewDatabasesService(godoClient) }
-			c.Registry = func() do.RegistryService { return do.NewRegistryService(godoClient) }
 			c.VPCs = func() do.VPCsService { return do.NewVPCsService(godoClient) }
-			c.OneClicks = func() do.OneClickService { return do.NewOneClickService(godoClient) }
-			c.Apps = func() do.AppsService { return do.NewAppsService(godoClient) }
 
 			return nil
 		},

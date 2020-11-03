@@ -131,20 +131,15 @@ func Execute() {
 // AddCommands adds sub commands to the base command.
 func addCommands() {
 	DoitCmd.AddCommand(Account())
-	DoitCmd.AddCommand(Apps())
 	DoitCmd.AddCommand(Auth())
 	DoitCmd.AddCommand(Balance())
 	DoitCmd.AddCommand(BillingHistory())
 	DoitCmd.AddCommand(Invoices())
 	DoitCmd.AddCommand(Completion())
 	DoitCmd.AddCommand(computeCmd())
-	DoitCmd.AddCommand(Kubernetes())
-	DoitCmd.AddCommand(Databases())
 	DoitCmd.AddCommand(Projects())
 	DoitCmd.AddCommand(Version())
-	DoitCmd.AddCommand(Registry())
 	DoitCmd.AddCommand(VPCs())
-	DoitCmd.AddCommand(OneClicks())
 }
 
 func computeCmd() *Command {
@@ -157,8 +152,6 @@ func computeCmd() *Command {
 	}
 
 	cmd.AddCommand(Actions())
-	cmd.AddCommand(CDN())
-	cmd.AddCommand(Certificate())
 	cmd.AddCommand(DropletAction())
 	cmd.AddCommand(Droplet())
 	cmd.AddCommand(Domain())
@@ -174,8 +167,6 @@ func computeCmd() *Command {
 	cmd.AddCommand(Snapshot())
 	cmd.AddCommand(SSHKeys())
 	cmd.AddCommand(Tags())
-	cmd.AddCommand(Volume())
-	cmd.AddCommand(VolumeAction())
 
 	// SSH is different since it doesn't have any subcommands. In this case, let's
 	// give it a parent at init time.

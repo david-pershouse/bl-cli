@@ -48,10 +48,8 @@ type Client struct {
 	// Services used for communicating with the API
 	Account           AccountService
 	Actions           ActionsService
-	Apps              AppsService
 	Balance           BalanceService
 	BillingHistory    BillingHistoryService
-	CDNs              CDNService
 	Domains           DomainsService
 	Droplets          DropletsService
 	DropletActions    DropletActionsService
@@ -64,18 +62,11 @@ type Client struct {
 	FloatingIPs       FloatingIPsService
 	FloatingIPActions FloatingIPActionsService
 	Snapshots         SnapshotsService
-	Storage           StorageService
-	StorageActions    StorageActionsService
 	Tags              TagsService
 	LoadBalancers     LoadBalancersService
-	Certificates      CertificatesService
 	Firewalls         FirewallsService
 	Projects          ProjectsService
-	Kubernetes        KubernetesService
-	Registry          RegistryService
-	Databases         DatabasesService
 	VPCs              VPCsService
-	OneClick          OneClickService
 
 	// Optional function called after every successful request made to the DO APIs
 	onRequestCompleted RequestCompletionCallback
@@ -186,11 +177,8 @@ func NewClient(httpClient *http.Client) *Client {
 	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent}
 	c.Account = &AccountServiceOp{client: c}
 	c.Actions = &ActionsServiceOp{client: c}
-	c.Apps = &AppsServiceOp{client: c}
 	c.Balance = &BalanceServiceOp{client: c}
 	c.BillingHistory = &BillingHistoryServiceOp{client: c}
-	c.CDNs = &CDNServiceOp{client: c}
-	c.Certificates = &CertificatesServiceOp{client: c}
 	c.Domains = &DomainsServiceOp{client: c}
 	c.Droplets = &DropletsServiceOp{client: c}
 	c.DropletActions = &DropletActionsServiceOp{client: c}
@@ -206,14 +194,8 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Regions = &RegionsServiceOp{client: c}
 	c.Sizes = &SizesServiceOp{client: c}
 	c.Snapshots = &SnapshotsServiceOp{client: c}
-	c.Storage = &StorageServiceOp{client: c}
-	c.StorageActions = &StorageActionsServiceOp{client: c}
 	c.Tags = &TagsServiceOp{client: c}
-	c.Kubernetes = &KubernetesServiceOp{client: c}
-	c.Registry = &RegistryServiceOp{client: c}
-	c.Databases = &DatabasesServiceOp{client: c}
 	c.VPCs = &VPCsServiceOp{client: c}
-	c.OneClick = &OneClickServiceOp{client: c}
 
 	return c
 }

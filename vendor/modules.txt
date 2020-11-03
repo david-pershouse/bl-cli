@@ -1,4 +1,4 @@
-# git.mammoth.com.au/github/go-binarylane v0.0.0-20201031062201-02daef5e4f29
+# git.mammoth.com.au/github/go-binarylane v0.0.0-20201103045021-7e08e03dadf3
 ## explicit
 git.mammoth.com.au/github/go-binarylane
 git.mammoth.com.au/github/go-binarylane/util
@@ -21,11 +21,9 @@ github.com/creack/pty
 github.com/davecgh/go-spew/spew
 # github.com/digitalocean/doctl v1.49.0
 ## explicit
-github.com/digitalocean/doctl/do
 # github.com/digitalocean/godo v1.50.0
 ## explicit
 github.com/digitalocean/godo
-github.com/digitalocean/godo/util
 # github.com/docker/cli v0.0.0-20200622130859-87db43814b48
 ## explicit
 github.com/docker/cli/cli/config

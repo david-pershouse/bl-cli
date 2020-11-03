@@ -263,8 +263,6 @@ func RunProjectResourcesGet(c *CmdConfig) error {
 		return RunLoadBalancerGet(c)
 	case "domain":
 		return RunDomainGet(c)
-	case "volume":
-		return RunVolumeGet(c)
 	default:
 		return fmt.Errorf("%q is an invalid resource type, consult the documentation", parts[1])
 	}

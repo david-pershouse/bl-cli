@@ -35,7 +35,7 @@ var (
 	DoitCmd = &Command{ // base command
 		Command: &cobra.Command{
 			Use:   "bl",
-			Short: "bl is a command line interface (CLI) for the DigitalOcean API.",
+			Short: "bl is a command line interface (CLI) for the BinaryLane API.",
 		},
 	}
 
@@ -147,7 +147,7 @@ func computeCmd() *Command {
 		Command: &cobra.Command{
 			Use:   "compute",
 			Short: "Display commands that manage infrastructure",
-			Long:  `The subcommands under ` + "`" + `bl compute` + "`" + ` are for managing DigitalOcean resources.`,
+			Long:  `The subcommands under ` + "`" + `bl compute` + "`" + ` are for managing BinaryLane resources.`,
 		},
 	}
 

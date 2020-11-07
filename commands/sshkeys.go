@@ -34,7 +34,7 @@ func SSHKeys() *Command {
 			Short:   "Display commands to manage SSH keys on your account",
 			Long: `The sub-commands of ` + "`" + `bl compute ssh-key` + "`" + ` manage the SSH keys on your account.
 
-DigitalOcean allows you to add SSH public keys to the interface so that you can embed your public key into a Server at the time of creation. Only the public key is required to take advantage of this functionality. Note that this command does not add, delete, or otherwise modify any ssh keys that may be on existing Servers.`,
+BinaryLane allows you to add SSH public keys to the interface so that you can embed your public key into a Server at the time of creation. Only the public key is required to take advantage of this functionality. Note that this command does not add, delete, or otherwise modify any ssh keys that may be on existing Servers.`,
 		},
 	}
 

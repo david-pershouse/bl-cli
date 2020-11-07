@@ -28,7 +28,7 @@ import (
 func Projects() *Command {
 	projectsDesc := `
 
-Projects allow you to organize your DigitalOcean resources (like Servers, Spaces, load balancers, domains, and floating IPs) into groups that fit the way you work. You can create projects that align with the applications, environments, and clients that you host on DigitalOcean.
+Projects allow you to organize your BinaryLane resources (like Servers, Spaces, load balancers, domains, and floating IPs) into groups that fit the way you work. You can create projects that align with the applications, environments, and clients that you host on BinaryLane.
 `
 
 	projectDetails := `
@@ -53,7 +53,7 @@ Projects allow you to organize your DigitalOcean resources (like Servers, Spaces
 	}
 
 	CmdBuilder(cmd, RunProjectsList, "list", "List existing projects",
-		"List details for for your DigitalOcean projects, including:"+projectDetails,
+		"List details for for your BinaryLane projects, including:"+projectDetails,
 		Writer, aliasOpt("ls"), displayerType(&displayers.Project{}))
 	CmdBuilder(cmd, RunProjectsGet, "get <id>", "Retrieve details for a specific project",
 		"Display the following details for an existing project specified by its ID (use `default` for <id> to retieve your default project):"+projectDetails,

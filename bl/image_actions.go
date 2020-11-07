@@ -19,7 +19,7 @@ import (
 	godo "git.mammoth.com.au/github/go-binarylane"
 )
 
-// ImageActionsService is an interface for interacting with DigitalOcean's image action api.
+// ImageActionsService is an interface for interacting with BinaryLane's image action api.
 type ImageActionsService interface {
 	Get(int, int) (*Action, error)
 	Convert(int) (*Action, error)

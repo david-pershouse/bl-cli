@@ -29,7 +29,7 @@ func FloatingIPAction() *Command {
 		Command: &cobra.Command{
 			Use:     "floating-ip-action",
 			Short:   "Display commands to associate floating IP addresses with Servers",
-			Long:    "Floating IP actions are commands that are used to manage DigitalOcean floating IP addresses.",
+			Long:    "Floating IP actions are commands that are used to manage BinaryLane floating IP addresses.",
 			Aliases: []string{"fipa"},
 		},
 	}

@@ -31,7 +31,7 @@ func Domain() *Command {
 		Command: &cobra.Command{
 			Use:   "domain",
 			Short: "Display commands that manage domains",
-			Long:  "Use the subcommands of `bl compute domain` to manage domains you have purchased from a domain name registrar that you are managing through the DigitalOcean DNS interface.",
+			Long:  "Use the subcommands of `bl compute domain` to manage domains you have purchased from a domain name registrar that you are managing through the BinaryLane DNS interface.",
 		},
 	}
 

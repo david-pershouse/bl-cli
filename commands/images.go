@@ -30,13 +30,13 @@ func Images() *Command {
 		Command: &cobra.Command{
 			Use:   "image",
 			Short: "Display commands to manage images",
-			Long: `The sub-commands of ` + "`" + `bl compute image` + "`" + ` manage images. A DigitalOcean image can be used to create a Server.
+			Long: `The sub-commands of ` + "`" + `bl compute image` + "`" + ` manage images. A BinaryLane image can be used to create a Server.
 
 Currently, there are five types of images: snapshots, backups, custom images, distributions, and One-Click Apps.
 
 - Snapshots provide a full copy of an existing Server instance taken on demand.
 - Backups are similar to snapshots but are created automatically at regular intervals when enabled for a Server.
-- Custom images are Linux-based virtual machine images that you may upload for use on DigitalOcean. These can be in one of the following formats: raw, qcow2, vhdx, vdi, or vmdk.
+- Custom images are Linux-based virtual machine images that you may upload for use on BinaryLane. These can be in one of the following formats: raw, qcow2, vhdx, vdi, or vmdk.
 - Distributions are the public Linux distributions that are available to be used as a base to create Servers.
 - Applications, or One-Click Apps, are distributions pre-configured with additional software.`,
 		},
@@ -47,7 +47,7 @@ Currently, there are five types of images: snapshots, backups, custom images, di
 - The image's name
 - The type of image. This is either ` + "`" + `snapshot` + "`" + `, ` + "`" + `backup` + "`" + `, or ` + "`" + `custom` + "`" + `.
 - The distribution of the image. For custom images, this is user defined.
-- The image's slug. This is a uniquely identifying string that is associated with each of the DigitalOcean-provided public images. These can be used to reference a public image as an alternative to the numeric id.
+- The image's slug. This is a uniquely identifying string that is associated with each of the BinaryLane-provided public images. These can be used to reference a public image as an alternative to the numeric id.
 - Whether the image is public or not. An image that is public is available to all accounts. A non-public image is only accessible from your account. This is boolean, true or false.
 - The region the image is available in. The regions are represented by their identifying slug values.
 - The image's creation date, in ISO8601 combined date and time format.
@@ -62,12 +62,12 @@ Currently, there are five types of images: snapshots, backups, custom images, di
 	AddBoolFlag(cmdImagesList, blcli.ArgImagePublic, "", false, "List public images")
 
 	cmdImagesListDistribution := CmdBuilder(cmd, RunImagesListDistribution,
-		"list-distribution", "List available distribution images", `Use this command to list the distribution images available from DigitalOcean. This command returns the following information about each image:`+imageDetail, Writer,
+		"list-distribution", "List available distribution images", `Use this command to list the distribution images available from BinaryLane. This command returns the following information about each image:`+imageDetail, Writer,
 		displayerType(&displayers.Image{}))
 	AddBoolFlag(cmdImagesListDistribution, blcli.ArgImagePublic, "", true, "List public images")
 
 	cmdImagesListApplication := CmdBuilder(cmd, RunImagesListApplication,
-		"list-application", "List available One-Click Apps", `Use this command to list all public One-Click Apps that are currently available on the DigitalOcean Marketplace. This command returns the following information about each image:`+imageDetail, Writer,
+		"list-application", "List available One-Click Apps", `Use this command to list all public One-Click Apps that are currently available on the BinaryLane Marketplace. This command returns the following information about each image:`+imageDetail, Writer,
 		displayerType(&displayers.Image{}))
 	AddBoolFlag(cmdImagesListApplication, blcli.ArgImagePublic, "", true, "List public images")
 
@@ -86,7 +86,7 @@ Currently, there are five types of images: snapshots, backups, custom images, di
 	cmdRunImagesDelete := CmdBuilder(cmd, RunImagesDelete, "delete <image-id>", "Permanently delete an image from your account", `This command deletes the specified image from your account. This is irreversible.`, Writer)
 	AddBoolFlag(cmdRunImagesDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Force image delete")
 
-	cmdRunImagesCreate := CmdBuilder(cmd, RunImagesCreate, "create <image-name>", "Create custom image", `This command creates an image in your DigitalOcean account. You can specify a URL for the image contents, the region at which to store the image, and image metadata.`, Writer)
+	cmdRunImagesCreate := CmdBuilder(cmd, RunImagesCreate, "create <image-name>", "Create custom image", `This command creates an image in your BinaryLane account. You can specify a URL for the image contents, the region at which to store the image, and image metadata.`, Writer)
 	AddStringFlag(cmdRunImagesCreate, blcli.ArgImageExternalURL, "", "", "Custom image retrieval URL", requiredOpt())
 	AddStringFlag(cmdRunImagesCreate, blcli.ArgRegionSlug, "", "", "Region slug identifier", requiredOpt())
 	AddStringFlag(cmdRunImagesCreate, blcli.ArgImageDistro, "", "Unknown", "Custom image distribution")

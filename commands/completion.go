@@ -390,9 +390,9 @@ complete -c bl -n '__fish_seen_subcommand_from kubernetes cluster update' -l upd
 complete -c bl -n '__fish_seen_subcommand_from kubernetes cluster upgrade' -l version -d "Desired Kubernetes version"
 
 # Completions for the 'bl kubernetes options' command
-complete -c bl -n '__fish_seen_subcommand_from kubernetes options' -a regions  -d "List regions that support DigitalOcean Kubernetes clusters"
-complete -c bl -n '__fish_seen_subcommand_from kubernetes options' -a sizes    -d "List machine sizes that can be used in a DigitalOcean Kubernetes cluster"
-complete -c bl -n '__fish_seen_subcommand_from kubernetes options' -a versions -d "List Kubernetes versions that can be used with DigitalOcean clusters"
+complete -c bl -n '__fish_seen_subcommand_from kubernetes options' -a regions  -d "List regions that support BinaryLane Kubernetes clusters"
+complete -c bl -n '__fish_seen_subcommand_from kubernetes options' -a sizes    -d "List machine sizes that can be used in a BinaryLane Kubernetes cluster"
+complete -c bl -n '__fish_seen_subcommand_from kubernetes options' -a versions -d "List Kubernetes versions that can be used with BinaryLane clusters"
 
 # Completions for the 'bl projects' command
 complete -c bl -n '__fish_seen_subcommand_from projects' -a create    -d "Create a new project"

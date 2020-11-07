@@ -24,7 +24,7 @@ type BillingHistory struct {
 	*godo.BillingHistory
 }
 
-// BillingHistoryService is an interface for interacting with DigitalOcean's invoices api.
+// BillingHistoryService is an interface for interacting with BinaryLane's invoices api.
 type BillingHistoryService interface {
 	List() (*BillingHistory, error)
 }

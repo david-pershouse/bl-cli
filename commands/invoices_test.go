@@ -100,7 +100,7 @@ var testInvoiceSummary = &bl.InvoiceSummary{
 			CreatedAt:       time.Date(2018, 6, 20, 8, 44, 38, 0, time.UTC),
 			UpdatedAt:       time.Date(2018, 6, 21, 8, 44, 38, 0, time.UTC),
 		},
-		UserCompany: "DigitalOcean",
+		UserCompany: "BinaryLane",
 		UserEmail:   "fbaggins@example.com",
 		ProductCharges: godo.InvoiceSummaryBreakdown{
 			Name:   "Product usage charges",

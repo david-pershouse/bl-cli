@@ -27,7 +27,7 @@ type Snapshot struct {
 // Snapshots is a slice of Snapshot.
 type Snapshots []Snapshot
 
-// SnapshotsService is an interface for interacting with DigitalOcean's snapshot api.
+// SnapshotsService is an interface for interacting with BinaryLane's snapshot api.
 type SnapshotsService interface {
 	List() (Snapshots, error)
 	ListVolume() (Snapshots, error)

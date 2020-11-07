@@ -27,7 +27,7 @@ type Tag struct {
 // Tags is a slice of Tag.
 type Tags []Tag
 
-// TagsService is an interface for interacting with DigitalOcean's tags api.
+// TagsService is an interface for interacting with BinaryLane's tags api.
 type TagsService interface {
 	List() (Tags, error)
 	Get(string) (*Tag, error)

@@ -28,7 +28,7 @@ type RateLimit struct {
 	*godo.Rate
 }
 
-// AccountService is an interface for interacting with DigitalOcean's account api.
+// AccountService is an interface for interacting with BinaryLane's account api.
 type AccountService interface {
 	Get() (*Account, error)
 	RateLimit() (*RateLimit, error)

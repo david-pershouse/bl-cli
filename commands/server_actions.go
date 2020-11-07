@@ -108,7 +108,7 @@ Servers actions are tasks that can be executed on a server, such as rebooting, r
 	AddBoolFlag(cmdServerActionPasswordReset, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionEnableIPv6 := CmdBuilder(cmd, RunServerActionEnableIPv6,
-		"enable-ipv6 <droplet-id>", "Enable IPv6 on a Server", `Use this command to enable IPv6 networking on a Server. DigitalOcean will automatically assign an IPv6 address to the Server.`, Writer,
+		"enable-ipv6 <droplet-id>", "Enable IPv6 on a Server", `Use this command to enable IPv6 networking on a Server. BinaryLane will automatically assign an IPv6 address to the Server.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionEnableIPv6, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 

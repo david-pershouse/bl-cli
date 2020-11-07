@@ -46,7 +46,7 @@ func retrieveUserTokenFromCommandLine() (string, error) {
 		return "", ErrUnknownTerminal
 	}
 
-	fmt.Print("Please authenticate bl for use with your DigitalOcean account. You can generate a token in the control panel at https://cloud.digitalocean.com/account/api/tokens\n\n")
+	fmt.Print("Please authenticate bl for use with your BinaryLane account. You can generate a token in the control panel at https://home.binarylane.com.au/account\n\n")
 	fmt.Print("Enter your access token: ")
 	passwdBytes, err := terminal.ReadPassword(int(syscall.Stdin))
 	if err != nil {
@@ -73,19 +73,19 @@ func Auth() *Command {
 		Command: &cobra.Command{
 			Use:   "auth",
 			Short: "Display commands for authenticating bl with an account",
-			Long: `The ` + "`" + `bl auth` + "`" + ` commands allow you to authenticate bl for use with your DigitalOcean account using tokens that you generate in the control panel at https://cloud.digitalocean.com/account/api/tokens.
+			Long: `The ` + "`" + `bl auth` + "`" + ` commands allow you to authenticate bl for use with your BinaryLane account using tokens that you generate in the control panel at https://home.binarylane.com.au/account
 
 If you work with a just one account, you can call ` + "`" + `bl auth init` + "`" + ` and supply the token when prompted. This creates an authentication context named ` + "`" + `default` + "`" + `.
 
-To switch between multiple DigitalOcean accounts, including team accounts, you can create named contexts by using ` + "`" + `bl auth init --context <name>` + "`" + `, then providing a token when prompted. This saves the token under the name you provide. To switch between accounts, use ` + "`" + `bl auth switch --context <name>` + "`" + `.`,
+To switch between multiple BinaryLane accounts, including team accounts, you can create named contexts by using ` + "`" + `bl auth init --context <name>` + "`" + `, then providing a token when prompted. This saves the token under the name you provide. To switch between accounts, use ` + "`" + `bl auth switch --context <name>` + "`" + `.`,
 		},
 	}
 
 	cmdBuilderWithInit(cmd, RunAuthInit(retrieveUserTokenFromCommandLine), "init", "Initialize bl to use a specific account", `This command allows you to initialize bl with a token that allows it to query and manage your account details and resources.
 
-You will need an API token, which you can generate in the control panel at https://cloud.digitalocean.com/account/api/tokens.
+You will need an API token, which you can generate in the control panel at https://home.binarylane.com.au/account
 
-You can provide a name to this initialization via the `+"`"+`--context`+"`"+` flag, and then it will be saved as an "authentication context". Authentication contexts are accessible via `+"`"+`bl auth switch`+"`"+`, which re-initializes bl, or by providing the `+"`"+`--context`+"`"+` flag when using any bl command (to specify that auth context for just one command). This enables you to use multiple DigitalOcean accounts with bl, or tokens that have different authentication scopes.
+You can provide a name to this initialization via the `+"`"+`--context`+"`"+` flag, and then it will be saved as an "authentication context". Authentication contexts are accessible via `+"`"+`bl auth switch`+"`"+`, which re-initializes bl, or by providing the `+"`"+`--context`+"`"+` flag when using any bl command (to specify that auth context for just one command). This enables you to use multiple BinaryLane accounts with bl, or tokens that have different authentication scopes.
 
 If the `+"`"+`--context`+"`"+` flag is not specified, a default authentication context will be created during initialization.
 
@@ -117,7 +117,7 @@ func RunAuthInit(retrieveUserTokenFunc func() (string, error)) func(c *CmdConfig
 		if token == "" {
 			in, err := retrieveUserTokenFunc()
 			if err != nil {
-				return fmt.Errorf("Unable to read DigitalOcean access token: %s", err)
+				return fmt.Errorf("Unable to read BinaryLane access token: %s", err)
 			}
 			token = strings.TrimSpace(in)
 		} else {
@@ -132,7 +132,7 @@ func RunAuthInit(retrieveUserTokenFunc func() (string, error)) func(c *CmdConfig
 
 		// need to initial the godo client since we've changed the configuration.
 		if err := c.initServices(c); err != nil {
-			return fmt.Errorf("Unable to initialize DigitalOcean API client with new token: %s", err)
+			return fmt.Errorf("Unable to initialize BinaryLane API client with new token: %s", err)
 		}
 
 		if _, err := c.Account().Get(); err != nil {

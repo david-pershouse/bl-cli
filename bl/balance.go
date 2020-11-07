@@ -23,7 +23,7 @@ type Balance struct {
 	*godo.Balance
 }
 
-// BalanceService is an interface for interacting with DigitalOcean's balance api.
+// BalanceService is an interface for interacting with BinaryLane's balance api.
 type BalanceService interface {
 	Get() (*Balance, error)
 }

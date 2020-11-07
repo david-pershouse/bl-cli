@@ -24,7 +24,7 @@ func BillingHistory() *Command {
 		Command: &cobra.Command{
 			Use:     "billing-history",
 			Short:   "Display commands for retrieving your billing history",
-			Long:    "The subcommands of `bl billing-history` are used to access the billing history for your DigitalOcean account.",
+			Long:    "The subcommands of `bl billing-history` are used to access the billing history for your BinaryLane account.",
 			Aliases: []string{"bh"},
 		},
 	}

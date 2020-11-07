@@ -33,7 +33,7 @@ func Firewall() *Command {
 		Command: &cobra.Command{
 			Use:   "firewall",
 			Short: "Display commands to manage cloud firewalls",
-			Long: `The sub-commands of ` + "`" + `bl compute firewall` + "`" + ` manage DigitalOcean cloud firewalls.
+			Long: `The sub-commands of ` + "`" + `bl compute firewall` + "`" + ` manage BinaryLane cloud firewalls.
 
 Cloud firewalls provide the ability to restrict network access to and from a Server, allowing you to define which ports accept inbound or outbound connections. With these commands, you can list, create, or delete Cloud firewalls, as well as modify access rules.
 

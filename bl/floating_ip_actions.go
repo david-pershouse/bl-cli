@@ -20,7 +20,7 @@ import (
 )
 
 // FloatingIPActionsService is an interface for interacting with
-// DigitalOcean's floating ip action api.
+// BinaryLane's floating ip action api.
 type FloatingIPActionsService interface {
 	Assign(ip string, dropletID int) (*Action, error)
 	Unassign(ip string) (*Action, error)

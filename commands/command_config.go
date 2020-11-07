@@ -71,7 +71,7 @@ func NewCmdConfig(ns string, dc blcli.Config, out io.Writer, args []string, init
 			accessToken := c.getContextAccessToken()
 			godoClient, err := c.Doit.GetGodoClient(Trace, accessToken)
 			if err != nil {
-				return fmt.Errorf("Unable to initialize DigitalOcean API client: %s", err)
+				return fmt.Errorf("Unable to initialize BinaryLane API client: %s", err)
 			}
 
 			c.Keys = func() bl.KeysService { return bl.NewKeysService(godoClient) }

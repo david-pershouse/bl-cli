@@ -39,7 +39,7 @@ type InvoiceList struct {
 	*godo.InvoiceList
 }
 
-// InvoicesService is an interface for interacting with DigitalOcean's invoices api.
+// InvoicesService is an interface for interacting with BinaryLane's invoices api.
 type InvoicesService interface {
 	Get(string) (*Invoice, error)
 	List() (*InvoiceList, error)

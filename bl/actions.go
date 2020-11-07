@@ -27,7 +27,7 @@ type Action struct {
 // Actions is a slice of Action.
 type Actions []Action
 
-// ActionsService is an interface for interacting with DigitalOcean's action api.
+// ActionsService is an interface for interacting with BinaryLane's action api.
 type ActionsService interface {
 	List() (Actions, error)
 	Get(int) (*Action, error)

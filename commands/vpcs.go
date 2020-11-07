@@ -30,7 +30,7 @@ func VPCs() *Command {
 		Command: &cobra.Command{
 			Use:   "vpcs",
 			Short: "Display commands that manage VPCs",
-			Long: `The commands under ` + "`" + `doctl vpcs` + "`" + ` are for managing your VPCs.
+			Long: `The commands under ` + "`" + `bl vpcs` + "`" + ` are for managing your VPCs.
 
 With the vpcs command, you can list, create, or delete VPCs, and manage their configuration details.`,
 		},

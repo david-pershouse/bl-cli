@@ -24,7 +24,7 @@ func Balance() *Command {
 		Command: &cobra.Command{
 			Use:   "balance",
 			Short: "Display commands for retrieving your account balance",
-			Long:  "The subcommands of `doctl balance` retrieve information about your account balance.",
+			Long:  "The subcommands of `bl balance` retrieve information about your account balance.",
 		},
 	}
 

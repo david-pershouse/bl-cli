@@ -31,11 +31,11 @@ const (
 )
 
 var (
-	//DoitCmd is the root level doctl command that all other commands attach to
+	//DoitCmd is the root level bl command that all other commands attach to
 	DoitCmd = &Command{ // base command
 		Command: &cobra.Command{
-			Use:   "doctl",
-			Short: "doctl is a command line interface (CLI) for the DigitalOcean API.",
+			Use:   "bl",
+			Short: "bl is a command line interface (CLI) for the DigitalOcean API.",
 		},
 	}
 
@@ -147,7 +147,7 @@ func computeCmd() *Command {
 		Command: &cobra.Command{
 			Use:   "compute",
 			Short: "Display commands that manage infrastructure",
-			Long:  `The subcommands under ` + "`" + `doctl compute` + "`" + ` are for managing DigitalOcean resources.`,
+			Long:  `The subcommands under ` + "`" + `bl compute` + "`" + ` are for managing DigitalOcean resources.`,
 		},
 	}
 

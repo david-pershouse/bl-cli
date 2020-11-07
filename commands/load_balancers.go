@@ -32,7 +32,7 @@ func LoadBalancer() *Command {
 		Command: &cobra.Command{
 			Use:   "load-balancer",
 			Short: "Display commands to manage load balancers",
-			Long: `The sub-commands of ` + "`" + `doctl compute load-balancer` + "`" + ` manage your load balancers.
+			Long: `The sub-commands of ` + "`" + `bl compute load-balancer` + "`" + ` manage your load balancers.
 
 With the load-balancer command, you can list, create, or delete load balancers, and manage their configuration details.`,
 		},
@@ -46,7 +46,7 @@ With the load-balancer command, you can list, create, or delete load balancers, 
   be either ` + "`" + `round_robin` + "`" + ` or ` + "`" + `least_connections` + "`" + `
 - The current state of the load balancer. This can be ` + "`" + `new` + "`" + `, ` + "`" + `active` + "`" + `, or ` + "`" + `errored` + "`" + `.
 - The load balancer's creation date, in ISO8601 combined date and time format.
-- The load balancer's forwarding rules. See ` + "`" + `doctl compute load-balancer add-forwarding-rules --help` + "`" + ` for a list.
+- The load balancer's forwarding rules. See ` + "`" + `bl compute load-balancer add-forwarding-rules --help` + "`" + ` for a list.
 - The ` + "`" + `health_check` + "`" + ` settings for the load balancer.
 - The ` + "`" + `sticky_sessions` + "`" + ` settings for the load balancer.
 - The datacenter region the load balancer is located in.
@@ -61,7 +61,7 @@ With the load-balancer command, you can list, create, or delete load balancers, 
 - ` + "`" + `entry_port` + "`" + `: The entry port used for incoming traffic to the load balancer.
 - ` + "`" + `target_protocol` + "`" + `: The target protocol used for traffic from the load balancer to the backend Servers. Possible values are: ` + "`" + `http` + "`" + `, ` + "`" + `https` + "`" + `, ` + "`" + `http2` + "`" + `, or ` + "`" + `tcp` + "`" + `.
 - ` + "`" + `target_port` + "`" + `: The target port used to send traffic from the load balancer to the backend Servers.
-- ` + "`" + `certificate_id` + "`" + `: The ID of the TLS certificate used for SSL termination, if enabled. Can be obtained with ` + "`" + `doctl certificate list` + "`" + `
+- ` + "`" + `certificate_id` + "`" + `: The ID of the TLS certificate used for SSL termination, if enabled. Can be obtained with ` + "`" + `bl certificate list` + "`" + `
 - ` + "`" + `tls_passthrough` + "`" + `: Whether SSL passthrough is enabled on the load balancer.
 `
 	forwardingRulesTxt := "A comma-separated list of key-value pairs representing forwarding rules, which define how traffic is routed, e.g.: `entry_protocol:tcp, entry_port:3306, target_protocol:tcp, target_port:3306`. Use a quoted string of space-separated values for multiple rules"

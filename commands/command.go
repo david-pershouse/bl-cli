@@ -23,7 +23,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Command is a wrapper around cobra.Command that adds doctl specific
+// Command is a wrapper around cobra.Command that adds bl specific
 // functionality.
 type Command struct {
 	*cobra.Command

@@ -37,7 +37,7 @@ import (
 
 const (
 	// LatestReleaseURL is the latest release URL endpoint.
-	LatestReleaseURL = "https://api.github.com/repos/digitalocean/doctl/releases/latest"
+	LatestReleaseURL = "https://api.github.com/repos/binarylane/bl-cli/releases/latest"
 )
 
 // Version is the version info for doit.
@@ -47,27 +47,23 @@ type Version struct {
 }
 
 var (
-	// Build is set at build time. It defines the git SHA for the current
-	// build.
+	// Build is set at build time. It defines the git SHA for the current build.
 	Build string
 
-	// Major is set at build time. It defines the major semantic version of
-	// doctl.
+	// Major is set at build time. It defines the major semantic version of bl.
 	Major string
 
-	// Minor is set at build time. It defines the minor semantic version of
-	// doctl.
+	// Minor is set at build time. It defines the minor semantic version of bl.
 	Minor string
 
-	// Patch is set at build time. It defines the patch semantic version of
-	// doctl.
+	// Patch is set at build time. It defines the patch semantic version of bl.
 	Patch string
 
 	// Label is set at build time. It defines the string that comes after the
-	// version of doctl, ie, the "dev" in v1.0.0-dev.
+	// version of bl, ie, the "dev" in v1.0.0-dev.
 	Label string
 
-	// DoitVersion is doctl's version.
+	// DoitVersion is bl's version.
 	DoitVersion Version
 
 	// TraceHTTP traces http connections.
@@ -110,7 +106,7 @@ func (v Version) String() string {
 // Complete is the complete version for doit.
 func (v Version) Complete(lv LatestVersioner) string {
 	var buffer bytes.Buffer
-	buffer.WriteString(fmt.Sprintf("doctl version %s", v.String()))
+	buffer.WriteString(fmt.Sprintf("bl version %s", v.String()))
 
 	if v.Build != "" {
 		buffer.WriteString(fmt.Sprintf("\nGit commit hash: %s", v.Build))
@@ -192,7 +188,7 @@ var _ Config = &LiveConfig{}
 // GetGodoClient returns a GodoClient.
 func (c *LiveConfig) GetGodoClient(trace bool, accessToken string) (*binarylane.Client, error) {
 	if accessToken == "" {
-		return nil, fmt.Errorf("access token is required. (hint: run 'doctl auth init')")
+		return nil, fmt.Errorf("access token is required. (hint: run 'bl auth init')")
 	}
 
 	tokenSource := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: accessToken})
@@ -226,7 +222,7 @@ func (c *LiveConfig) GetGodoClient(trace bool, accessToken string) (*binarylane.
 }
 
 func userAgent() string {
-	return fmt.Sprintf("doctl/%s (%s %s)", DoitVersion.String(), runtime.GOOS, runtime.GOARCH)
+	return fmt.Sprintf("bl/%s (%s %s)", DoitVersion.String(), runtime.GOOS, runtime.GOARCH)
 }
 
 // SSH creates a ssh connection to a host.
@@ -481,7 +477,7 @@ func emptyStringSlice(s []string) bool {
 	return len(s) == 1 && s[0] == "[]"
 }
 
-// CommandName returns the name by which doctl was invoked
+// CommandName returns the name by which bl was invoked
 func CommandName() string {
 	name, ok := os.LookupEnv("SNAP_NAME")
 	if !ok {

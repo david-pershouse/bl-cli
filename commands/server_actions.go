@@ -57,7 +57,7 @@ func ServerAction() *Command {
 			Use:     "server-action",
 			Aliases: []string{"da"},
 			Short:   "Display server action commands",
-			Long: `Use the subcommands of ` + "`" + `doctl compute server-action` + "`" + ` to perform actions on servers.
+			Long: `Use the subcommands of ` + "`" + `bl compute server-action` + "`" + ` to perform actions on servers.
 
 Servers actions are tasks that can be executed on a server, such as rebooting, resizing, or snapshotting a server.`,
 		},
@@ -134,7 +134,7 @@ In order to resize a Server, it must first be powered off.`
 		"resize <droplet-id>", "Resize a Server", dropletResizeDesc, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionResize, blcli.ArgResizeDisk, "", false, "Resize the Server's disk size in addition to its RAM and CPU.")
-	AddStringFlag(cmdServerActionResize, blcli.ArgSizeSlug, "", "", "A slug indicating the new size for the Server (e.g. `s-2vcpu-2gb`). Run `doctl compute size list` for a list of valid sizes.", requiredOpt())
+	AddStringFlag(cmdServerActionResize, blcli.ArgSizeSlug, "", "", "A slug indicating the new size for the Server (e.g. `s-2vcpu-2gb`). Run `bl compute size list` for a list of valid sizes.", requiredOpt())
 	AddBoolFlag(cmdServerActionResize, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionRebuild := CmdBuilder(cmd, RunServerActionRebuild,

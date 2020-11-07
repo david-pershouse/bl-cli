@@ -33,7 +33,7 @@ func Plugin() *Command {
 			Long:       "plugin is used to access plugin commands",
 			Aliases:    []string{"p"},
 			Hidden:     true,
-			Deprecated: "This command will be removed in a future version of doctl",
+			Deprecated: "This command will be removed in a future version of bl",
 		},
 	}
 

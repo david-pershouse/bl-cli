@@ -29,7 +29,7 @@ func Tags() *Command {
 		Command: &cobra.Command{
 			Use:   "tag",
 			Short: "Display commands to manage tags",
-			Long: `The sub-commands of ` + "`" + `doctl compute tag` + "`" + ` manage the tags on your account.
+			Long: `The sub-commands of ` + "`" + `bl compute tag` + "`" + ` manage the tags on your account.
 
 A tag is a label that can be applied to a resource (currently Servers, images,
 volumes, volume snapshots, and database clusters) in order to better organize or

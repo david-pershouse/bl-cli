@@ -30,7 +30,7 @@ func Images() *Command {
 		Command: &cobra.Command{
 			Use:   "image",
 			Short: "Display commands to manage images",
-			Long: `The sub-commands of ` + "`" + `doctl compute image` + "`" + ` manage images. A DigitalOcean image can be used to create a Server.
+			Long: `The sub-commands of ` + "`" + `bl compute image` + "`" + ` manage images. A DigitalOcean image can be used to create a Server.
 
 Currently, there are five types of images: snapshots, backups, custom images, distributions, and One-Click Apps.
 

@@ -24,7 +24,7 @@ func Size() *Command {
 		Command: &cobra.Command{
 			Use:   "size",
 			Short: "List available Server sizes",
-			Long:  "The subcommands of `doctl compute size` retrieve information about Server sizes.",
+			Long:  "The subcommands of `bl compute size` retrieve information about Server sizes.",
 		},
 	}
 

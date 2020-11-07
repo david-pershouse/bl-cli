@@ -6,21 +6,13 @@ git.mammoth.com.au/github/go-binarylane/util
 ## explicit
 github.com/blang/semver
 # github.com/cpuguy83/go-md2man v1.0.10
+## explicit
 github.com/cpuguy83/go-md2man/md2man
 # github.com/creack/pty v1.1.11
 ## explicit
 github.com/creack/pty
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
-# github.com/digitalocean/doctl v1.49.0
-## explicit
-# github.com/digitalocean/godo v1.50.0
-## explicit
-github.com/digitalocean/godo
-# github.com/docker/cli v0.0.0-20200622130859-87db43814b48
-## explicit
-# github.com/dustin/go-humanize v1.0.0
-## explicit
 # github.com/fatih/color v1.7.0
 ## explicit
 github.com/fatih/color
@@ -59,24 +51,21 @@ github.com/hashicorp/hcl/json/parser
 github.com/hashicorp/hcl/json/scanner
 github.com/hashicorp/hcl/json/token
 # github.com/inconshreveable/mousetrap v1.0.0
-github.com/inconshreveable/mousetrap
-# github.com/magiconair/properties v1.8.1
-github.com/magiconair/properties
-# github.com/mattn/go-colorable v0.0.9
-github.com/mattn/go-colorable
-# github.com/mattn/go-isatty v0.0.4
-github.com/mattn/go-isatty
-# github.com/mitchellh/copystructure v1.0.0
 ## explicit
-github.com/mitchellh/copystructure
+github.com/inconshreveable/mousetrap
+# github.com/magiconair/properties v1.8.0
+github.com/magiconair/properties
+# github.com/mattn/go-colorable v0.1.8
+## explicit
+github.com/mattn/go-colorable
+# github.com/mattn/go-isatty v0.0.12
+github.com/mattn/go-isatty
 # github.com/mitchellh/mapstructure v1.1.2
 github.com/mitchellh/mapstructure
-# github.com/mitchellh/reflectwalk v1.0.0
-github.com/mitchellh/reflectwalk
 # github.com/natefinch/pie v0.0.0-20170715172608-9a0d72014007
 ## explicit
 github.com/natefinch/pie
-# github.com/pelletier/go-toml v1.6.0
+# github.com/pelletier/go-toml v1.2.0
 github.com/pelletier/go-toml
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
@@ -90,6 +79,7 @@ github.com/sclevine/spec/report
 ## explicit
 github.com/shiena/ansicolor
 # github.com/spf13/afero v1.2.2
+## explicit
 github.com/spf13/afero
 github.com/spf13/afero/mem
 # github.com/spf13/cast v1.3.0
@@ -98,9 +88,10 @@ github.com/spf13/cast
 ## explicit
 github.com/spf13/cobra
 github.com/spf13/cobra/doc
-# github.com/spf13/jwalterweatherman v1.1.0
+# github.com/spf13/jwalterweatherman v1.0.0
 github.com/spf13/jwalterweatherman
 # github.com/spf13/pflag v1.0.5
+## explicit
 github.com/spf13/pflag
 # github.com/spf13/viper v1.4.0
 ## explicit
@@ -129,7 +120,7 @@ golang.org/x/net/context/ctxhttp
 ## explicit
 golang.org/x/oauth2
 golang.org/x/oauth2/internal
-# golang.org/x/sys v0.0.0-20201020230747-6e5568b54d1a
+# golang.org/x/sys v0.0.0-20200930185726-fdedc70b468f
 golang.org/x/sys/cpu
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
@@ -176,13 +167,5 @@ google.golang.org/protobuf/runtime/protoimpl
 # gopkg.in/yaml.v2 v2.2.8
 ## explicit
 gopkg.in/yaml.v2
-# k8s.io/api v0.17.13
-## explicit
-# k8s.io/apimachinery v0.17.13
-## explicit
-# k8s.io/client-go v0.17.13
-## explicit
-# sigs.k8s.io/yaml v1.2.0
-## explicit
 # github.com/stretchr/objx => github.com/stretchr/objx v0.2.0
 # golang.org/x/crypto => golang.org/x/crypto v0.0.0-20200420201142-3c4aac89819a

@@ -149,13 +149,13 @@ mocks:
 	@echo ""
 	@scripts/regenmocks.sh
 
-.PHONY: _upgrade_godo
-_upgrade_godo:
-	go get -u github.com/digitalocean/godo
+.PHONY: _upgrade_binarylane
+_upgrade_binarylane:
+	go get -u git.mammoth.com.au/github/binarylane
 
-.PHONY: upgrade_godo
-upgrade_godo: _upgrade_godo vendor mocks
-	@echo "==> upgrade the godo version"
+.PHONY: upgrade_binarylane
+upgrade_binarylane: _upgrade_binarylane vendor mocks
+	@echo "==> upgrade the binarylane version"
 	@echo ""
 
 .PHONY: vendor

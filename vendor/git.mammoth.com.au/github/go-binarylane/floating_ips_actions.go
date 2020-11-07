@@ -8,7 +8,7 @@ import (
 
 // FloatingIPActionsService is an interface for interfacing with the
 // floating IPs actions endpoints of the Digital Ocean API.
-// See: https://developers.digitalocean.com/documentation/v2#floating-ips-action
+// See: https://api.binarylane.com.au/reference#floating-ips-action
 type FloatingIPActionsService interface {
 	Assign(ctx context.Context, ip string, dropletID int) (*Action, *Response, error)
 	Unassign(ctx context.Context, ip string) (*Action, *Response, error)
@@ -17,7 +17,7 @@ type FloatingIPActionsService interface {
 }
 
 // FloatingIPActionsServiceOp handles communication with the floating IPs
-// action related methods of the DigitalOcean API.
+// action related methods of the BinaryLane API.
 type FloatingIPActionsServiceOp struct {
 	client *Client
 }

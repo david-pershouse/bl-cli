@@ -16,11 +16,11 @@ package displayers
 import (
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type Tag struct {
-	Tags do.Tags
+	Tags bl.Tags
 }
 
 var _ Displayable = &Tag{}
@@ -30,13 +30,13 @@ func (t *Tag) JSON(out io.Writer) error {
 }
 
 func (t *Tag) Cols() []string {
-	return []string{"Name", "DropletCount"}
+	return []string{"Name", "ServerCount"}
 }
 
 func (t *Tag) ColMap() map[string]string {
 	return map[string]string{
 		"Name":         "Name",
-		"DropletCount": "Droplet Count",
+		"ServerCount": "Server Count",
 	}
 }
 
@@ -44,10 +44,10 @@ func (t *Tag) KV() []map[string]interface{} {
 	out := []map[string]interface{}{}
 
 	for _, x := range t.Tags {
-		dropletCount := x.Resources.Droplets.Count
+		serverCount := x.Resources.Servers.Count
 		o := map[string]interface{}{
-			"Name":         x.Name,
-			"DropletCount": dropletCount,
+			"Name":        x.Name,
+			"ServerCount": serverCount,
 		}
 		out = append(out, o)
 	}

@@ -18,11 +18,11 @@ import (
 	"strconv"
 	"strings"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type Snapshot struct {
-	Snapshots do.Snapshots
+	Snapshots bl.Snapshots
 }
 
 var _ Displayable = &Snapshot{}

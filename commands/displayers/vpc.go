@@ -16,11 +16,11 @@ package displayers
 import (
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type VPC struct {
-	VPCs do.VPCs
+	VPCs bl.VPCs
 }
 
 var _ Displayable = &VPC{}

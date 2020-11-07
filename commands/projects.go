@@ -19,7 +19,7 @@ import (
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
@@ -28,7 +28,7 @@ import (
 func Projects() *Command {
 	projectsDesc := `
 
-Projects allow you to organize your DigitalOcean resources (like Droplets, Spaces, load balancers, domains, and floating IPs) into groups that fit the way you work. You can create projects that align with the applications, environments, and clients that you host on DigitalOcean.
+Projects allow you to organize your DigitalOcean resources (like Servers, Spaces, load balancers, domains, and floating IPs) into groups that fit the way you work. You can create projects that align with the applications, environments, and clients that you host on DigitalOcean.
 `
 
 	projectDetails := `
@@ -117,7 +117,7 @@ A valid URN has the format: ` + "`" + `do:resource_type:resource_id` + "`" + `. 
 		"List all of the resources assigned to the specified project displaying their uniform resource names (\"URNs\").",
 		Writer, aliasOpt("ls"), displayerType(&displayers.ProjectResource{}))
 	CmdBuilder(cmd, RunProjectResourcesGet, "get <urn>", "Retrieve a resource by its URN",
-		"Retrieve information about a resource by specifying its uniform resource name (\"URN\"). Currently, ony Droplets, floating IPs, load balancers, domains, and volumes are supported."+urnDesc,
+		"Retrieve information about a resource by specifying its uniform resource name (\"URN\"). Currently, ony Servers, floating IPs, load balancers, domains, and volumes are supported."+urnDesc,
 		Writer, aliasOpt("g"), displayerType(&displayers.ProjectResource{}))
 
 	cmdProjectResourcesAssign := CmdBuilder(cmd, RunProjectResourcesAssign,
@@ -157,7 +157,7 @@ func RunProjectsGet(c *CmdConfig) error {
 		return err
 	}
 
-	return c.Display(&displayers.Project{Projects: do.Projects{*p}})
+	return c.Display(&displayers.Project{Projects: bl.Projects{*p}})
 }
 
 // RunProjectsCreate creates a new Project with a given configuration.
@@ -173,7 +173,7 @@ func RunProjectsCreate(c *CmdConfig) error {
 		return err
 	}
 
-	return c.Display(&displayers.Project{Projects: do.Projects{*p}})
+	return c.Display(&displayers.Project{Projects: bl.Projects{*p}})
 }
 
 // RunProjectsUpdate updates an existing Project with a given configuration.
@@ -195,7 +195,7 @@ func RunProjectsUpdate(c *CmdConfig) error {
 		return err
 	}
 
-	return c.Display(&displayers.Project{Projects: do.Projects{*p}})
+	return c.Display(&displayers.Project{Projects: bl.Projects{*p}})
 }
 
 // RunProjectsDelete deletes a Project with a given configuration.
@@ -250,13 +250,13 @@ func RunProjectResourcesGet(c *CmdConfig) error {
 
 	parts, isValid := validateURN(urn)
 	if !isValid {
-		return fmt.Errorf(`URN must be in the format "do:<resource_type>:<resource_id>" but was %q`, urn)
+		return fmt.Errorf(`URN must be in the format "bl:<resource_type>:<resource_id>" but was %q`, urn)
 	}
 
 	c.Args = []string{parts[2]}
 	switch parts[1] {
-	case "droplet":
-		return RunDropletGet(c)
+	case "server":
+		return RunServerGet(c)
 	case "floatingip":
 		return RunFloatingIPGet(c)
 	case "loadbalancer":
@@ -296,7 +296,7 @@ func validateURN(urn string) ([]string, bool) {
 		return nil, false
 	}
 
-	if parts[0] != "do" {
+	if parts[0] != "bl" {
 		return nil, false
 	}
 

@@ -36,6 +36,12 @@ git.mammoth.com.au/github/go-binarylane v0.0.0-20201031062201-02daef5e4f29 h1:I6
 git.mammoth.com.au/github/go-binarylane v0.0.0-20201031062201-02daef5e4f29/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
 git.mammoth.com.au/github/go-binarylane v0.0.0-20201103045021-7e08e03dadf3 h1:WIwnkBdukcf7AePSANsP1TJ0kP1fdv4wvARbuUYsrho=
 git.mammoth.com.au/github/go-binarylane v0.0.0-20201103045021-7e08e03dadf3/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
+git.mammoth.com.au/github/go-binarylane v0.0.0-20201106084735-133530a204dc h1:9DbeuQgzf5UGGybo3UB/MoN7trEE/LcaEIuSqAB2vOU=
+git.mammoth.com.au/github/go-binarylane v0.0.0-20201106084735-133530a204dc/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
+git.mammoth.com.au/github/go-binarylane v0.0.0-20201106230133-d2d8cb275e65 h1:MyDRqEMJ1XQkiXbCfeWmS+eK0NH3eZOcvMYLyKh8Q3c=
+git.mammoth.com.au/github/go-binarylane v0.0.0-20201106230133-d2d8cb275e65/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
+git.mammoth.com.au/github/go-binarylane v0.0.0-20201107032515-2dbe2d0b8fd9 h1:9H8Vg5kPcz+qCDjFg0FwymG/Msj/cVkQimHYrLvfps4=
+git.mammoth.com.au/github/go-binarylane v0.0.0-20201107032515-2dbe2d0b8fd9/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
 github.com/Azure/go-autorest/autorest v0.9.0/go.mod h1:xyHB1BMZT0cuDHU7I0+g046+BFDTQ8rEZB0s4Yfa6bI=
 github.com/Azure/go-autorest/autorest/adal v0.5.0/go.mod h1:8Z9fGy2MpX0PvDjB1pEgQTmVqjGhiHBW7RJJEciWzS0=
 github.com/Azure/go-autorest/autorest/date v0.1.0/go.mod h1:plvfp3oPSKwf2DNjlBjWF/7vwR+cUD/ELuzDCXwHUVA=

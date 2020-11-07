@@ -16,11 +16,11 @@ package displayers
 import (
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type Account struct {
-	*do.Account
+	*bl.Account
 }
 
 var _ Displayable = &Account{}
@@ -37,7 +37,7 @@ func (a *Account) Cols() []string {
 
 func (a *Account) ColMap() map[string]string {
 	return map[string]string{
-		"Email": "Email", "DropletLimit": "Droplet Limit", "EmailVerified": "Email Verified",
+		"Email": "Email", "DropletLimit": "Server Limit", "EmailVerified": "Email Verified",
 		"UUID": "UUID", "Status": "Status",
 	}
 }

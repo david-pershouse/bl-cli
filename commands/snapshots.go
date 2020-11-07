@@ -18,7 +18,7 @@ import (
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	"github.com/gobwas/glob"
 	"github.com/spf13/cobra"
 )
@@ -30,7 +30,7 @@ func Snapshot() *Command {
 			Use:     "snapshot",
 			Aliases: []string{"s"},
 			Short:   "Access and manage snapshots",
-			Long:    "The subcommands of `doctl compute snapshot` allow you to manage and retrieve information about Droplet and block storage volume snapshots.",
+			Long:    "The subcommands of `doctl compute snapshot` allow you to manage and retrieve information about Server and block storage volume snapshots.",
 		},
 	}
 
@@ -40,23 +40,23 @@ func Snapshot() *Command {
   - The snapshot's name
   - The date and time when the snapshot was created
   - The slugs of the datacenter regions in which the snapshot is available
-  - The type of resource the snapshot was made from, Droplet or volume, and its ID
-  - The minimum size in GB required for a Droplet or volume to use this snapshot
+  - The type of resource the snapshot was made from, Server or volume, and its ID
+  - The minimum size in GB required for a Server or volume to use this snapshot
   - The compressed, billable size of the snapshot
 `
 
 	cmdRunSnapshotList := CmdBuilder(cmd, RunSnapshotList, "list [glob]",
-		"List Droplet and volume snapshots", "List information about Droplet and block storage volume snapshots, including:"+snapshotDetail,
+		"List Server and volume snapshots", "List information about Server and block storage volume snapshots, including:"+snapshotDetail,
 		Writer, aliasOpt("ls"), displayerType(&displayers.Snapshot{}))
 	AddStringFlag(cmdRunSnapshotList, blcli.ArgResourceType, "", "", "Filter by resource type (`droplet` or `volume`)")
 	AddStringFlag(cmdRunSnapshotList, blcli.ArgRegionSlug, "", "", "Filter by regional availability")
 
 	CmdBuilder(cmd, RunSnapshotGet, "get <snapshot-id>...",
-		"Retrieve a Droplet or volume snapshot", "Retrieve information about a Droplet or block storage volume snapshot, including:"+snapshotDetail,
+		"Retrieve a Server or volume snapshot", "Retrieve information about a Server or block storage volume snapshot, including:"+snapshotDetail,
 		Writer, aliasOpt("g"), displayerType(&displayers.Snapshot{}))
 
 	cmdRunSnapshotDelete := CmdBuilder(cmd, RunSnapshotDelete, "delete <snapshot-id>...",
-		"Delete a snapshot of a Droplet or volume", "Delete a snapshot of a Droplet or volume by specifying its ID.",
+		"Delete a snapshot of a Server or volume", "Delete a snapshot of a Server or volume by specifying its ID.",
 		Writer, aliasOpt("d"), displayerType(&displayers.Snapshot{}))
 	AddBoolFlag(cmdRunSnapshotDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Delete the snapshot without confirmation")
 
@@ -88,8 +88,8 @@ func RunSnapshotList(c *CmdConfig) error {
 		matches = append(matches, g)
 	}
 
-	var matchedList []do.Snapshot
-	var list []do.Snapshot
+	var matchedList []bl.Snapshot
+	var list []bl.Snapshot
 
 	if restype == "droplet" {
 		list, err = ss.ListDroplet()
@@ -153,7 +153,7 @@ func RunSnapshotGet(c *CmdConfig) error {
 	ss := c.Snapshots()
 	ids := c.Args
 
-	var matchedList []do.Snapshot
+	var matchedList []bl.Snapshot
 
 	for _, id := range ids {
 		s, err := ss.Get(id)

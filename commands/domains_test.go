@@ -17,18 +17,18 @@ import (
 	"testing"
 
 	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testDomain     = do.Domain{Domain: &godo.Domain{Name: "example.com"}}
-	testDomainList = do.Domains{
+	testDomain     = bl.Domain{Domain: &godo.Domain{Name: "example.com"}}
+	testDomainList = bl.Domains{
 		testDomain,
 	}
-	testRecord     = do.DomainRecord{DomainRecord: &godo.DomainRecord{ID: 1}}
-	testRecordList = do.DomainRecords{testRecord}
+	testRecord     = bl.DomainRecord{DomainRecord: &godo.DomainRecord{ID: 1}}
+	testRecordList = bl.DomainRecords{testRecord}
 )
 
 func TestDomainsCommand(t *testing.T) {
@@ -116,7 +116,7 @@ func TestRecordList_RequiredArguments(t *testing.T) {
 func TestRecordsCreate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		port := 0
-		dcer := &do.DomainRecordEditRequest{Type: "A", Name: "foo.example.com.", Data: "192.168.1.1", Priority: 0, Port: &port, TTL: 0, Weight: 0}
+		dcer := &bl.DomainRecordEditRequest{Type: "A", Name: "foo.example.com.", Data: "192.168.1.1", Priority: 0, Port: &port, TTL: 0, Weight: 0}
 		tm.domains.EXPECT().CreateRecord("example.com", dcer).Return(&testRecord, nil)
 
 		config.Doit.Set(config.NS, blcli.ArgRecordType, "A")
@@ -154,7 +154,7 @@ func TestRecordsDelete(t *testing.T) {
 func TestRecordsUpdate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		port := 0
-		dcer := &do.DomainRecordEditRequest{Type: "A", Name: "foo.example.com.", Data: "192.168.1.1", Priority: 0, Port: &port, TTL: 0, Weight: 0}
+		dcer := &bl.DomainRecordEditRequest{Type: "A", Name: "foo.example.com.", Data: "192.168.1.1", Priority: 0, Port: &port, TTL: 0, Weight: 0}
 		tm.domains.EXPECT().EditRecord("example.com", 1, dcer).Return(&testRecord, nil)
 
 		config.Doit.Set(config.NS, blcli.ArgRecordID, 1)

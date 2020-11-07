@@ -16,11 +16,11 @@ package displayers
 import (
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type Domain struct {
-	Domains do.Domains
+	Domains bl.Domains
 }
 
 var _ Displayable = &Domain{}
@@ -53,7 +53,7 @@ func (d *Domain) KV() []map[string]interface{} {
 }
 
 type DomainRecord struct {
-	DomainRecords do.DomainRecords
+	DomainRecords bl.DomainRecords
 }
 
 func (dr *DomainRecord) JSON(out io.Writer) error {

@@ -6,14 +6,14 @@ import (
 )
 
 // SizesService is an interface for interfacing with the size
-// endpoints of the DigitalOcean API
-// See: https://developers.digitalocean.com/documentation/v2#sizes
+// endpoints of the BinaryLane API
+// See: https://api.binarylane.com.au/reference#sizes
 type SizesService interface {
 	List(context.Context, *ListOptions) ([]Size, *Response, error)
 }
 
 // SizesServiceOp handles communication with the size related methods of the
-// DigitalOcean API.
+// BinaryLane API.
 type SizesServiceOp struct {
 	client *Client
 }

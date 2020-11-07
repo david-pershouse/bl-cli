@@ -16,11 +16,11 @@ package displayers
 import (
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type Image struct {
-	Images do.Images
+	Images bl.Images
 }
 
 var _ Displayable = &Image{}

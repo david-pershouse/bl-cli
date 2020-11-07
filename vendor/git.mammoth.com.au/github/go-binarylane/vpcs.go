@@ -9,8 +9,8 @@ import (
 const vpcsBasePath = "/v2/vpcs"
 
 // VPCsService is an interface for managing Virtual Private Cloud configurations with the
-// DigitalOcean API.
-// See: https://developers.digitalocean.com/documentation/v2#vpcs
+// BinaryLane API.
+// See: https://api.binarylane.com.au/reference#vpcs
 type VPCsService interface {
 	Create(context.Context, *VPCCreateRequest) (*VPC, *Response, error)
 	Get(context.Context, string) (*VPC, *Response, error)
@@ -22,7 +22,7 @@ type VPCsService interface {
 
 var _ VPCsService = &VPCsServiceOp{}
 
-// VPCsServiceOp interfaces with VPC endpoints in the DigitalOcean API.
+// VPCsServiceOp interfaces with VPC endpoints in the BinaryLane API.
 type VPCsServiceOp struct {
 	client *Client
 }

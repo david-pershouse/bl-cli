@@ -19,7 +19,7 @@ import (
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	"github.com/spf13/viper"
 )
 
@@ -35,27 +35,27 @@ type CmdConfig struct {
 	setContextAccessToken func(string)
 
 	// services
-	Keys              func() do.KeysService
-	Sizes             func() do.SizesService
-	Regions           func() do.RegionsService
-	Images            func() do.ImagesService
-	ImageActions      func() do.ImageActionsService
-	LoadBalancers     func() do.LoadBalancersService
-	FloatingIPs       func() do.FloatingIPsService
-	FloatingIPActions func() do.FloatingIPActionsService
-	Droplets          func() do.DropletsService
-	DropletActions    func() do.DropletActionsService
-	Domains           func() do.DomainsService
-	Actions           func() do.ActionsService
-	Account           func() do.AccountService
-	Balance           func() do.BalanceService
-	BillingHistory    func() do.BillingHistoryService
-	Invoices          func() do.InvoicesService
-	Tags              func() do.TagsService
-	Snapshots         func() do.SnapshotsService
-	Firewalls         func() do.FirewallsService
-	Projects          func() do.ProjectsService
-	VPCs              func() do.VPCsService
+	Keys              func() bl.KeysService
+	Sizes             func() bl.SizesService
+	Regions           func() bl.RegionsService
+	Images            func() bl.ImagesService
+	ImageActions      func() bl.ImageActionsService
+	LoadBalancers     func() bl.LoadBalancersService
+	FloatingIPs       func() bl.FloatingIPsService
+	FloatingIPActions func() bl.FloatingIPActionsService
+	Servers           func() bl.ServersService
+	ServerActions     func() bl.ServerActionsService
+	Domains           func() bl.DomainsService
+	Actions           func() bl.ActionsService
+	Account           func() bl.AccountService
+	Balance           func() bl.BalanceService
+	BillingHistory    func() bl.BillingHistoryService
+	Invoices          func() bl.InvoicesService
+	Tags              func() bl.TagsService
+	Snapshots         func() bl.SnapshotsService
+	Firewalls         func() bl.FirewallsService
+	Projects          func() bl.ProjectsService
+	VPCs              func() bl.VPCsService
 }
 
 // NewCmdConfig creates an instance of a CmdConfig.
@@ -74,27 +74,27 @@ func NewCmdConfig(ns string, dc blcli.Config, out io.Writer, args []string, init
 				return fmt.Errorf("Unable to initialize DigitalOcean API client: %s", err)
 			}
 
-			c.Keys = func() do.KeysService { return do.NewKeysService(godoClient) }
-			c.Sizes = func() do.SizesService { return do.NewSizesService(godoClient) }
-			c.Regions = func() do.RegionsService { return do.NewRegionsService(godoClient) }
-			c.Images = func() do.ImagesService { return do.NewImagesService(godoClient) }
-			c.ImageActions = func() do.ImageActionsService { return do.NewImageActionsService(godoClient) }
-			c.FloatingIPs = func() do.FloatingIPsService { return do.NewFloatingIPsService(godoClient) }
-			c.FloatingIPActions = func() do.FloatingIPActionsService { return do.NewFloatingIPActionsService(godoClient) }
-			c.Droplets = func() do.DropletsService { return do.NewDropletsService(godoClient) }
-			c.DropletActions = func() do.DropletActionsService { return do.NewDropletActionsService(godoClient) }
-			c.Domains = func() do.DomainsService { return do.NewDomainsService(godoClient) }
-			c.Actions = func() do.ActionsService { return do.NewActionsService(godoClient) }
-			c.Account = func() do.AccountService { return do.NewAccountService(godoClient) }
-			c.Balance = func() do.BalanceService { return do.NewBalanceService(godoClient) }
-			c.BillingHistory = func() do.BillingHistoryService { return do.NewBillingHistoryService(godoClient) }
-			c.Invoices = func() do.InvoicesService { return do.NewInvoicesService(godoClient) }
-			c.Tags = func() do.TagsService { return do.NewTagsService(godoClient) }
-			c.Snapshots = func() do.SnapshotsService { return do.NewSnapshotsService(godoClient) }
-			c.LoadBalancers = func() do.LoadBalancersService { return do.NewLoadBalancersService(godoClient) }
-			c.Firewalls = func() do.FirewallsService { return do.NewFirewallsService(godoClient) }
-			c.Projects = func() do.ProjectsService { return do.NewProjectsService(godoClient) }
-			c.VPCs = func() do.VPCsService { return do.NewVPCsService(godoClient) }
+			c.Keys = func() bl.KeysService { return bl.NewKeysService(godoClient) }
+			c.Sizes = func() bl.SizesService { return bl.NewSizesService(godoClient) }
+			c.Regions = func() bl.RegionsService { return bl.NewRegionsService(godoClient) }
+			c.Images = func() bl.ImagesService { return bl.NewImagesService(godoClient) }
+			c.ImageActions = func() bl.ImageActionsService { return bl.NewImageActionsService(godoClient) }
+			c.FloatingIPs = func() bl.FloatingIPsService { return bl.NewFloatingIPsService(godoClient) }
+			c.FloatingIPActions = func() bl.FloatingIPActionsService { return bl.NewFloatingIPActionsService(godoClient) }
+			c.Servers = func() bl.ServersService { return bl.NewServersService(godoClient) }
+			c.ServerActions = func() bl.ServerActionsService { return bl.NewServerActionsService(godoClient) }
+			c.Domains = func() bl.DomainsService { return bl.NewDomainsService(godoClient) }
+			c.Actions = func() bl.ActionsService { return bl.NewActionsService(godoClient) }
+			c.Account = func() bl.AccountService { return bl.NewAccountService(godoClient) }
+			c.Balance = func() bl.BalanceService { return bl.NewBalanceService(godoClient) }
+			c.BillingHistory = func() bl.BillingHistoryService { return bl.NewBillingHistoryService(godoClient) }
+			c.Invoices = func() bl.InvoicesService { return bl.NewInvoicesService(godoClient) }
+			c.Tags = func() bl.TagsService { return bl.NewTagsService(godoClient) }
+			c.Snapshots = func() bl.SnapshotsService { return bl.NewSnapshotsService(godoClient) }
+			c.LoadBalancers = func() bl.LoadBalancersService { return bl.NewLoadBalancersService(godoClient) }
+			c.Firewalls = func() bl.FirewallsService { return bl.NewFirewallsService(godoClient) }
+			c.Projects = func() bl.ProjectsService { return bl.NewProjectsService(godoClient) }
+			c.VPCs = func() bl.VPCsService { return bl.NewVPCsService(godoClient) }
 
 			return nil
 		},

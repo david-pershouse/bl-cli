@@ -16,11 +16,11 @@ package displayers
 import (
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type Region struct {
-	Regions do.Regions
+	Regions bl.Regions
 }
 
 var _ Displayable = &Region{}

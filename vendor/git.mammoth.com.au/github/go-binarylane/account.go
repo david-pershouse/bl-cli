@@ -6,14 +6,14 @@ import (
 )
 
 // AccountService is an interface for interfacing with the Account
-// endpoints of the DigitalOcean API
-// See: https://developers.digitalocean.com/documentation/v2/#account
+// endpoints of the BinaryLane API
+// See: https://api.binarylane.com.au/reference/#account
 type AccountService interface {
 	Get(context.Context) (*Account, *Response, error)
 }
 
 // AccountServiceOp handles communication with the Account related methods of
-// the DigitalOcean API.
+// the BinaryLane API.
 type AccountServiceOp struct {
 	client *Client
 }

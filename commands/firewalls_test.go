@@ -5,20 +5,20 @@ import (
 	"testing"
 
 	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testFirewall = do.Firewall{
+	testFirewall = bl.Firewall{
 		Firewall: &godo.Firewall{
 			Name: "my firewall",
 		},
 	}
 
-	testFirewallList = do.Firewalls{
+	testFirewallList = bl.Firewalls{
 		testFirewall,
 	}
 )
@@ -26,7 +26,7 @@ var (
 func TestFirewallCommand(t *testing.T) {
 	cmd := Firewall()
 	assert.NotNil(t, cmd)
-	assertCommandNames(t, cmd, "get", "create", "update", "list", "list-by-droplet", "delete", "add-droplets", "remove-droplets", "add-tags", "remove-tags", "add-rules", "remove-rules")
+	assertCommandNames(t, cmd, "get", "create", "update", "list", "list-by-droplet", "delete", "add-servers", "remove-servers", "add-tags", "remove-tags", "add-rules", "remove-rules")
 }
 
 func TestFirewallGet(t *testing.T) {
@@ -66,7 +66,7 @@ func TestFirewallCreate(t *testing.T) {
 
 		config.Doit.Set(config.NS, blcli.ArgFirewallName, "firewall")
 		config.Doit.Set(config.NS, blcli.ArgTagNames, []string{"backend"})
-		config.Doit.Set(config.NS, blcli.ArgDropletIDs, []string{"1", "2"})
+		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"1", "2"})
 		config.Doit.Set(config.NS, blcli.ArgInboundRules, "protocol:icmp protocol:tcp,ports:8000-9000,address:127.0.0.0,address:0::/0,address:::/1")
 
 		err := RunFirewallCreate(config)
@@ -94,7 +94,7 @@ func TestFirewallUpdate(t *testing.T) {
 					PortRange: "8080",
 					Destinations: &godo.Destinations{
 						LoadBalancerUIDs: []string{"lb-uuid"},
-						Tags:             []string{"new-droplets"},
+						Tags:             []string{"new-servers"},
 					},
 				},
 				{
@@ -111,9 +111,9 @@ func TestFirewallUpdate(t *testing.T) {
 
 		config.Args = append(config.Args, fID)
 		config.Doit.Set(config.NS, blcli.ArgFirewallName, "firewall")
-		config.Doit.Set(config.NS, blcli.ArgDropletIDs, []string{"1"})
+		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"1"})
 		config.Doit.Set(config.NS, blcli.ArgInboundRules, "protocol:tcp,ports:8000-9000,address:127.0.0.0")
-		config.Doit.Set(config.NS, blcli.ArgOutboundRules, "protocol:tcp,ports:8080,load_balancer_uid:lb-uuid,tag:new-droplets protocol:tcp,ports:80,address:192.168.0.0")
+		config.Doit.Set(config.NS, blcli.ArgOutboundRules, "protocol:tcp,ports:8080,load_balancer_uid:lb-uuid,tag:new-servers protocol:tcp,ports:80,address:192.168.0.0")
 
 		err := RunFirewallUpdate(config)
 		assert.NoError(t, err)
@@ -160,7 +160,7 @@ func TestFirewallAddDroplets(t *testing.T) {
 		tm.firewalls.EXPECT().AddDroplets(fID, dropletIDs[0], dropletIDs[1]).Return(nil)
 
 		config.Args = append(config.Args, fID)
-		config.Doit.Set(config.NS, blcli.ArgDropletIDs, []string{"1", "2"})
+		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"1", "2"})
 
 		err := RunFirewallAddDroplets(config)
 		assert.NoError(t, err)
@@ -174,7 +174,7 @@ func TestFirewallRemoveDroplets(t *testing.T) {
 		tm.firewalls.EXPECT().RemoveDroplets(fID, dropletIDs[0]).Return(nil)
 
 		config.Args = append(config.Args, fID)
-		config.Doit.Set(config.NS, blcli.ArgDropletIDs, []string{"1"})
+		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"1"})
 
 		err := RunFirewallRemoveDroplets(config)
 		assert.NoError(t, err)

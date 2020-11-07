@@ -33,7 +33,7 @@ For example, ` + "`" + `doctl account get` + "`" + ` retrieves account profile d
 	CmdBuilder(cmd, RunAccountGet, "get", "Retrieve account profile details", `Retrieve the following details from your account profile:
 
 - Email address
-- Account Droplet limit
+- Account Server limit
 - Email verification status
 - Account status (active or disabled)
 - UUID for the account.`, Writer,

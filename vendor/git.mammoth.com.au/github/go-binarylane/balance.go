@@ -7,14 +7,14 @@ import (
 )
 
 // BalanceService is an interface for interfacing with the Balance
-// endpoints of the DigitalOcean API
-// See: https://developers.digitalocean.com/documentation/v2/#balance
+// endpoints of the BinaryLane API
+// See: https://api.binarylane.com.au/reference/#balance
 type BalanceService interface {
 	Get(context.Context) (*Balance, *Response, error)
 }
 
 // BalanceServiceOp handles communication with the Balance related methods of
-// the DigitalOcean API.
+// the BinaryLane API.
 type BalanceServiceOp struct {
 	client *Client
 }

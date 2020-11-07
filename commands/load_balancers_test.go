@@ -4,14 +4,14 @@ import (
 	"testing"
 
 	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testLoadBalancer = do.LoadBalancer{
+	testLoadBalancer = bl.LoadBalancer{
 		LoadBalancer: &godo.LoadBalancer{
 			Algorithm: "round_robin",
 			Region: &godo.Region{
@@ -22,7 +22,7 @@ var (
 			HealthCheck:    &godo.HealthCheck{},
 		}}
 
-	testLoadBalancerList = do.LoadBalancers{
+	testLoadBalancerList = bl.LoadBalancers{
 		testLoadBalancer,
 	}
 )
@@ -30,7 +30,7 @@ var (
 func TestLoadBalancerCommand(t *testing.T) {
 	cmd := LoadBalancer()
 	assert.NotNil(t, cmd)
-	assertCommandNames(t, cmd, "get", "list", "create", "update", "delete", "add-droplets", "remove-droplets", "add-forwarding-rules", "remove-forwarding-rules")
+	assertCommandNames(t, cmd, "get", "list", "create", "update", "delete", "add-servers", "remove-servers", "add-forwarding-rules", "remove-forwarding-rules")
 }
 
 func TestLoadBalancerGet(t *testing.T) {
@@ -63,7 +63,7 @@ func TestLoadBalancerList(t *testing.T) {
 
 func TestLoadBalancerCreateWithInvalidDropletIDsArgs(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		config.Doit.Set(config.NS, blcli.ArgDropletIDs, []string{"bogus"})
+		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"bogus"})
 
 		err := RunLoadBalancerCreate(config)
 		assert.Error(t, err)
@@ -115,7 +115,7 @@ func TestLoadBalancerCreate(t *testing.T) {
 		config.Doit.Set(config.NS, blcli.ArgSizeSlug, "lb-small")
 		config.Doit.Set(config.NS, blcli.ArgLoadBalancerName, "lb-name")
 		config.Doit.Set(config.NS, blcli.ArgVPCUUID, vpcUUID)
-		config.Doit.Set(config.NS, blcli.ArgDropletIDs, []string{"1", "2"})
+		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"1", "2"})
 		config.Doit.Set(config.NS, blcli.ArgStickySessions, "type:none")
 		config.Doit.Set(config.NS, blcli.ArgHealthCheck, "protocol:http,port:80,check_interval_seconds:4,response_timeout_seconds:23,healthy_threshold:5,unhealthy_threshold:10")
 		config.Doit.Set(config.NS, blcli.ArgForwardingRules, "entry_protocol:tcp,entry_port:3306,target_protocol:tcp,target_port:3306,tls_passthrough:true")
@@ -161,7 +161,7 @@ func TestLoadBalancerUpdate(t *testing.T) {
 		config.Doit.Set(config.NS, blcli.ArgRegionSlug, "nyc1")
 		config.Doit.Set(config.NS, blcli.ArgSizeSlug, "")
 		config.Doit.Set(config.NS, blcli.ArgLoadBalancerName, "lb-name")
-		config.Doit.Set(config.NS, blcli.ArgDropletIDs, []string{"1", "2"})
+		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"1", "2"})
 		config.Doit.Set(config.NS, blcli.ArgStickySessions, "type:cookies,cookie_name:DO-LB,cookie_ttl_seconds:5")
 		config.Doit.Set(config.NS, blcli.ArgHealthCheck, "protocol:http,port:80,check_interval_seconds:4,response_timeout_seconds:23,healthy_threshold:5,unhealthy_threshold:10")
 		config.Doit.Set(config.NS, blcli.ArgForwardingRules, "entry_protocol:http,entry_port:80,target_protocol:http,target_port:80")
@@ -204,7 +204,7 @@ func TestLoadBalancerAddDroplets(t *testing.T) {
 		tm.loadBalancers.EXPECT().AddDroplets(lbID, 1, 23).Return(nil)
 
 		config.Args = append(config.Args, lbID)
-		config.Doit.Set(config.NS, blcli.ArgDropletIDs, []string{"1", "23"})
+		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"1", "23"})
 
 		err := RunLoadBalancerAddDroplets(config)
 		assert.NoError(t, err)
@@ -224,7 +224,7 @@ func TestLoadBalancerRemoveDroplets(t *testing.T) {
 		tm.loadBalancers.EXPECT().RemoveDroplets(lbID, 321).Return(nil)
 
 		config.Args = append(config.Args, lbID)
-		config.Doit.Set(config.NS, blcli.ArgDropletIDs, []string{"321"})
+		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"321"})
 
 		err := RunLoadBalancerRemoveDroplets(config)
 		assert.NoError(t, err)

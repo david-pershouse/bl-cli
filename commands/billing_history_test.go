@@ -17,12 +17,12 @@ import (
 	"testing"
 	"time"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
-var testBillingHistoryList = &do.BillingHistory{
+var testBillingHistoryList = &bl.BillingHistory{
 	BillingHistory: &godo.BillingHistory{
 		BillingHistory: []godo.BillingHistoryEntry{
 			{

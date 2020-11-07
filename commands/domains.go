@@ -20,7 +20,7 @@ import (
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
@@ -117,7 +117,7 @@ func RunDomainCreate(c *CmdConfig) error {
 		return err
 	}
 
-	return c.Display(&displayers.Domain{Domains: do.Domains{*d}})
+	return c.Display(&displayers.Domain{Domains: bl.Domains{*d}})
 }
 
 // RunDomainList runs domain create.
@@ -153,7 +153,7 @@ func RunDomainGet(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.Domain{Domains: do.Domains{*d}}
+	item := &displayers.Domain{Domains: bl.Domains{*d}}
 	return c.Display(item)
 }
 
@@ -263,7 +263,7 @@ func RunRecordCreate(c *CmdConfig) error {
 		return err
 	}
 
-	drcr := &do.DomainRecordEditRequest{
+	drcr := &bl.DomainRecordEditRequest{
 		Type:     rType,
 		Name:     rName,
 		Data:     rData,
@@ -284,7 +284,7 @@ func RunRecordCreate(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.DomainRecord{DomainRecords: do.DomainRecords{*r}}
+	item := &displayers.DomainRecord{DomainRecords: bl.DomainRecords{*r}}
 	return c.Display(item)
 
 }
@@ -387,7 +387,7 @@ func RunRecordUpdate(c *CmdConfig) error {
 		return err
 	}
 
-	drcr := &do.DomainRecordEditRequest{
+	drcr := &bl.DomainRecordEditRequest{
 		Type:     rType,
 		Name:     rName,
 		Data:     rData,
@@ -404,6 +404,6 @@ func RunRecordUpdate(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.DomainRecord{DomainRecords: do.DomainRecords{*r}}
+	item := &displayers.DomainRecord{DomainRecords: bl.DomainRecords{*r}}
 	return c.Display(item)
 }

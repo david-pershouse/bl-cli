@@ -11,8 +11,8 @@ const forwardingRulesPath = "forwarding_rules"
 
 const dropletsPath = "droplets"
 
-// LoadBalancersService is an interface for managing load balancers with the DigitalOcean API.
-// See: https://developers.digitalocean.com/documentation/v2#load-balancers
+// LoadBalancersService is an interface for managing load balancers with the BinaryLane API.
+// See: https://api.binarylane.com.au/reference#load-balancers
 type LoadBalancersService interface {
 	Get(context.Context, string) (*LoadBalancer, *Response, error)
 	List(context.Context, *ListOptions) ([]LoadBalancer, *Response, error)
@@ -181,7 +181,7 @@ type loadBalancerRoot struct {
 	LoadBalancer *LoadBalancer `json:"load_balancer"`
 }
 
-// LoadBalancersServiceOp handles communication with load balancer-related methods of the DigitalOcean API.
+// LoadBalancersServiceOp handles communication with load balancer-related methods of the BinaryLane API.
 type LoadBalancersServiceOp struct {
 	client *Client
 }

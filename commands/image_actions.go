@@ -19,7 +19,7 @@ import (
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
@@ -82,7 +82,7 @@ func RunImageActionsGet(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.Action{Actions: do.Actions{*a}}
+	item := &displayers.Action{Actions: bl.Actions{*a}}
 	return c.Display(item)
 }
 
@@ -128,6 +128,6 @@ func RunImageActionsTransfer(c *CmdConfig) error {
 
 	}
 
-	item := &displayers.Action{Actions: do.Actions{*a}}
+	item := &displayers.Action{Actions: bl.Actions{*a}}
 	return c.Display(item)
 }

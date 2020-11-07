@@ -9,8 +9,8 @@ import (
 const keysBasePath = "v2/account/keys"
 
 // KeysService is an interface for interfacing with the keys
-// endpoints of the DigitalOcean API
-// See: https://developers.digitalocean.com/documentation/v2#keys
+// endpoints of the BinaryLane API
+// See: https://api.binarylane.com.au/reference#keys
 type KeysService interface {
 	List(context.Context, *ListOptions) ([]Key, *Response, error)
 	GetByID(context.Context, int) (*Key, *Response, error)
@@ -23,7 +23,7 @@ type KeysService interface {
 }
 
 // KeysServiceOp handles communication with key related method of the
-// DigitalOcean API.
+// BinaryLane API.
 type KeysServiceOp struct {
 	client *Client
 }

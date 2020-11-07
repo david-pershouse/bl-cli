@@ -21,7 +21,7 @@ import (
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 
 	"github.com/spf13/cobra"
@@ -35,11 +35,11 @@ func Firewall() *Command {
 			Short: "Display commands to manage cloud firewalls",
 			Long: `The sub-commands of ` + "`" + `doctl compute firewall` + "`" + ` manage DigitalOcean cloud firewalls.
 
-Cloud firewalls provide the ability to restrict network access to and from a Droplet, allowing you to define which ports accept inbound or outbound connections. With these commands, you can list, create, or delete Cloud firewalls, as well as modify access rules.
+Cloud firewalls provide the ability to restrict network access to and from a Server, allowing you to define which ports accept inbound or outbound connections. With these commands, you can list, create, or delete Cloud firewalls, as well as modify access rules.
 
 A firewall's ` + "`" + `inbound_rules` + "`" + ` and ` + "`" + `outbound_rules` + "`" + ` attributes contain arrays of objects as their values. These objects contain the standard attributes of their associated types, which can be found below.
 
-Inbound access rules specify the protocol (TCP, UDP, or ICMP), ports, and sources for inbound traffic that will be allowed through the Firewall to the target Droplets. The ` + "`" + `ports` + "`" + ` attribute may contain a single port, a range of ports (e.g. ` + "`" + `8000-9000` + "`" + `), or ` + "`" + `all` + "`" + ` to allow traffic on all ports for the specified protocol. The ` + "`" + `sources` + "`" + ` attribute will contain an object specifying a whitelist of sources from which traffic will be accepted.`,
+Inbound access rules specify the protocol (TCP, UDP, or ICMP), ports, and sources for inbound traffic that will be allowed through the Firewall to the target Servers. The ` + "`" + `ports` + "`" + ` attribute may contain a single port, a range of ports (e.g. ` + "`" + `8000-9000` + "`" + `), or ` + "`" + `all` + "`" + ` to allow traffic on all ports for the specified protocol. The ` + "`" + `sources` + "`" + ` attribute will contain an object specifying a whitelist of sources from which traffic will be accepted.`,
 		},
 	}
 	fwDetail := `
@@ -52,12 +52,12 @@ Inbound access rules specify the protocol (TCP, UDP, or ICMP), ports, and source
 	  When empty, all changes have been successfully applied.
 	- The inbound rules for the firewall.
 	- The outbound rules for the firewall.
-	- The IDs of Droplets assigned to the firewall.
+	- The IDs of Servers assigned to the firewall.
 	- The tags assigned to the firewall.
 `
 	inboundRulesTxt := "A comma-separated key-value list that defines an inbound rule, e.g.: `protocol:tcp,ports:22,droplet_id:123`. Use a quoted string of space-separated values for multiple rules."
 	outboundRulesTxt := "A comma-separate key-value list the defines an outbound rule, e.g.: `protocol:tcp,ports:22,address:0.0.0.0/0`. Use a quoted string of space-separated values for multiple rules."
-	dropletIDRulesTxt := "A comma-separated list of Droplet IDs to place behind the cloud firewall, e.g.: `123,456`"
+	dropletIDRulesTxt := "A comma-separated list of Server IDs to place behind the cloud firewall, e.g.: `123,456`"
 	tagNameRulesTxt := "A comma-separated list of tag names to apply to the cloud firewall, e.g.: `frontend,backend`"
 
 	CmdBuilder(cmd, RunFirewallGet, "get <id>", "Retrieve information about a cloud firewall", `Use this command to get information about an existing cloud firewall, including:`+fwDetail, Writer, aliasOpt("g"), displayerType(&displayers.Firewall{}))
@@ -66,28 +66,28 @@ Inbound access rules specify the protocol (TCP, UDP, or ICMP), ports, and source
 	AddStringFlag(cmdFirewallCreate, blcli.ArgFirewallName, "", "", "Firewall name", requiredOpt())
 	AddStringFlag(cmdFirewallCreate, blcli.ArgInboundRules, "", "", inboundRulesTxt)
 	AddStringFlag(cmdFirewallCreate, blcli.ArgOutboundRules, "", "", outboundRulesTxt)
-	AddStringSliceFlag(cmdFirewallCreate, blcli.ArgDropletIDs, "", []string{}, dropletIDRulesTxt)
+	AddStringSliceFlag(cmdFirewallCreate, blcli.ArgServerIDs, "", []string{}, dropletIDRulesTxt)
 	AddStringSliceFlag(cmdFirewallCreate, blcli.ArgTagNames, "", []string{}, tagNameRulesTxt)
 
 	cmdFirewallUpdate := CmdBuilder(cmd, RunFirewallUpdate, "update <id>", "Update a cloud firewall's configuration", `Use this command to update the configuration of an existing cloud firewall. The request should contain a full representation of the Firewall, including existing attributes. Note: Any attributes that are not provided will be reset to their default values.`, Writer, aliasOpt("u"), displayerType(&displayers.Firewall{}))
 	AddStringFlag(cmdFirewallUpdate, blcli.ArgFirewallName, "", "", "Firewall name", requiredOpt())
 	AddStringFlag(cmdFirewallUpdate, blcli.ArgInboundRules, "", "", inboundRulesTxt)
 	AddStringFlag(cmdFirewallUpdate, blcli.ArgOutboundRules, "", "", outboundRulesTxt)
-	AddStringSliceFlag(cmdFirewallUpdate, blcli.ArgDropletIDs, "", []string{}, dropletIDRulesTxt)
+	AddStringSliceFlag(cmdFirewallUpdate, blcli.ArgServerIDs, "", []string{}, dropletIDRulesTxt)
 	AddStringSliceFlag(cmdFirewallUpdate, blcli.ArgTagNames, "", []string{}, tagNameRulesTxt)
 
 	CmdBuilder(cmd, RunFirewallList, "list", "List the cloud firewalls on your account", `Use this command to retrieve a list of cloud firewalls.`, Writer, aliasOpt("ls"), displayerType(&displayers.Firewall{}))
 
-	CmdBuilder(cmd, RunFirewallListByDroplet, "list-by-droplet <droplet_id>", "List firewalls by Droplet", `Use this command to list cloud firewalls by the ID of a Droplet assigned to the firewall.`, Writer, displayerType(&displayers.Firewall{}))
+	CmdBuilder(cmd, RunFirewallListByDroplet, "list-by-droplet <droplet_id>", "List firewalls by Server", `Use this command to list cloud firewalls by the ID of a Server assigned to the firewall.`, Writer, displayerType(&displayers.Firewall{}))
 
-	cmdRunRecordDelete := CmdBuilder(cmd, RunFirewallDelete, "delete <id>...", "Permanently delete a cloud firewall", `Use this command to permanently delete a cloud firewall. This is irreversable, but does not delete any Droplets assigned to the cloud firewall.`, Writer, aliasOpt("d", "rm"))
+	cmdRunRecordDelete := CmdBuilder(cmd, RunFirewallDelete, "delete <id>...", "Permanently delete a cloud firewall", `Use this command to permanently delete a cloud firewall. This is irreversable, but does not delete any Servers assigned to the cloud firewall.`, Writer, aliasOpt("d", "rm"))
 	AddBoolFlag(cmdRunRecordDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Delete firewall without confirmation prompt")
 
-	cmdAddDroplets := CmdBuilder(cmd, RunFirewallAddDroplets, "add-droplets <id>", "Add Droplets to a cloud firewall", `Use this command to add Droplets to the cloud firewall.`, Writer)
-	AddStringSliceFlag(cmdAddDroplets, blcli.ArgDropletIDs, "", []string{}, dropletIDRulesTxt)
+	cmdAddDroplets := CmdBuilder(cmd, RunFirewallAddDroplets, "add-servers <id>", "Add Servers to a cloud firewall", `Use this command to add Servers to the cloud firewall.`, Writer)
+	AddStringSliceFlag(cmdAddDroplets, blcli.ArgServerIDs, "", []string{}, dropletIDRulesTxt)
 
-	cmdRemoveDroplets := CmdBuilder(cmd, RunFirewallRemoveDroplets, "remove-droplets <id>", "Remove Droplets from a cloud firewall", `Use this command to remove Droplets from a cloud firewall.`, Writer)
-	AddStringSliceFlag(cmdRemoveDroplets, blcli.ArgDropletIDs, "", []string{}, dropletIDRulesTxt)
+	cmdRemoveDroplets := CmdBuilder(cmd, RunFirewallRemoveDroplets, "remove-servers <id>", "Remove Servers from a cloud firewall", `Use this command to remove Servers from a cloud firewall.`, Writer)
+	AddStringSliceFlag(cmdRemoveDroplets, blcli.ArgServerIDs, "", []string{}, dropletIDRulesTxt)
 
 	cmdAddTags := CmdBuilder(cmd, RunFirewallAddTags, "add-tags <id>", "Add tags to a cloud firewall", `Use this command to add tags to a cloud firewall. This adds all assets using that tag to the firewall`, Writer)
 	AddStringSliceFlag(cmdAddTags, blcli.ArgTagNames, "", []string{}, tagNameRulesTxt)
@@ -120,7 +120,7 @@ func RunFirewallGet(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.Firewall{Firewalls: do.Firewalls{*f}}
+	item := &displayers.Firewall{Firewalls: bl.Firewalls{*f}}
 	return c.Display(item)
 }
 
@@ -137,7 +137,7 @@ func RunFirewallCreate(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.Firewall{Firewalls: do.Firewalls{*f}}
+	item := &displayers.Firewall{Firewalls: bl.Firewalls{*f}}
 	return c.Display(item)
 }
 
@@ -159,7 +159,7 @@ func RunFirewallUpdate(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.Firewall{Firewalls: do.Firewalls{*f}}
+	item := &displayers.Firewall{Firewalls: bl.Firewalls{*f}}
 	return c.Display(item)
 }
 
@@ -175,7 +175,7 @@ func RunFirewallList(c *CmdConfig) error {
 	return c.Display(items)
 }
 
-// RunFirewallListByDroplet lists Firewalls for a given Droplet.
+// RunFirewallListByDroplet lists Firewalls for a given Server.
 func RunFirewallListByDroplet(c *CmdConfig) error {
 	err := ensureOneArg(c)
 	if err != nil {
@@ -221,7 +221,7 @@ func RunFirewallDelete(c *CmdConfig) error {
 	return nil
 }
 
-// RunFirewallAddDroplets adds droplets to a Firewall.
+// RunFirewallAddDroplets adds servers to a Firewall.
 func RunFirewallAddDroplets(c *CmdConfig) error {
 	err := ensureOneArg(c)
 	if err != nil {
@@ -229,7 +229,7 @@ func RunFirewallAddDroplets(c *CmdConfig) error {
 	}
 	fID := c.Args[0]
 
-	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgDropletIDs)
+	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
 	if err != nil {
 		return err
 	}
@@ -242,7 +242,7 @@ func RunFirewallAddDroplets(c *CmdConfig) error {
 	return c.Firewalls().AddDroplets(fID, dropletIDs...)
 }
 
-// RunFirewallRemoveDroplets removes droplets from a Firewall.
+// RunFirewallRemoveDroplets removes servers from a Firewall.
 func RunFirewallRemoveDroplets(c *CmdConfig) error {
 	err := ensureOneArg(c)
 	if err != nil {
@@ -250,7 +250,7 @@ func RunFirewallRemoveDroplets(c *CmdConfig) error {
 	}
 	fID := c.Args[0]
 
-	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgDropletIDs)
+	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
 	if err != nil {
 		return err
 	}
@@ -356,7 +356,7 @@ func buildFirewallRequestFromArgs(c *CmdConfig, r *godo.FirewallRequest) error {
 	}
 	r.OutboundRules = outboundRules
 
-	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgDropletIDs)
+	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
 	if err != nil {
 		return err
 	}

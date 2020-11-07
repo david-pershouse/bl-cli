@@ -19,7 +19,7 @@ import (
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	"github.com/spf13/cobra"
 )
 
@@ -28,7 +28,7 @@ func FloatingIPAction() *Command {
 	cmd := &Command{
 		Command: &cobra.Command{
 			Use:     "floating-ip-action",
-			Short:   "Display commands to associate floating IP addresses with Droplets",
+			Short:   "Display commands to associate floating IP addresses with Servers",
 			Long:    "Floating IP actions are commands that are used to manage DigitalOcean floating IP addresses.",
 			Aliases: []string{"fipa"},
 		},
@@ -49,11 +49,11 @@ func FloatingIPAction() *Command {
 		displayerType(&displayers.Action{}))
 
 	CmdBuilder(cmd, RunFloatingIPActionsAssign,
-		"assign <floating-ip> <droplet-id>", "Assign a floating IP address to a Droplet", "Use this command to assign a floating IP address to a Droplet by specifying the `droplet_id`.", Writer,
+		"assign <floating-ip> <droplet-id>", "Assign a floating IP address to a Server", "Use this command to assign a floating IP address to a Server by specifying the `droplet_id`.", Writer,
 		displayerType(&displayers.Action{}))
 
 	CmdBuilder(cmd, RunFloatingIPActionsUnassign,
-		"unassign <floating-ip>", "Unassign a floating IP address from a Droplet", `Use this command to unassign a floating IP address from a Droplet. The floating IP address will be reserved in the region but not assigned to a Droplet.`, Writer,
+		"unassign <floating-ip>", "Unassign a floating IP address from a Server", `Use this command to unassign a floating IP address from a Server. The floating IP address will be reserved in the region but not assigned to a Server.`, Writer,
 		displayerType(&displayers.Action{}))
 
 	return cmd
@@ -79,7 +79,7 @@ func RunFloatingIPActionsGet(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.Action{Actions: do.Actions{*a}}
+	item := &displayers.Action{Actions: bl.Actions{*a}}
 	return c.Display(item)
 }
 
@@ -103,7 +103,7 @@ func RunFloatingIPActionsAssign(c *CmdConfig) error {
 		checkErr(fmt.Errorf("could not assign IP to droplet: %v", err))
 	}
 
-	item := &displayers.Action{Actions: do.Actions{*a}}
+	item := &displayers.Action{Actions: bl.Actions{*a}}
 	return c.Display(item)
 }
 
@@ -123,6 +123,6 @@ func RunFloatingIPActionsUnassign(c *CmdConfig) error {
 		checkErr(fmt.Errorf("could not unassign IP to droplet: %v", err))
 	}
 
-	item := &displayers.Action{Actions: do.Actions{*a}}
+	item := &displayers.Action{Actions: bl.Actions{*a}}
 	return c.Display(item)
 }

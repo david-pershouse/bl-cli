@@ -16,12 +16,12 @@ package displayers
 import (
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 // Key is used to display the SSH Key results from a `list` operation.
 type Key struct {
-	Keys do.SSHKeys
+	Keys bl.SSHKeys
 }
 
 var _ Displayable = &Key{}
@@ -60,7 +60,7 @@ func (ke *Key) KV() []map[string]interface{} {
 // separate displayer is required in order to include the public key in this
 // operation.
 type KeyGet struct {
-	Keys do.SSHKeys
+	Keys bl.SSHKeys
 }
 
 var _ Displayable = &KeyGet{}

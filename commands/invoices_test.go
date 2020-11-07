@@ -20,13 +20,13 @@ import (
 	"testing"
 	"time"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
-var testInvoicesList = &do.InvoiceList{
+var testInvoicesList = &bl.InvoiceList{
 	InvoiceList: &godo.InvoiceList{
 		Invoices: []godo.InvoiceListItem{
 			{
@@ -49,15 +49,15 @@ var testInvoicesList = &do.InvoiceList{
 	},
 }
 
-var testInvoicesGet = &do.Invoice{
+var testInvoicesGet = &bl.Invoice{
 	Invoice: &godo.Invoice{
 		InvoiceItems: []godo.InvoiceItem{
 			{
-				Product:          "Droplets",
+				Product:          "Servers",
 				ResourceID:       "1234",
 				ResourceUUID:     "droplet-1234-uuid",
 				GroupDescription: "",
-				Description:      "My Example Droplet",
+				Description:      "My Example Server",
 				Amount:           "12.34",
 				Duration:         "672",
 				DurationUnit:     "Hours",
@@ -84,7 +84,7 @@ var testInvoicesGet = &do.Invoice{
 	},
 }
 
-var testInvoiceSummary = &do.InvoiceSummary{
+var testInvoiceSummary = &bl.InvoiceSummary{
 	InvoiceSummary: &godo.InvoiceSummary{
 		InvoiceUUID:   "example-invoice-uuid",
 		BillingPeriod: "2020-01",

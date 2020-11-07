@@ -86,7 +86,7 @@ docker_build:
 test_unit:
 	@echo "==> run unit tests"
 	@echo ""
-	go test -mod=vendor ./commands/... ./do/... ./pkg/... .
+	go test -mod=vendor ./commands/... ./bl/... ./pkg/... .
 
 .PHONY: test_integration
 test_integration:

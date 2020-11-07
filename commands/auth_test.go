@@ -22,7 +22,7 @@ import (
 	"errors"
 
 	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
@@ -47,7 +47,7 @@ func TestAuthInit(t *testing.T) {
 	cfgFileWriter = func() (io.WriteCloser, error) { return &nopWriteCloser{Writer: ioutil.Discard}, nil }
 
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		tm.account.EXPECT().Get().Return(&do.Account{}, nil)
+		tm.account.EXPECT().Get().Return(&bl.Account{}, nil)
 
 		err := RunAuthInit(retrieveUserTokenFunc)(config)
 		assert.NoError(t, err)
@@ -69,7 +69,7 @@ func TestAuthInitWithProvidedToken(t *testing.T) {
 	cfgFileWriter = func() (io.WriteCloser, error) { return &nopWriteCloser{Writer: ioutil.Discard}, nil }
 
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		tm.account.EXPECT().Get().Return(&do.Account{}, nil)
+		tm.account.EXPECT().Get().Return(&bl.Account{}, nil)
 
 		err := RunAuthInit(retrieveUserTokenFunc)(config)
 		assert.NoError(t, err)

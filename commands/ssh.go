@@ -23,7 +23,7 @@ import (
 	"strings"
 
 	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	"git.mammoth.com.au/github/bl-cli/pkg/ssh"
 )
 
@@ -38,18 +38,18 @@ func SSH(parent *Command) *Command {
 
 	path := filepath.Join(usr.HomeDir, ".ssh", "id_rsa")
 
-	sshDesc := fmt.Sprintf(`Access a Droplet using SSH by providing its ID or name.
+	sshDesc := fmt.Sprintf(`Access a Server using SSH by providing its ID or name.
 
-You may specify the user to login with by passing the `+"`"+`--%s`+"`"+` flag. To access the Droplet on a non-default port, use the `+"`"+`--%s`+"`"+` flag. By default, the connection will be made to the Droplet's public IP address. In order access it using its private IP address, use the `+"`"+`--%s`+"`"+` flag.
+You may specify the user to login with by passing the `+"`"+`--%s`+"`"+` flag. To access the Server on a non-default port, use the `+"`"+`--%s`+"`"+` flag. By default, the connection will be made to the Server's public IP address. In order access it using its private IP address, use the `+"`"+`--%s`+"`"+` flag.
 `, blcli.ArgSSHUser, blcli.ArgsSSHPort, blcli.ArgsSSHPrivateIP)
 
-	cmdSSH := CmdBuilder(parent, RunSSH, "ssh <droplet-id|name>", "Access a Droplet using SSH", sshDesc, Writer)
+	cmdSSH := CmdBuilder(parent, RunSSH, "ssh <droplet-id|name>", "Access a Server using SSH", sshDesc, Writer)
 	AddStringFlag(cmdSSH, blcli.ArgSSHUser, "", "root", "SSH user for connection")
 	AddStringFlag(cmdSSH, blcli.ArgsSSHKeyPath, "", path, "Path to SSH private key")
 	AddIntFlag(cmdSSH, blcli.ArgsSSHPort, "", 22, "The remote port sshd is running on")
 	AddBoolFlag(cmdSSH, blcli.ArgsSSHAgentForwarding, "", false, "Enable SSH agent forwarding")
-	AddBoolFlag(cmdSSH, blcli.ArgsSSHPrivateIP, "", false, "SSH to Droplet's private IP address")
-	AddStringFlag(cmdSSH, blcli.ArgSSHCommand, "", "", "Command to execute on Droplet")
+	AddBoolFlag(cmdSSH, blcli.ArgsSSHPrivateIP, "", false, "SSH to Server's private IP address")
+	AddStringFlag(cmdSSH, blcli.ArgSSHCommand, "", "", "Command to execute on Server")
 
 	return cmdSSH
 }
@@ -97,9 +97,9 @@ func RunSSH(c *CmdConfig) error {
 		return err
 	}
 
-	var droplet *do.Droplet
+	var droplet *bl.Server
 
-	ds := c.Droplets()
+	ds := c.Servers()
 	if id, err := strconv.Atoi(dropletID); err == nil {
 		// dropletID is an integer
 
@@ -138,7 +138,7 @@ func RunSSH(c *CmdConfig) error {
 		}
 
 		if droplet == nil {
-			return errors.New("Could not find Droplet")
+			return errors.New("Could not find Server")
 		}
 
 	}
@@ -153,14 +153,14 @@ func RunSSH(c *CmdConfig) error {
 	}
 
 	if ip == "" {
-		return errors.New("Could not find Droplet address")
+		return errors.New("Could not find Server address")
 	}
 
 	runner := c.Doit.SSH(user, ip, keyPath, port, opts)
 	return runner.Run()
 }
 
-func defaultSSHUser(droplet *do.Droplet) string {
+func defaultSSHUser(droplet *bl.Server) string {
 	slug := strings.ToLower(droplet.Image.Slug)
 	if strings.Contains(slug, "coreos") {
 		return "core"
@@ -189,7 +189,7 @@ func extractHostInfo(in string) sshHostInfo {
 	}
 }
 
-func privateIPElsePub(droplet *do.Droplet, choice bool) (string, error) {
+func privateIPElsePub(droplet *bl.Server, choice bool) (string, error) {
 	if choice {
 		return droplet.PrivateIPv4()
 	}

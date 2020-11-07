@@ -17,11 +17,11 @@ import (
 	"fmt"
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type Size struct {
-	Sizes do.Sizes
+	Sizes bl.Sizes
 }
 
 var _ Displayable = &Size{}

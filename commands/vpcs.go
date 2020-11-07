@@ -18,7 +18,7 @@ import (
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
@@ -94,7 +94,7 @@ func RunVPCGet(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.VPC{VPCs: do.VPCs{*vpc}}
+	item := &displayers.VPC{VPCs: bl.VPCs{*vpc}}
 	return c.Display(item)
 }
 
@@ -143,7 +143,7 @@ func RunVPCCreate(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.VPC{VPCs: do.VPCs{*vpc}}
+	item := &displayers.VPC{VPCs: bl.VPCs{*vpc}}
 	return c.Display(item)
 }
 
@@ -182,7 +182,7 @@ func RunVPCUpdate(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.VPC{VPCs: do.VPCs{*vpc}}
+	item := &displayers.VPC{VPCs: bl.VPCs{*vpc}}
 	return c.Display(item)
 }
 

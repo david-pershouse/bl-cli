@@ -9,14 +9,14 @@ import (
 const billingHistoryBasePath = "v2/customers/my/billing_history"
 
 // BillingHistoryService is an interface for interfacing with the BillingHistory
-// endpoints of the DigitalOcean API
-// See: https://developers.digitalocean.com/documentation/v2/#billing_history
+// endpoints of the BinaryLane API
+// See: https://api.binarylane.com.au/reference/#billing_history
 type BillingHistoryService interface {
 	List(context.Context, *ListOptions) (*BillingHistory, *Response, error)
 }
 
 // BillingHistoryServiceOp handles communication with the BillingHistory related methods of
-// the DigitalOcean API.
+// the BinaryLane API.
 type BillingHistoryServiceOp struct {
 	client *Client
 }

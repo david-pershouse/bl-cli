@@ -20,7 +20,7 @@ import (
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	"github.com/spf13/cobra"
 )
 
@@ -44,7 +44,7 @@ This can be filtered to a specific action. For example, while ` + "`" + `doctl c
 - The Date/Time when the action started, in RFC3339 format
 - The Date/Time when the action completed, in RFC3339 format
 - The resource ID of the resource upon which the action was taken
-- The resource type (Droplet, backend)
+- The resource type (Server, backend)
 - The region in which the action took place (nyc3, sfo2, etc)`
 
 	CmdBuilder(cmd, RunCmdActionGet, "get <action-id>", "Retrieve details about a specific action", `This command retrieves the following details about a specific action taken on one of your resources:`+actionDetails, Writer,
@@ -86,7 +86,7 @@ func RunCmdActionList(c *CmdConfig) error {
 	return c.Display(item)
 }
 
-type actionsByCompletedAt do.Actions
+type actionsByCompletedAt bl.Actions
 
 func (a actionsByCompletedAt) Len() int {
 	return len(a)
@@ -98,7 +98,7 @@ func (a actionsByCompletedAt) Less(i, j int) bool {
 	return a[i].CompletedAt.Before(a[j].CompletedAt.Time)
 }
 
-func filterActionList(c *CmdConfig, in do.Actions) (do.Actions, error) {
+func filterActionList(c *CmdConfig, in bl.Actions) (bl.Actions, error) {
 	resourceType, err := c.Doit.GetString(c.NS, blcli.ArgActionResourceType)
 	if err != nil {
 		return nil, err
@@ -141,7 +141,7 @@ func filterActionList(c *CmdConfig, in do.Actions) (do.Actions, error) {
 		}
 	}
 
-	out := do.Actions{}
+	out := bl.Actions{}
 
 	for _, a := range in {
 		match := true
@@ -205,7 +205,7 @@ func RunCmdActionGet(c *CmdConfig) error {
 		return err
 	}
 
-	return c.Display(&displayers.Action{Actions: do.Actions{*a}})
+	return c.Display(&displayers.Action{Actions: bl.Actions{*a}})
 }
 
 // RunCmdActionWait waits for an action to complete or error.
@@ -230,13 +230,13 @@ func RunCmdActionWait(c *CmdConfig) error {
 		return err
 	}
 
-	return c.Display(&displayers.Action{Actions: do.Actions{*a}})
+	return c.Display(&displayers.Action{Actions: bl.Actions{*a}})
 }
 
-func actionWait(c *CmdConfig, actionID, pollTime int) (*do.Action, error) {
+func actionWait(c *CmdConfig, actionID, pollTime int) (*bl.Action, error) {
 	as := c.Actions()
 
-	var a *do.Action
+	var a *bl.Action
 	var err error
 
 	for {

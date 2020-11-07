@@ -17,12 +17,12 @@ import (
 	"testing"
 	"time"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
-var testBalance = &do.Balance{
+var testBalance = &bl.Balance{
 	Balance: &godo.Balance{
 		MonthToDateBalance: "23.44",
 		AccountBalance:     "12.23",

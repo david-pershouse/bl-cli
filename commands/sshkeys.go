@@ -19,7 +19,7 @@ import (
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh"
@@ -34,7 +34,7 @@ func SSHKeys() *Command {
 			Short:   "Display commands to manage SSH keys on your account",
 			Long: `The sub-commands of ` + "`" + `doctl compute ssh-key` + "`" + ` manage the SSH keys on your account.
 
-DigitalOcean allows you to add SSH public keys to the interface so that you can embed your public key into a Droplet at the time of creation. Only the public key is required to take advantage of this functionality. Note that this command does not add, delete, or otherwise modify any ssh keys that may be on existing Droplets.`,
+DigitalOcean allows you to add SSH public keys to the interface so that you can embed your public key into a Server at the time of creation. Only the public key is required to take advantage of this functionality. Note that this command does not add, delete, or otherwise modify any ssh keys that may be on existing Servers.`,
 		},
 	}
 
@@ -48,19 +48,19 @@ DigitalOcean allows you to add SSH public keys to the interface so that you can 
 
 Specify a `+"`"+`<key-name>`+"`"+` for the key, and set the `+"`"+`--public-key`+"`"+` flag to a string with the contents of the key.
 
-Note that creating a key will not add it to any Droplets.`, Writer,
+Note that creating a key will not add it to any Servers.`, Writer,
 		aliasOpt("c"), displayerType(&displayers.Key{}))
 	AddStringFlag(cmdSSHKeysCreate, blcli.ArgKeyPublicKey, "", "", "Key contents", requiredOpt())
 
 	cmdSSHKeysImport := CmdBuilder(cmd, RunKeyImport, "import <key-name>", "Import an SSH key from your computer to your account", `Use this command to add a new SSH key to your account, using a local public key file.
 
-Note that importing a key to your account will not add it to any Droplets`, Writer,
+Note that importing a key to your account will not add it to any Servers`, Writer,
 		aliasOpt("i"), displayerType(&displayers.Key{}))
 	AddStringFlag(cmdSSHKeysImport, blcli.ArgKeyPublicKeyFile, "", "", "Public key file", requiredOpt())
 
 	cmdRunKeyDelete := CmdBuilder(cmd, RunKeyDelete, "delete <key-id|key-fingerprint>", "Permanently delete an SSH key from your account", `Use this command to permanently delete an SSH key from your account.
 
-Note that this does not delete an SSH key from any Droplets.`, Writer,
+Note that this does not delete an SSH key from any Servers.`, Writer,
 		aliasOpt("d"))
 	AddBoolFlag(cmdRunKeyDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Delete the key without a confirmation prompt")
 
@@ -100,7 +100,7 @@ func RunKeyGet(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.KeyGet{Keys: do.SSHKeys{*k}}
+	item := &displayers.KeyGet{Keys: bl.SSHKeys{*k}}
 	return c.Display(item)
 }
 
@@ -130,7 +130,7 @@ func RunKeyCreate(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.Key{Keys: do.SSHKeys{*r}}
+	item := &displayers.Key{Keys: bl.SSHKeys{*r}}
 	return c.Display(item)
 }
 
@@ -174,7 +174,7 @@ func RunKeyImport(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.Key{Keys: do.SSHKeys{*r}}
+	item := &displayers.Key{Keys: bl.SSHKeys{*r}}
 	return c.Display(item)
 }
 
@@ -225,6 +225,6 @@ func RunKeyUpdate(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.Key{Keys: do.SSHKeys{*k}}
+	item := &displayers.Key{Keys: bl.SSHKeys{*k}}
 	return c.Display(item)
 }

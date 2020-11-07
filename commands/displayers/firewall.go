@@ -19,11 +19,11 @@ import (
 	"strconv"
 	"strings"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type Firewall struct {
-	Firewalls do.Firewalls
+	Firewalls bl.Firewalls
 }
 
 var _ Displayable = &Firewall{}
@@ -54,7 +54,7 @@ func (f *Firewall) ColMap() map[string]string {
 		"Created":        "Created At",
 		"InboundRules":   "Inbound Rules",
 		"OutboundRules":  "Outbound Rules",
-		"DropletIDs":     "Droplet IDs",
+		"DropletIDs":     "Server IDs",
 		"Tags":           "Tags",
 		"PendingChanges": "Pending Changes",
 	}
@@ -82,7 +82,7 @@ func (f *Firewall) KV() []map[string]interface{} {
 	return out
 }
 
-func firewallRulesPrintHelper(fw do.Firewall) (string, string) {
+func firewallRulesPrintHelper(fw bl.Firewall) (string, string) {
 	var irs, ors []string
 
 	for _, ir := range fw.InboundRules {
@@ -127,7 +127,7 @@ func firewallInAndOutboundRulesPrintHelper(addresses []string, tags []string, dr
 	return strings.Join(output, ",")
 }
 
-func firewallPendingChangesPrintHelper(fw do.Firewall) string {
+func firewallPendingChangesPrintHelper(fw bl.Firewall) string {
 	output := []string{}
 
 	for _, pc := range fw.PendingChanges {

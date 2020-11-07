@@ -23,16 +23,16 @@ func Size() *Command {
 	cmd := &Command{
 		Command: &cobra.Command{
 			Use:   "size",
-			Short: "List available Droplet sizes",
-			Long:  "The subcommands of `doctl compute size` retrieve information about Droplet sizes.",
+			Short: "List available Server sizes",
+			Long:  "The subcommands of `doctl compute size` retrieve information about Server sizes.",
 		},
 	}
 
-	sizeDesc := `List the slug identifier, RAM, VCPU count, disk size, and pricing details for each Droplet size.
+	sizeDesc := `List the slug identifier, RAM, VCPU count, disk size, and pricing details for each Server size.
 
-Use the slugs displayed by this command to specify the type of Droplet in other commands.
+Use the slugs displayed by this command to specify the type of Server in other commands.
 `
-	CmdBuilder(cmd, RunSizeList, "list", "List available Droplet sizes", sizeDesc,
+	CmdBuilder(cmd, RunSizeList, "list", "List available Server sizes", sizeDesc,
 		Writer, aliasOpt("ls"), displayerType(&displayers.Size{}))
 
 	return cmd

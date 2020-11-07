@@ -51,8 +51,8 @@ type Client struct {
 	Balance           BalanceService
 	BillingHistory    BillingHistoryService
 	Domains           DomainsService
-	Droplets          DropletsService
-	DropletActions    DropletActionsService
+	Servers           ServersService
+	ServerActions     ServerActionsService
 	Images            ImagesService
 	ImageActions      ImageActionsService
 	Invoices          InvoicesService
@@ -153,7 +153,7 @@ func addOptions(s string, opt interface{}) (string, error) {
 	return origURL.String(), nil
 }
 
-// NewFromToken returns a new DigitalOcean API client with the given API
+// NewFromToken returns a new BinaryLane API client with the given API
 // token.
 func NewFromToken(token string) *Client {
 	ctx := context.Background()
@@ -161,7 +161,7 @@ func NewFromToken(token string) *Client {
 	return NewClient(oauth2.NewClient(ctx, ts))
 }
 
-// NewClient returns a new DigitalOcean API client, using the given
+// NewClient returns a new BinaryLane API client, using the given
 // http.Client to perform all requests.
 //
 // Users who wish to pass their own http.Client should use this method. If
@@ -180,8 +180,8 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Balance = &BalanceServiceOp{client: c}
 	c.BillingHistory = &BillingHistoryServiceOp{client: c}
 	c.Domains = &DomainsServiceOp{client: c}
-	c.Droplets = &DropletsServiceOp{client: c}
-	c.DropletActions = &DropletActionsServiceOp{client: c}
+	c.Servers = &ServersServiceOp{client: c}
+	c.ServerActions = &ServerActionsServiceOp{client: c}
 	c.Firewalls = &FirewallsServiceOp{client: c}
 	c.FloatingIPs = &FloatingIPsServiceOp{client: c}
 	c.FloatingIPActions = &FloatingIPActionsServiceOp{client: c}
@@ -203,7 +203,7 @@ func NewClient(httpClient *http.Client) *Client {
 // ClientOpt are options for New.
 type ClientOpt func(*Client) error
 
-// New returns a new DigitalOcean API client instance.
+// New returns a new BinaryLane API client instance.
 func New(httpClient *http.Client, opts ...ClientOpt) (*Client, error) {
 	c := NewClient(httpClient)
 	for _, opt := range opts {

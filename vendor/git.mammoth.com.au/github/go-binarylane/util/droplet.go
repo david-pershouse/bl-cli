@@ -24,7 +24,7 @@ func WaitForActive(ctx context.Context, client *binarylane.Client, monitorURI st
 	completed := false
 	failCount := 0
 	for !completed {
-		action, _, err := client.DropletActions.GetByURI(ctx, monitorURI)
+		action, _, err := client.ServerActions.GetByURI(ctx, monitorURI)
 
 		if err != nil {
 			select {

@@ -11,8 +11,8 @@ import (
 const invoicesBasePath = "v2/customers/my/invoices"
 
 // InvoicesService is an interface for interfacing with the Invoice
-// endpoints of the DigitalOcean API
-// See: https://developers.digitalocean.com/documentation/v2/#invoices
+// endpoints of the BinaryLane API
+// See: https://api.binarylane.com.au/reference/#invoices
 type InvoicesService interface {
 	Get(context.Context, string, *ListOptions) (*Invoice, *Response, error)
 	GetPDF(context.Context, string) ([]byte, *Response, error)
@@ -22,7 +22,7 @@ type InvoicesService interface {
 }
 
 // InvoicesServiceOp handles communication with the Invoice related methods of
-// the DigitalOcean API.
+// the BinaryLane API.
 type InvoicesServiceOp struct {
 	client *Client
 }

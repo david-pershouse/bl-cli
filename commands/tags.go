@@ -18,7 +18,7 @@ import (
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
@@ -31,7 +31,7 @@ func Tags() *Command {
 			Short: "Display commands to manage tags",
 			Long: `The sub-commands of ` + "`" + `doctl compute tag` + "`" + ` manage the tags on your account.
 
-A tag is a label that can be applied to a resource (currently Droplets, images,
+A tag is a label that can be applied to a resource (currently Servers, images,
 volumes, volume snapshots, and database clusters) in order to better organize or
 facilitate the lookups and actions on it.
 
@@ -72,7 +72,7 @@ func RunCmdTagCreate(c *CmdConfig) error {
 		return err
 	}
 
-	return c.Display(&displayers.Tag{Tags: do.Tags{*t}})
+	return c.Display(&displayers.Tag{Tags: bl.Tags{*t}})
 }
 
 // RunCmdTagGet runs tag get.
@@ -89,7 +89,7 @@ func RunCmdTagGet(c *CmdConfig) error {
 		return err
 	}
 
-	return c.Display(&displayers.Tag{Tags: do.Tags{*t}})
+	return c.Display(&displayers.Tag{Tags: bl.Tags{*t}})
 }
 
 // RunCmdTagList runs tag list.

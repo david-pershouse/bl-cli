@@ -18,27 +18,27 @@ import (
 	"testing"
 
 	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/do"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	"git.mammoth.com.au/github/bl-cli/bl"
+	"git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testTag = do.Tag{
-		Tag: &godo.Tag{
+	testTag = bl.Tag{
+		Tag: &binarylane.Tag{
 			Name: "mytag",
-			Resources: &godo.TaggedResources{
+			Resources: &binarylane.TaggedResources{
 				Count:         5,
-				LastTaggedURI: fmt.Sprintf("https://api.digitalocean.com/v2/droplets/%d", testDroplet.ID),
-				Droplets: &godo.TaggedDropletsResources{
+				LastTaggedURI: fmt.Sprintf("https://api.digitalocean.com/v2/servers/%d", testServer.ID),
+				Servers: &binarylane.TaggedServersResources{
 					Count:      5,
-					LastTagged: testDroplet.Droplet,
+					LastTagged: testServer.Server,
 				},
-				Images: &godo.TaggedImagesResources{
+				Images: &binarylane.TaggedImagesResources{
 					Count: 0,
 				},
 			}}}
-	testTagList = do.Tags{
+	testTagList = bl.Tags{
 		testTag,
 	}
 )
@@ -71,7 +71,7 @@ func TestTagList(t *testing.T) {
 
 func TestTagCreate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		tcr := godo.TagCreateRequest{Name: "new-tag"}
+		tcr := binarylane.TagCreateRequest{Name: "new-tag"}
 		tm.tags.EXPECT().Create(&tcr).Return(&testTag, nil)
 		config.Args = append(config.Args, "new-tag")
 

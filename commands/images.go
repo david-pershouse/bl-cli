@@ -19,7 +19,7 @@ import (
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )
@@ -30,14 +30,14 @@ func Images() *Command {
 		Command: &cobra.Command{
 			Use:   "image",
 			Short: "Display commands to manage images",
-			Long: `The sub-commands of ` + "`" + `doctl compute image` + "`" + ` manage images. A DigitalOcean image can be used to create a Droplet.
+			Long: `The sub-commands of ` + "`" + `doctl compute image` + "`" + ` manage images. A DigitalOcean image can be used to create a Server.
 
 Currently, there are five types of images: snapshots, backups, custom images, distributions, and One-Click Apps.
 
-- Snapshots provide a full copy of an existing Droplet instance taken on demand.
-- Backups are similar to snapshots but are created automatically at regular intervals when enabled for a Droplet.
+- Snapshots provide a full copy of an existing Server instance taken on demand.
+- Backups are similar to snapshots but are created automatically at regular intervals when enabled for a Server.
 - Custom images are Linux-based virtual machine images that you may upload for use on DigitalOcean. These can be in one of the following formats: raw, qcow2, vhdx, vdi, or vmdk.
-- Distributions are the public Linux distributions that are available to be used as a base to create Droplets.
+- Distributions are the public Linux distributions that are available to be used as a base to create Servers.
 - Applications, or One-Click Apps, are distributions pre-configured with additional software.`,
 		},
 	}
@@ -51,7 +51,7 @@ Currently, there are five types of images: snapshots, backups, custom images, di
 - Whether the image is public or not. An image that is public is available to all accounts. A non-public image is only accessible from your account. This is boolean, true or false.
 - The region the image is available in. The regions are represented by their identifying slug values.
 - The image's creation date, in ISO8601 combined date and time format.
-- The minimum Droplet disk size in GB required for a Droplet to use this image.
+- The minimum Server disk size in GB required for a Server to use this image.
 - The size of the image in GB.
 - The description of the image. (optional)
 - A status string indicating the state of a custom image. This may be ` + "`" + `NEW` + "`" + `, ` + "`" + `available` + "`" + `, ` + "`" + `pending` + "`" + `, or ` + "`" + `deleted` + "`" + `.
@@ -184,7 +184,7 @@ func RunImagesGet(c *CmdConfig) error {
 
 	rawID := c.Args[0]
 
-	var i *do.Image
+	var i *bl.Image
 
 	if id, cerr := strconv.Atoi(rawID); cerr == nil {
 		i, err = is.GetByID(id)
@@ -200,7 +200,7 @@ func RunImagesGet(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.Image{Images: do.Images{*i}}
+	item := &displayers.Image{Images: bl.Images{*i}}
 	return c.Display(item)
 }
 
@@ -232,7 +232,7 @@ func RunImagesUpdate(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.Image{Images: do.Images{*i}}
+	item := &displayers.Image{Images: bl.Images{*i}}
 	return c.Display(item)
 }
 
@@ -282,7 +282,7 @@ func RunImagesCreate(c *CmdConfig) error {
 		return err
 	}
 
-	item := &displayers.Image{Images: do.Images{*i}}
+	item := &displayers.Image{Images: bl.Images{*i}}
 	return c.Display(item)
 }
 

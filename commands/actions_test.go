@@ -18,14 +18,14 @@ import (
 	"time"
 
 	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testAction     = do.Action{Action: &godo.Action{ID: 1, Region: &godo.Region{Slug: "dev0"}}}
-	testActionList = do.Actions{
+	testAction     = bl.Action{Action: &godo.Action{ID: 1, Region: &godo.Region{Slug: "dev0"}}}
+	testActionList = bl.Actions{
 		testAction,
 	}
 )
@@ -75,7 +75,7 @@ func Test_filterActions(t *testing.T) {
 		{len: 2, status: "completed", desc: "by status"},
 	}
 
-	actions := do.Actions{
+	actions := bl.Actions{
 		{Action: &godo.Action{
 			ResourceType: "foo", RegionSlug: "nyc1", Status: "completed", Type: "alpha",
 			CompletedAt: &godo.Timestamp{Time: time.Date(2015, time.April, 2, 12, 0, 0, 0, time.UTC)},

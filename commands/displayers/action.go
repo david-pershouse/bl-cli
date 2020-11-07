@@ -16,11 +16,11 @@ package displayers
 import (
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type Action struct {
-	Actions do.Actions
+	Actions bl.Actions
 }
 
 var _ Displayable = &Action{}

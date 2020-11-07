@@ -16,14 +16,14 @@ package commands
 import (
 	"testing"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testSize     = do.Size{Size: &godo.Size{Slug: "small"}}
-	testSizeList = do.Sizes{testSize}
+	testSize     = bl.Size{Size: &godo.Size{Slug: "small"}}
+	testSizeList = bl.Sizes{testSize}
 )
 
 func TestSizeCommand(t *testing.T) {

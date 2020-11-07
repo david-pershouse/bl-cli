@@ -16,11 +16,11 @@ package displayers
 import (
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type InvoiceSummary struct {
-	*do.InvoiceSummary
+	*bl.InvoiceSummary
 }
 
 var _ Displayable = &InvoiceSummary{}

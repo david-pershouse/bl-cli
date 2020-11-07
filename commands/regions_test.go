@@ -16,14 +16,14 @@ package commands
 import (
 	"testing"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testRegion     = do.Region{Region: &godo.Region{Slug: "dev0"}}
-	testRegionList = do.Regions{testRegion}
+	testRegion     = bl.Region{Region: &godo.Region{Slug: "dev0"}}
+	testRegionList = bl.Regions{testRegion}
 )
 
 func TestRegionCommand(t *testing.T) {

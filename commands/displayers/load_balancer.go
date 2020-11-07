@@ -19,11 +19,11 @@ import (
 	"reflect"
 	"strings"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type LoadBalancer struct {
-	LoadBalancers do.LoadBalancers
+	LoadBalancers bl.LoadBalancers
 }
 
 var _ Displayable = &LoadBalancer{}
@@ -64,7 +64,7 @@ func (lb *LoadBalancer) ColMap() map[string]string {
 		"Size":                "Size",
 		"VPCUUID":             "VPC UUID",
 		"Tag":                 "Tag",
-		"DropletIDs":          "Droplet IDs",
+		"DropletIDs":          "Server IDs",
 		"RedirectHttpToHttps": "SSL",
 		"StickySessions":      "Sticky Sessions",
 		"HealthCheck":         "Health Check",

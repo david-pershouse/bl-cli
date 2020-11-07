@@ -10,7 +10,7 @@ const floatingBasePath = "v2/floating_ips"
 
 // FloatingIPsService is an interface for interfacing with the floating IPs
 // endpoints of the Digital Ocean API.
-// See: https://developers.digitalocean.com/documentation/v2#floating-ips
+// See: https://api.binarylane.com.au/reference#floating-ips
 type FloatingIPsService interface {
 	List(context.Context, *ListOptions) ([]FloatingIP, *Response, error)
 	Get(context.Context, string) (*FloatingIP, *Response, error)
@@ -19,7 +19,7 @@ type FloatingIPsService interface {
 }
 
 // FloatingIPsServiceOp handles communication with the floating IPs related methods of the
-// DigitalOcean API.
+// BinaryLane API.
 type FloatingIPsServiceOp struct {
 	client *Client
 }
@@ -28,9 +28,9 @@ var _ FloatingIPsService = &FloatingIPsServiceOp{}
 
 // FloatingIP represents a Digital Ocean floating IP.
 type FloatingIP struct {
-	Region  *Region  `json:"region"`
-	Droplet *Droplet `json:"droplet"`
-	IP      string   `json:"ip"`
+	Region  *Region `json:"region"`
+	Droplet *Server `json:"droplet"`
+	IP      string  `json:"ip"`
 }
 
 func (f FloatingIP) String() string {

@@ -4,14 +4,14 @@ import (
 	"bytes"
 	"testing"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestDisplayerDisplay(t *testing.T) {
-	emptyImages := make([]do.Image, 0)
-	var nilImages []do.Image
+	emptyImages := make([]bl.Image, 0)
+	var nilImages []bl.Image
 
 	tests := []struct {
 		name         string

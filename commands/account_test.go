@@ -16,12 +16,12 @@ package commands
 import (
 	"testing"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
-var testAccount = &do.Account{
+var testAccount = &bl.Account{
 	Account: &godo.Account{
 		DropletLimit:  10,
 		Email:         "user@example.com",

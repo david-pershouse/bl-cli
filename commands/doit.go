@@ -152,8 +152,8 @@ func computeCmd() *Command {
 	}
 
 	cmd.AddCommand(Actions())
-	cmd.AddCommand(DropletAction())
-	cmd.AddCommand(Droplet())
+	cmd.AddCommand(ServerAction())
+	cmd.AddCommand(Server())
 	cmd.AddCommand(Domain())
 	cmd.AddCommand(Firewall())
 	cmd.AddCommand(FloatingIP())

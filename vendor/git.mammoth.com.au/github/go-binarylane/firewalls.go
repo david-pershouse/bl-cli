@@ -9,8 +9,8 @@ import (
 
 const firewallsBasePath = "/v2/firewalls"
 
-// FirewallsService is an interface for managing Firewalls with the DigitalOcean API.
-// See: https://developers.digitalocean.com/documentation/v2/#firewalls
+// FirewallsService is an interface for managing Firewalls with the BinaryLane API.
+// See: https://api.binarylane.com.au/reference/#firewalls
 type FirewallsService interface {
 	Get(context.Context, string) (*Firewall, *Response, error)
 	Create(context.Context, *FirewallRequest) (*Firewall, *Response, error)
@@ -26,7 +26,7 @@ type FirewallsService interface {
 	RemoveRules(context.Context, string, *FirewallRulesRequest) (*Response, error)
 }
 
-// FirewallsServiceOp handles communication with Firewalls methods of the DigitalOcean API.
+// FirewallsServiceOp handles communication with Firewalls methods of the BinaryLane API.
 type FirewallsServiceOp struct {
 	client *Client
 }
@@ -178,7 +178,7 @@ func (fw *FirewallsServiceOp) List(ctx context.Context, opt *ListOptions) ([]Fir
 
 // ListByDroplet Firewalls.
 func (fw *FirewallsServiceOp) ListByDroplet(ctx context.Context, dID int, opt *ListOptions) ([]Firewall, *Response, error) {
-	basePath := path.Join(dropletBasePath, strconv.Itoa(dID), "firewalls")
+	basePath := path.Join(serverBasePath, strconv.Itoa(dID), "firewalls")
 	path, err := addOptions(basePath, opt)
 	if err != nil {
 		return nil, nil, err

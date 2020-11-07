@@ -20,14 +20,14 @@ import (
 	"testing"
 
 	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testKey     = do.SSHKey{Key: &godo.Key{ID: 1, Fingerprint: "fingerprint"}}
-	testKeyList = do.SSHKeys{testKey}
+	testKey     = bl.SSHKey{Key: &godo.Key{ID: 1, Fingerprint: "fingerprint"}}
+	testKeyList = bl.SSHKeys{testKey}
 )
 
 func TestSSHKeysCommand(t *testing.T) {

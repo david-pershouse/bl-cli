@@ -57,7 +57,7 @@ var _ = suite("invoices/get", func(t *testing.T, when spec.G, it spec.S) {
 
 const invoiceGetOutput string = `
 Resource ID    Resource UUID              Product           Description                 Group Description    Amount    Duration    Duration Unit    Start Time              End Time                Project Name         Category
-1234           droplet-1234-uuid          Droplets          My Example Droplet                               12.34     672         Hours            2018-06-20T08:44:38Z    2018-06-21T08:44:38Z    My project           iaas
+1234           droplet-1234-uuid          Servers          My Example Droplet                               12.34     672         Hours            2018-06-20T08:44:38Z    2018-06-21T08:44:38Z    My project           iaas
 2345           load-balancer-2345-uuid    Load Balancers    My Example Load Balancer    group                23.45     744         Hours            2018-06-20T08:44:38Z    2018-06-21T08:44:38Z    My Second Project    paas
 
 `
@@ -65,7 +65,7 @@ const invoiceGetResponse string = `
 {
 	"invoice_items": [
 		{
-			"product": "Droplets",
+			"product": "Servers",
 			"resource_id": "1234",
 			"resource_uuid": "droplet-1234-uuid",
 			"group_description": "",

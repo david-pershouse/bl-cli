@@ -17,11 +17,11 @@ import (
 	"fmt"
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type FloatingIP struct {
-	FloatingIPs do.FloatingIPs
+	FloatingIPs bl.FloatingIPs
 }
 
 var _ Displayable = &FloatingIP{}
@@ -38,7 +38,7 @@ func (fi *FloatingIP) Cols() []string {
 
 func (fi *FloatingIP) ColMap() map[string]string {
 	return map[string]string{
-		"IP": "IP", "Region": "Region", "DropletID": "Droplet ID", "DropletName": "Droplet Name",
+		"IP": "IP", "Region": "Region", "DropletID": "Server ID", "DropletName": "Server Name",
 	}
 }
 

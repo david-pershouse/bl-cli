@@ -4,14 +4,14 @@ import (
 	"testing"
 
 	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 	godo "git.mammoth.com.au/github/go-binarylane"
 
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testVPC = do.VPC{
+	testVPC = bl.VPC{
 		VPC: &godo.VPC{
 			Name:        "vpc-name",
 			RegionSlug:  "nyc1",
@@ -19,7 +19,7 @@ var (
 			IPRange:     "10.116.0.0/20",
 		}}
 
-	testVPCList = do.VPCs{
+	testVPCList = bl.VPCs{
 		testVPC,
 	}
 )

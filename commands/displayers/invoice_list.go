@@ -16,11 +16,11 @@ package displayers
 import (
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type InvoiceList struct {
-	*do.InvoiceList
+	*bl.InvoiceList
 }
 
 var _ Displayable = &InvoiceList{}

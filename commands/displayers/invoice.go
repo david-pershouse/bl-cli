@@ -17,11 +17,11 @@ import (
 	"io"
 	"time"
 
-	"git.mammoth.com.au/github/bl-cli/do"
+	"git.mammoth.com.au/github/bl-cli/bl"
 )
 
 type Invoice struct {
-	*do.Invoice
+	*bl.Invoice
 }
 
 var _ Displayable = &Invoice{}

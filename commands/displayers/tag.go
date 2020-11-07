@@ -35,7 +35,7 @@ func (t *Tag) Cols() []string {
 
 func (t *Tag) ColMap() map[string]string {
 	return map[string]string{
-		"Name":         "Name",
+		"Name":        "Name",
 		"ServerCount": "Server Count",
 	}
 }

@@ -95,9 +95,9 @@ var (
 
 	testServerList        = bl.Servers{testServer, anotherTestServer}
 	testPrivateServerList = bl.Servers{testPrivateServer}
-	testKernel             = bl.Kernel{Kernel: &binarylane.Kernel{ID: 1}}
-	testKernelList         = bl.Kernels{testKernel}
-	testFloatingIP         = bl.FloatingIP{
+	testKernel            = bl.Kernel{Kernel: &binarylane.Kernel{ID: 1}}
+	testKernelList        = bl.Kernels{testKernel}
+	testFloatingIP        = bl.FloatingIP{
 		FloatingIP: &binarylane.FloatingIP{
 			Droplet: testServer.Server,
 			Region:  testServer.Region,

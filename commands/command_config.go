@@ -18,8 +18,8 @@ import (
 	"io"
 
 	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/commands/displayers"
 	"git.mammoth.com.au/github/bl-cli/bl"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
 	"github.com/spf13/viper"
 )
 

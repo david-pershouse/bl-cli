@@ -18,8 +18,8 @@ import (
 	"strings"
 
 	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/commands/displayers"
 	"git.mammoth.com.au/github/bl-cli/bl"
+	"git.mammoth.com.au/github/bl-cli/commands/displayers"
 	godo "git.mammoth.com.au/github/go-binarylane"
 	"github.com/spf13/cobra"
 )

@@ -65,7 +65,7 @@ func VPCSetDefault() VPCSetField {
 // vpcSetDefault satisfies the VPCSetField interface
 type vpcSetDefault struct{}
 
-// VPC represents a DigitalOcean Virtual Private Cloud configuration.
+// VPC represents a BinaryLane Virtual Private Cloud configuration.
 type VPC struct {
 	ID          string    `json:"id,omitempty"`
 	URN         string    `json:"urn"`

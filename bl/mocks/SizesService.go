@@ -7,7 +7,7 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -35,10 +35,10 @@ func (m *MockSizesService) EXPECT() *MockSizesServiceMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockSizesService) List() (do.Sizes, error) {
+func (m *MockSizesService) List() (bl.Sizes, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
-	ret0, _ := ret[0].(do.Sizes)
+	ret0, _ := ret[0].(bl.Sizes)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

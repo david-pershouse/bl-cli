@@ -9,7 +9,7 @@ import (
 const floatingBasePath = "v2/floating_ips"
 
 // FloatingIPsService is an interface for interfacing with the floating IPs
-// endpoints of the Digital Ocean API.
+// endpoints of the BinaryLane API.
 // See: https://api.binarylane.com.au/reference#floating-ips
 type FloatingIPsService interface {
 	List(context.Context, *ListOptions) ([]FloatingIP, *Response, error)
@@ -26,18 +26,18 @@ type FloatingIPsServiceOp struct {
 
 var _ FloatingIPsService = &FloatingIPsServiceOp{}
 
-// FloatingIP represents a Digital Ocean floating IP.
+// FloatingIP represents a BinaryLane floating IP.
 type FloatingIP struct {
-	Region  *Region `json:"region"`
-	Droplet *Server `json:"droplet"`
-	IP      string  `json:"ip"`
+	Region *Region `json:"region"`
+	Server *Server `json:"server"`
+	IP     string  `json:"ip"`
 }
 
 func (f FloatingIP) String() string {
 	return Stringify(f)
 }
 
-// URN returns the floating IP in a valid DO API URN form.
+// URN returns the floating IP in a valid BL API URN form.
 func (f FloatingIP) URN() string {
 	return ToURN("FloatingIP", f.IP)
 }
@@ -54,11 +54,10 @@ type floatingIPRoot struct {
 }
 
 // FloatingIPCreateRequest represents a request to create a floating IP.
-// If DropletID is not empty, the floating IP will be assigned to the
-// droplet.
+// If ServerId is not empty, the floating IP will be assigned to the server.
 type FloatingIPCreateRequest struct {
-	Region    string `json:"region"`
-	DropletID int    `json:"droplet_id,omitempty"`
+	Region   string `json:"region"`
+	ServerID int    `json:"server_id,omitempty"`
 }
 
 // List all floating IPs.
@@ -107,8 +106,8 @@ func (f *FloatingIPsServiceOp) Get(ctx context.Context, ip string) (*FloatingIP,
 	return root.FloatingIP, resp, err
 }
 
-// Create a floating IP. If the DropletID field of the request is not empty,
-// the floating IP will also be assigned to the droplet.
+// Create a floating IP. If the ServerID field of the request is not empty,
+// the floating IP will also be assigned to the server.
 func (f *FloatingIPsServiceOp) Create(ctx context.Context, createRequest *FloatingIPCreateRequest) (*FloatingIP, *Response, error) {
 	path := floatingBasePath
 

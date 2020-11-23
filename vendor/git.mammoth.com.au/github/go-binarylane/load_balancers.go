@@ -9,7 +9,7 @@ import (
 const loadBalancersBasePath = "/v2/load_balancers"
 const forwardingRulesPath = "forwarding_rules"
 
-const dropletsPath = "droplets"
+const serversPath = "servers"
 
 // LoadBalancersService is an interface for managing load balancers with the BinaryLane API.
 // See: https://api.binarylane.com.au/reference#load-balancers
@@ -19,13 +19,13 @@ type LoadBalancersService interface {
 	Create(context.Context, *LoadBalancerRequest) (*LoadBalancer, *Response, error)
 	Update(ctx context.Context, lbID string, lbr *LoadBalancerRequest) (*LoadBalancer, *Response, error)
 	Delete(ctx context.Context, lbID string) (*Response, error)
-	AddDroplets(ctx context.Context, lbID string, dropletIDs ...int) (*Response, error)
-	RemoveDroplets(ctx context.Context, lbID string, dropletIDs ...int) (*Response, error)
+	AddServers(ctx context.Context, lbID string, serverIDs ...int) (*Response, error)
+	RemoveServers(ctx context.Context, lbID string, serverIDs ...int) (*Response, error)
 	AddForwardingRules(ctx context.Context, lbID string, rules ...ForwardingRule) (*Response, error)
 	RemoveForwardingRules(ctx context.Context, lbID string, rules ...ForwardingRule) (*Response, error)
 }
 
-// LoadBalancer represents a DigitalOcean load balancer configuration.
+// LoadBalancer represents a BinaryLane load balancer configuration.
 // Tags can only be provided upon the creation of a Load Balancer.
 type LoadBalancer struct {
 	ID                     string           `json:"id,omitempty"`
@@ -39,7 +39,7 @@ type LoadBalancer struct {
 	HealthCheck            *HealthCheck     `json:"health_check,omitempty"`
 	StickySessions         *StickySessions  `json:"sticky_sessions,omitempty"`
 	Region                 *Region          `json:"region,omitempty"`
-	DropletIDs             []int            `json:"droplet_ids,omitempty"`
+	ServerIDs              []int            `json:"server_ids,omitempty"`
 	Tag                    string           `json:"tag,omitempty"`
 	Tags                   []string         `json:"tags,omitempty"`
 	RedirectHttpToHttps    bool             `json:"redirect_http_to_https,omitempty"`
@@ -53,7 +53,7 @@ func (l LoadBalancer) String() string {
 	return Stringify(l)
 }
 
-// URN returns the load balancer ID in a valid DO API URN form.
+// URN returns the load balancer ID in a valid BL API URN form.
 func (l LoadBalancer) URN() string {
 	return ToURN("LoadBalancer", l.ID)
 }
@@ -66,7 +66,7 @@ func (l LoadBalancer) AsRequest() *LoadBalancerRequest {
 		Algorithm:              l.Algorithm,
 		SizeSlug:               l.SizeSlug,
 		ForwardingRules:        append([]ForwardingRule(nil), l.ForwardingRules...),
-		DropletIDs:             append([]int(nil), l.DropletIDs...),
+		ServerIDs:              append([]int(nil), l.ServerIDs...),
 		Tag:                    l.Tag,
 		RedirectHttpToHttps:    l.RedirectHttpToHttps,
 		EnableProxyProtocol:    l.EnableProxyProtocol,
@@ -141,7 +141,7 @@ type LoadBalancerRequest struct {
 	ForwardingRules        []ForwardingRule `json:"forwarding_rules,omitempty"`
 	HealthCheck            *HealthCheck     `json:"health_check,omitempty"`
 	StickySessions         *StickySessions  `json:"sticky_sessions,omitempty"`
-	DropletIDs             []int            `json:"droplet_ids,omitempty"`
+	ServerIDs              []int            `json:"server_ids,omitempty"`
 	Tag                    string           `json:"tag,omitempty"`
 	Tags                   []string         `json:"tags,omitempty"`
 	RedirectHttpToHttps    bool             `json:"redirect_http_to_https,omitempty"`
@@ -163,11 +163,11 @@ func (l forwardingRulesRequest) String() string {
 	return Stringify(l)
 }
 
-type dropletIDsRequest struct {
-	IDs []int `json:"droplet_ids,omitempty"`
+type serverIDsRequest struct {
+	IDs []int `json:"server_ids,omitempty"`
 }
 
-func (l dropletIDsRequest) String() string {
+func (l serverIDsRequest) String() string {
 	return Stringify(l)
 }
 
@@ -279,11 +279,11 @@ func (l *LoadBalancersServiceOp) Delete(ctx context.Context, ldID string) (*Resp
 	return l.client.Do(ctx, req, nil)
 }
 
-// AddDroplets adds droplets to a load balancer.
-func (l *LoadBalancersServiceOp) AddDroplets(ctx context.Context, lbID string, dropletIDs ...int) (*Response, error) {
-	path := fmt.Sprintf("%s/%s/%s", loadBalancersBasePath, lbID, dropletsPath)
+// AddServers adds servers to a load balancer.
+func (l *LoadBalancersServiceOp) AddServers(ctx context.Context, lbID string, serverIDs ...int) (*Response, error) {
+	path := fmt.Sprintf("%s/%s/%s", loadBalancersBasePath, lbID, serversPath)
 
-	req, err := l.client.NewRequest(ctx, http.MethodPost, path, &dropletIDsRequest{IDs: dropletIDs})
+	req, err := l.client.NewRequest(ctx, http.MethodPost, path, &serverIDsRequest{IDs: serverIDs})
 	if err != nil {
 		return nil, err
 	}
@@ -291,11 +291,11 @@ func (l *LoadBalancersServiceOp) AddDroplets(ctx context.Context, lbID string, d
 	return l.client.Do(ctx, req, nil)
 }
 
-// RemoveDroplets removes droplets from a load balancer.
-func (l *LoadBalancersServiceOp) RemoveDroplets(ctx context.Context, lbID string, dropletIDs ...int) (*Response, error) {
-	path := fmt.Sprintf("%s/%s/%s", loadBalancersBasePath, lbID, dropletsPath)
+// RemoveServers removes servers from a load balancer.
+func (l *LoadBalancersServiceOp) RemoveServers(ctx context.Context, lbID string, serverIDs ...int) (*Response, error) {
+	path := fmt.Sprintf("%s/%s/%s", loadBalancersBasePath, lbID, serversPath)
 
-	req, err := l.client.NewRequest(ctx, http.MethodDelete, path, &dropletIDsRequest{IDs: dropletIDs})
+	req, err := l.client.NewRequest(ctx, http.MethodDelete, path, &serverIDsRequest{IDs: serverIDs})
 	if err != nil {
 		return nil, err
 	}

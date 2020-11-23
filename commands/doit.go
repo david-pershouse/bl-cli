@@ -86,7 +86,7 @@ func init() {
 }
 
 func initConfig() {
-	viper.SetEnvPrefix("DIGITALOCEAN")
+	viper.SetEnvPrefix("BINARYLANE")
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 	viper.SetConfigType("yaml")

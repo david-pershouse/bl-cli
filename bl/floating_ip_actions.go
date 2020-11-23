@@ -22,7 +22,7 @@ import (
 // FloatingIPActionsService is an interface for interacting with
 // BinaryLane's floating ip action api.
 type FloatingIPActionsService interface {
-	Assign(ip string, dropletID int) (*Action, error)
+	Assign(ip string, serverID int) (*Action, error)
 	Unassign(ip string) (*Action, error)
 	Get(ip string, actionID int) (*Action, error)
 	List(ip string, opt *godo.ListOptions) ([]Action, error)
@@ -41,8 +41,8 @@ func NewFloatingIPActionsService(godoClient *godo.Client) FloatingIPActionsServi
 	}
 }
 
-func (fia *floatingIPActionsService) Assign(ip string, dropletID int) (*Action, error) {
-	a, _, err := fia.client.FloatingIPActions.Assign(context.TODO(), ip, dropletID)
+func (fia *floatingIPActionsService) Assign(ip string, serverID int) (*Action, error) {
+	a, _, err := fia.client.FloatingIPActions.Assign(context.TODO(), ip, serverID)
 	if err != nil {
 		return nil, err
 	}

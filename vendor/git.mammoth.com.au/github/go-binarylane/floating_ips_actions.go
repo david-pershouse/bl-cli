@@ -7,10 +7,10 @@ import (
 )
 
 // FloatingIPActionsService is an interface for interfacing with the
-// floating IPs actions endpoints of the Digital Ocean API.
+// floating IPs actions endpoints of the BinaryLane API.
 // See: https://api.binarylane.com.au/reference#floating-ips-action
 type FloatingIPActionsService interface {
-	Assign(ctx context.Context, ip string, dropletID int) (*Action, *Response, error)
+	Assign(ctx context.Context, ip string, serverID int) (*Action, *Response, error)
 	Unassign(ctx context.Context, ip string) (*Action, *Response, error)
 	Get(ctx context.Context, ip string, actionID int) (*Action, *Response, error)
 	List(ctx context.Context, ip string, opt *ListOptions) ([]Action, *Response, error)
@@ -22,16 +22,16 @@ type FloatingIPActionsServiceOp struct {
 	client *Client
 }
 
-// Assign a floating IP to a droplet.
-func (s *FloatingIPActionsServiceOp) Assign(ctx context.Context, ip string, dropletID int) (*Action, *Response, error) {
+// Assign a floating IP to a server.
+func (s *FloatingIPActionsServiceOp) Assign(ctx context.Context, ip string, serverID int) (*Action, *Response, error) {
 	request := &ActionRequest{
 		"type":       "assign",
-		"droplet_id": dropletID,
+		"server_id": serverID,
 	}
 	return s.doAction(ctx, ip, request)
 }
 
-// Unassign a floating IP from the droplet it is currently assigned to.
+// Unassign a floating IP from the server it is currently assigned to.
 func (s *FloatingIPActionsServiceOp) Unassign(ctx context.Context, ip string) (*Action, *Response, error) {
 	request := &ActionRequest{"type": "unassign"}
 	return s.doAction(ctx, ip, request)

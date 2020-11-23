@@ -7,7 +7,7 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -35,10 +35,10 @@ func (m *MockBalanceService) EXPECT() *MockBalanceServiceMockRecorder {
 }
 
 // Get mocks base method.
-func (m *MockBalanceService) Get() (*do.Balance, error) {
+func (m *MockBalanceService) Get() (*bl.Balance, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get")
-	ret0, _ := ret[0].(*do.Balance)
+	ret0, _ := ret[0].(*bl.Balance)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

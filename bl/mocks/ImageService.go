@@ -7,8 +7,8 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
+	binarylane "git.mammoth.com.au/github/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -36,10 +36,10 @@ func (m *MockImagesService) EXPECT() *MockImagesServiceMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockImagesService) List(public bool) (do.Images, error) {
+func (m *MockImagesService) List(public bool) (bl.Images, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", public)
-	ret0, _ := ret[0].(do.Images)
+	ret0, _ := ret[0].(bl.Images)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockImagesServiceMockRecorder) List(public interface{}) *gomock.Call {
 }
 
 // ListDistribution mocks base method.
-func (m *MockImagesService) ListDistribution(public bool) (do.Images, error) {
+func (m *MockImagesService) ListDistribution(public bool) (bl.Images, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListDistribution", public)
-	ret0, _ := ret[0].(do.Images)
+	ret0, _ := ret[0].(bl.Images)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -66,10 +66,10 @@ func (mr *MockImagesServiceMockRecorder) ListDistribution(public interface{}) *g
 }
 
 // ListApplication mocks base method.
-func (m *MockImagesService) ListApplication(public bool) (do.Images, error) {
+func (m *MockImagesService) ListApplication(public bool) (bl.Images, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListApplication", public)
-	ret0, _ := ret[0].(do.Images)
+	ret0, _ := ret[0].(bl.Images)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -81,10 +81,10 @@ func (mr *MockImagesServiceMockRecorder) ListApplication(public interface{}) *go
 }
 
 // ListUser mocks base method.
-func (m *MockImagesService) ListUser(public bool) (do.Images, error) {
+func (m *MockImagesService) ListUser(public bool) (bl.Images, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListUser", public)
-	ret0, _ := ret[0].(do.Images)
+	ret0, _ := ret[0].(bl.Images)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -96,10 +96,10 @@ func (mr *MockImagesServiceMockRecorder) ListUser(public interface{}) *gomock.Ca
 }
 
 // GetByID mocks base method.
-func (m *MockImagesService) GetByID(id int) (*do.Image, error) {
+func (m *MockImagesService) GetByID(id int) (*bl.Image, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByID", id)
-	ret0, _ := ret[0].(*do.Image)
+	ret0, _ := ret[0].(*bl.Image)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -111,10 +111,10 @@ func (mr *MockImagesServiceMockRecorder) GetByID(id interface{}) *gomock.Call {
 }
 
 // GetBySlug mocks base method.
-func (m *MockImagesService) GetBySlug(slug string) (*do.Image, error) {
+func (m *MockImagesService) GetBySlug(slug string) (*bl.Image, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetBySlug", slug)
-	ret0, _ := ret[0].(*do.Image)
+	ret0, _ := ret[0].(*bl.Image)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -126,10 +126,10 @@ func (mr *MockImagesServiceMockRecorder) GetBySlug(slug interface{}) *gomock.Cal
 }
 
 // Update mocks base method.
-func (m *MockImagesService) Update(id int, iur *godo.ImageUpdateRequest) (*do.Image, error) {
+func (m *MockImagesService) Update(id int, iur *binarylane.ImageUpdateRequest) (*bl.Image, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", id, iur)
-	ret0, _ := ret[0].(*do.Image)
+	ret0, _ := ret[0].(*bl.Image)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -155,10 +155,10 @@ func (mr *MockImagesServiceMockRecorder) Delete(id interface{}) *gomock.Call {
 }
 
 // Create mocks base method.
-func (m *MockImagesService) Create(icr *godo.CustomImageCreateRequest) (*do.Image, error) {
+func (m *MockImagesService) Create(icr *binarylane.CustomImageCreateRequest) (*bl.Image, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", icr)
-	ret0, _ := ret[0].(*do.Image)
+	ret0, _ := ret[0].(*bl.Image)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

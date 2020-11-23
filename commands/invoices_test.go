@@ -55,7 +55,7 @@ var testInvoicesGet = &bl.Invoice{
 			{
 				Product:          "Servers",
 				ResourceID:       "1234",
-				ResourceUUID:     "droplet-1234-uuid",
+				ResourceUUID:     "server-1234-uuid",
 				GroupDescription: "",
 				Description:      "My Example Server",
 				Amount:           "12.34",

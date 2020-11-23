@@ -7,8 +7,8 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
+	binarylane "git.mammoth.com.au/github/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -36,10 +36,10 @@ func (m *MockProjectsService) EXPECT() *MockProjectsServiceMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockProjectsService) List() (do.Projects, error) {
+func (m *MockProjectsService) List() (bl.Projects, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
-	ret0, _ := ret[0].(do.Projects)
+	ret0, _ := ret[0].(bl.Projects)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockProjectsServiceMockRecorder) List() *gomock.Call {
 }
 
 // GetDefault mocks base method.
-func (m *MockProjectsService) GetDefault() (*do.Project, error) {
+func (m *MockProjectsService) GetDefault() (*bl.Project, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDefault")
-	ret0, _ := ret[0].(*do.Project)
+	ret0, _ := ret[0].(*bl.Project)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -66,10 +66,10 @@ func (mr *MockProjectsServiceMockRecorder) GetDefault() *gomock.Call {
 }
 
 // Get mocks base method.
-func (m *MockProjectsService) Get(projectUUID string) (*do.Project, error) {
+func (m *MockProjectsService) Get(projectUUID string) (*bl.Project, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", projectUUID)
-	ret0, _ := ret[0].(*do.Project)
+	ret0, _ := ret[0].(*bl.Project)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -81,10 +81,10 @@ func (mr *MockProjectsServiceMockRecorder) Get(projectUUID interface{}) *gomock.
 }
 
 // Create mocks base method.
-func (m *MockProjectsService) Create(arg0 *godo.CreateProjectRequest) (*do.Project, error) {
+func (m *MockProjectsService) Create(arg0 *binarylane.CreateProjectRequest) (*bl.Project, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", arg0)
-	ret0, _ := ret[0].(*do.Project)
+	ret0, _ := ret[0].(*bl.Project)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -96,10 +96,10 @@ func (mr *MockProjectsServiceMockRecorder) Create(arg0 interface{}) *gomock.Call
 }
 
 // Update mocks base method.
-func (m *MockProjectsService) Update(projectUUID string, req *godo.UpdateProjectRequest) (*do.Project, error) {
+func (m *MockProjectsService) Update(projectUUID string, req *binarylane.UpdateProjectRequest) (*bl.Project, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", projectUUID, req)
-	ret0, _ := ret[0].(*do.Project)
+	ret0, _ := ret[0].(*bl.Project)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -125,10 +125,10 @@ func (mr *MockProjectsServiceMockRecorder) Delete(projectUUID interface{}) *gomo
 }
 
 // ListResources mocks base method.
-func (m *MockProjectsService) ListResources(projectUUID string) (do.ProjectResources, error) {
+func (m *MockProjectsService) ListResources(projectUUID string) (bl.ProjectResources, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListResources", projectUUID)
-	ret0, _ := ret[0].(do.ProjectResources)
+	ret0, _ := ret[0].(bl.ProjectResources)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -140,10 +140,10 @@ func (mr *MockProjectsServiceMockRecorder) ListResources(projectUUID interface{}
 }
 
 // AssignResources mocks base method.
-func (m *MockProjectsService) AssignResources(projectUUID string, resources []string) (do.ProjectResources, error) {
+func (m *MockProjectsService) AssignResources(projectUUID string, resources []string) (bl.ProjectResources, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AssignResources", projectUUID, resources)
-	ret0, _ := ret[0].(do.ProjectResources)
+	ret0, _ := ret[0].(bl.ProjectResources)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

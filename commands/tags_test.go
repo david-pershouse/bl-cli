@@ -29,7 +29,7 @@ var (
 			Name: "mytag",
 			Resources: &binarylane.TaggedResources{
 				Count:         5,
-				LastTaggedURI: fmt.Sprintf("https://api.digitalocean.com/v2/servers/%d", testServer.ID),
+				LastTaggedURI: fmt.Sprintf("https://api.binarylane.com.au/v2/servers/%d", testServer.ID),
 				Servers: &binarylane.TaggedServersResources{
 					Count:      5,
 					LastTagged: testServer.Server,

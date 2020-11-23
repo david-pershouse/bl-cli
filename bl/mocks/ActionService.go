@@ -7,7 +7,7 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -35,10 +35,10 @@ func (m *MockActionsService) EXPECT() *MockActionsServiceMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockActionsService) List() (do.Actions, error) {
+func (m *MockActionsService) List() (bl.Actions, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
-	ret0, _ := ret[0].(do.Actions)
+	ret0, _ := ret[0].(bl.Actions)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +50,10 @@ func (mr *MockActionsServiceMockRecorder) List() *gomock.Call {
 }
 
 // Get mocks base method.
-func (m *MockActionsService) Get(arg0 int) (*do.Action, error) {
+func (m *MockActionsService) Get(arg0 int) (*bl.Action, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", arg0)
-	ret0, _ := ret[0].(*do.Action)
+	ret0, _ := ret[0].(*bl.Action)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

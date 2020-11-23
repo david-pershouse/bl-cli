@@ -7,8 +7,8 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
+	binarylane "git.mammoth.com.au/github/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -36,10 +36,10 @@ func (m *MockImageActionsService) EXPECT() *MockImageActionsServiceMockRecorder 
 }
 
 // Get mocks base method.
-func (m *MockImageActionsService) Get(arg0, arg1 int) (*do.Action, error) {
+func (m *MockImageActionsService) Get(arg0, arg1 int) (*bl.Action, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", arg0, arg1)
-	ret0, _ := ret[0].(*do.Action)
+	ret0, _ := ret[0].(*bl.Action)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockImageActionsServiceMockRecorder) Get(arg0, arg1 interface{}) *gomo
 }
 
 // Convert mocks base method.
-func (m *MockImageActionsService) Convert(arg0 int) (*do.Action, error) {
+func (m *MockImageActionsService) Convert(arg0 int) (*bl.Action, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Convert", arg0)
-	ret0, _ := ret[0].(*do.Action)
+	ret0, _ := ret[0].(*bl.Action)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -66,10 +66,10 @@ func (mr *MockImageActionsServiceMockRecorder) Convert(arg0 interface{}) *gomock
 }
 
 // Transfer mocks base method.
-func (m *MockImageActionsService) Transfer(arg0 int, arg1 *godo.ActionRequest) (*do.Action, error) {
+func (m *MockImageActionsService) Transfer(arg0 int, arg1 *binarylane.ActionRequest) (*bl.Action, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Transfer", arg0, arg1)
-	ret0, _ := ret[0].(*do.Action)
+	ret0, _ := ret[0].(*bl.Action)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

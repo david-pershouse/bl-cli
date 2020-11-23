@@ -45,9 +45,9 @@ func TestFloatingIPsGet(t *testing.T) {
 	})
 }
 
-func TestFloatingIPsCreate_Droplet(t *testing.T) {
+func TestFloatingIPsCreate_Server(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		ficr := &godo.FloatingIPCreateRequest{DropletID: 1}
+		ficr := &godo.FloatingIPCreateRequest{ServerID: 1}
 		tm.floatingIPs.EXPECT().Create(ficr).Return(&testFloatingIP, nil)
 
 		config.Doit.Set(config.NS, blcli.ArgServerID, 1)

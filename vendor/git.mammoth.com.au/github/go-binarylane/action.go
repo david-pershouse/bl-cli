@@ -41,7 +41,7 @@ type actionRoot struct {
 	Event *Action `json:"action"`
 }
 
-// Action represents a DigitalOcean Action
+// Action represents a BinaryLane Action
 type Action struct {
 	ID           int        `json:"id"`
 	Status       string     `json:"status"`

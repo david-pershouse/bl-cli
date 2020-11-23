@@ -63,67 +63,67 @@ Servers actions are tasks that can be executed on a server, such as rebooting, r
 		},
 	}
 
-	cmdServerActionGet := CmdBuilder(cmd, RunServerActionGet, "get <droplet-id>", "Retrieve a specific Server action", `Use this command to retrieve a Server action.`, Writer,
+	cmdServerActionGet := CmdBuilder(cmd, RunServerActionGet, "get <server-id>", "Retrieve a specific Server action", `Use this command to retrieve a Server action.`, Writer,
 		aliasOpt("g"), displayerType(&displayers.Action{}))
 	AddIntFlag(cmdServerActionGet, blcli.ArgActionID, "", 0, "Action ID", requiredOpt())
 
 	cmdServerActionEnableBackups := CmdBuilder(cmd, RunServerActionEnableBackups,
-		"enable-backups <droplet-id>", "Enable backups on a Server", `Use this command to enable backups on a Server.`, Writer,
+		"enable-backups <server-id>", "Enable backups on a Server", `Use this command to enable backups on a Server.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionEnableBackups, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionDisableBackups := CmdBuilder(cmd, RunServerActionDisableBackups,
-		"disable-backups <droplet-id>", "Disable backups on a Server", `Use this command to disable backups on a Server. This does not delete existing backups.`, Writer,
+		"disable-backups <server-id>", "Disable backups on a Server", `Use this command to disable backups on a Server. This does not delete existing backups.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionDisableBackups, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionReboot := CmdBuilder(cmd, RunServerActionReboot,
-		"reboot <droplet-id>", "Reboot a Server", `Use this command to reboot a Server.`, Writer,
+		"reboot <server-id>", "Reboot a Server", `Use this command to reboot a Server.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionReboot, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionPowerCycle := CmdBuilder(cmd, RunServerActionPowerCycle,
-		"power-cycle <droplet-id>", "Powercycle a Server", `Use this command to powercycle a Server.`, Writer,
+		"power-cycle <server-id>", "Powercycle a Server", `Use this command to powercycle a Server.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionPowerCycle, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionShutdown := CmdBuilder(cmd, RunServerActionShutdown,
-		"shutdown <droplet-id>", "Shut down a Server", `Use this command to shut down a Server. Servers that are powered off are still billable. To stop billing, destroy the Server.`, Writer,
+		"shutdown <server-id>", "Shut down a Server", `Use this command to shut down a Server. Servers that are powered off are still billable. To stop billing, destroy the Server.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionShutdown, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionPowerOff := CmdBuilder(cmd, RunServerActionPowerOff,
-		"power-off <droplet-id>", "Power off a Server", `Use this command to power off a Server. Servers that are powered off are still billable. To stop billing, destroy the Server.`, Writer,
+		"power-off <server-id>", "Power off a Server", `Use this command to power off a Server. Servers that are powered off are still billable. To stop billing, destroy the Server.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionPowerOff, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionPowerOn := CmdBuilder(cmd, RunServerActionPowerOn,
-		"power-on <droplet-id>", "Power on a Server", `Use this command to power on a Server.`, Writer,
+		"power-on <server-id>", "Power on a Server", `Use this command to power on a Server.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionPowerOn, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionPasswordReset := CmdBuilder(cmd, RunServerActionPasswordReset,
-		"password-reset <droplet-id>", "Reset the root password for a Server", `Use this command to initiate a root password reset on a Server. This also powercycles the Server.`, Writer,
+		"password-reset <server-id>", "Reset the root password for a Server", `Use this command to initiate a root password reset on a Server. This also powercycles the Server.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionPasswordReset, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionEnableIPv6 := CmdBuilder(cmd, RunServerActionEnableIPv6,
-		"enable-ipv6 <droplet-id>", "Enable IPv6 on a Server", `Use this command to enable IPv6 networking on a Server. BinaryLane will automatically assign an IPv6 address to the Server.`, Writer,
+		"enable-ipv6 <server-id>", "Enable IPv6 on a Server", `Use this command to enable IPv6 networking on a Server. BinaryLane will automatically assign an IPv6 address to the Server.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionEnableIPv6, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionEnablePrivateNetworking := CmdBuilder(cmd, RunServerActionEnablePrivateNetworking,
-		"enable-private-networking <droplet-id>", "Enable private networking on a Server", `Use this command to enable private networking on a Server. This adds a private IPv4 address to the Server that other Servers inside the network can access. The Server will require additional internal network configuration for it to become accessible through the private network.`, Writer,
+		"enable-private-networking <server-id>", "Enable private networking on a Server", `Use this command to enable private networking on a Server. This adds a private IPv4 address to the Server that other Servers inside the network can access. The Server will require additional internal network configuration for it to become accessible through the private network.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionEnablePrivateNetworking, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionRestore := CmdBuilder(cmd, RunServerActionRestore,
-		"restore <droplet-id>", "Restore a Server from a backup", `Use this command to restore a Server from a backup.`, Writer,
+		"restore <server-id>", "Restore a Server from a backup", `Use this command to restore a Server from a backup.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddIntFlag(cmdServerActionRestore, blcli.ArgImageID, "", 0, "Image ID", requiredOpt())
 	AddBoolFlag(cmdServerActionRestore, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
-	dropletResizeDesc := `Use this command to resize a Server to a different plan.
+	serverResizeDesc := `Use this command to resize a Server to a different plan.
 
 By default, this command will only increase or decrease the CPU and RAM of the Server, not its disk size. This can be reversed.
 
@@ -131,32 +131,32 @@ To also increase the Server's disk size, pass the ` + "`--resize-disk`" + ` flag
 
 In order to resize a Server, it must first be powered off.`
 	cmdServerActionResize := CmdBuilder(cmd, RunServerActionResize,
-		"resize <droplet-id>", "Resize a Server", dropletResizeDesc, Writer,
+		"resize <server-id>", "Resize a Server", serverResizeDesc, Writer,
 		displayerType(&displayers.Action{}))
 	AddBoolFlag(cmdServerActionResize, blcli.ArgResizeDisk, "", false, "Resize the Server's disk size in addition to its RAM and CPU.")
 	AddStringFlag(cmdServerActionResize, blcli.ArgSizeSlug, "", "", "A slug indicating the new size for the Server (e.g. `s-2vcpu-2gb`). Run `bl compute size list` for a list of valid sizes.", requiredOpt())
 	AddBoolFlag(cmdServerActionResize, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionRebuild := CmdBuilder(cmd, RunServerActionRebuild,
-		"rebuild <droplet-id>", "Rebuild a Server", `Use this command to rebuild a Server from an image.`, Writer,
+		"rebuild <server-id>", "Rebuild a Server", `Use this command to rebuild a Server from an image.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddStringFlag(cmdServerActionRebuild, blcli.ArgImage, "", "", "Image ID or Slug", requiredOpt())
 	AddBoolFlag(cmdServerActionRebuild, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionRename := CmdBuilder(cmd, RunServerActionRename,
-		"rename <droplet-id>", "Rename a Server", `Use this command to rename a Server. When using a fully qualified domain name (FQDN) this also updates the pointer (PTR) record.`, Writer,
+		"rename <server-id>", "Rename a Server", `Use this command to rename a Server. When using a fully qualified domain name (FQDN) this also updates the pointer (PTR) record.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddStringFlag(cmdServerActionRename, blcli.ArgServerName, "", "", "Server name", requiredOpt())
 	AddBoolFlag(cmdServerActionRename, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionChangeKernel := CmdBuilder(cmd, RunServerActionChangeKernel,
-		"change-kernel <droplet-id>", "Change a Server's kernel", `Use this command to change a Server's kernel.`, Writer,
+		"change-kernel <server-id>", "Change a Server's kernel", `Use this command to change a Server's kernel.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddIntFlag(cmdServerActionChangeKernel, blcli.ArgKernelID, "", 0, "Kernel ID", requiredOpt())
 	AddBoolFlag(cmdServerActionChangeKernel, blcli.ArgCommandWait, "", false, "Wait for action to complete")
 
 	cmdServerActionSnapshot := CmdBuilder(cmd, RunServerActionSnapshot,
-		"snapshot <droplet-id>", "Take a Server snapshot", `Use this command to take a snapshot of a Server. We recommend that you power off the Server before taking a snapshot to ensure data consistency.`, Writer,
+		"snapshot <server-id>", "Take a Server snapshot", `Use this command to take a snapshot of a Server. We recommend that you power off the Server before taking a snapshot to ensure data consistency.`, Writer,
 		displayerType(&displayers.Action{}))
 	AddStringFlag(cmdServerActionSnapshot, blcli.ArgSnapshotName, "", "", "Snapshot name", requiredOpt())
 	AddBoolFlag(cmdServerActionSnapshot, blcli.ArgCommandWait, "", false, "Wait for action to complete")
@@ -171,7 +171,7 @@ func RunServerActionGet(c *CmdConfig) error {
 		if err != nil {
 			return nil, err
 		}
-		dropletID, err := strconv.Atoi(c.Args[0])
+		serverID, err := strconv.Atoi(c.Args[0])
 		if err != nil {
 			return nil, err
 		}
@@ -181,7 +181,7 @@ func RunServerActionGet(c *CmdConfig) error {
 			return nil, err
 		}
 
-		a, err := das.Get(dropletID, actionID)
+		a, err := das.Get(serverID, actionID)
 		return a, err
 	}
 

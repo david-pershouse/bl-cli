@@ -34,8 +34,8 @@ type LoadBalancersService interface {
 	Create(lbr *godo.LoadBalancerRequest) (*LoadBalancer, error)
 	Update(lbID string, lbr *godo.LoadBalancerRequest) (*LoadBalancer, error)
 	Delete(lbID string) error
-	AddDroplets(lbID string, dIDs ...int) error
-	RemoveDroplets(lbID string, dIDs ...int) error
+	AddServers(lbID string, sIDs ...int) error
+	RemoveServers(lbID string, sIDs ...int) error
 	AddForwardingRules(lbID string, rules ...godo.ForwardingRule) error
 	RemoveForwardingRules(lbID string, rules ...godo.ForwardingRule) error
 }
@@ -114,13 +114,13 @@ func (lbs *loadBalancersService) Delete(lbID string) error {
 	return err
 }
 
-func (lbs *loadBalancersService) AddDroplets(lbID string, dIDs ...int) error {
-	_, err := lbs.client.LoadBalancers.AddDroplets(context.TODO(), lbID, dIDs...)
+func (lbs *loadBalancersService) AddServers(lbID string, sIDs ...int) error {
+	_, err := lbs.client.LoadBalancers.AddServers(context.TODO(), lbID, sIDs...)
 	return err
 }
 
-func (lbs *loadBalancersService) RemoveDroplets(lbID string, dIDs ...int) error {
-	_, err := lbs.client.LoadBalancers.RemoveDroplets(context.TODO(), lbID, dIDs...)
+func (lbs *loadBalancersService) RemoveServers(lbID string, sIDs ...int) error {
+	_, err := lbs.client.LoadBalancers.RemoveServers(context.TODO(), lbID, sIDs...)
 	return err
 }
 

@@ -49,7 +49,7 @@ func FloatingIPAction() *Command {
 		displayerType(&displayers.Action{}))
 
 	CmdBuilder(cmd, RunFloatingIPActionsAssign,
-		"assign <floating-ip> <droplet-id>", "Assign a floating IP address to a Server", "Use this command to assign a floating IP address to a Server by specifying the `droplet_id`.", Writer,
+		"assign <floating-ip> <server-id>", "Assign a floating IP address to a Server", "Use this command to assign a floating IP address to a Server by specifying the `server_id`.", Writer,
 		displayerType(&displayers.Action{}))
 
 	CmdBuilder(cmd, RunFloatingIPActionsUnassign,
@@ -83,7 +83,7 @@ func RunFloatingIPActionsGet(c *CmdConfig) error {
 	return c.Display(item)
 }
 
-// RunFloatingIPActionsAssign assigns a floating IP to a droplet.
+// RunFloatingIPActionsAssign assigns a floating IP to a server.
 func RunFloatingIPActionsAssign(c *CmdConfig) error {
 	if len(c.Args) != 2 {
 		return blcli.NewMissingArgsErr(c.NS)
@@ -93,21 +93,21 @@ func RunFloatingIPActionsAssign(c *CmdConfig) error {
 
 	fia := c.FloatingIPActions()
 
-	dropletID, err := strconv.Atoi(c.Args[1])
+	serverID, err := strconv.Atoi(c.Args[1])
 	if err != nil {
 		return err
 	}
 
-	a, err := fia.Assign(ip, dropletID)
+	a, err := fia.Assign(ip, serverID)
 	if err != nil {
-		checkErr(fmt.Errorf("could not assign IP to droplet: %v", err))
+		checkErr(fmt.Errorf("could not assign IP to server: %v", err))
 	}
 
 	item := &displayers.Action{Actions: bl.Actions{*a}}
 	return c.Display(item)
 }
 
-// RunFloatingIPActionsUnassign unassigns a floating IP to a droplet.
+// RunFloatingIPActionsUnassign unassigns a floating IP to a server.
 func RunFloatingIPActionsUnassign(c *CmdConfig) error {
 	err := ensureOneArg(c)
 	if err != nil {
@@ -120,7 +120,7 @@ func RunFloatingIPActionsUnassign(c *CmdConfig) error {
 
 	a, err := fia.Unassign(ip)
 	if err != nil {
-		checkErr(fmt.Errorf("could not unassign IP to droplet: %v", err))
+		checkErr(fmt.Errorf("could not unassign IP to server: %v", err))
 	}
 
 	item := &displayers.Action{Actions: bl.Actions{*a}}

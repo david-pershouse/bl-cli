@@ -20,7 +20,7 @@ type SizesServiceOp struct {
 
 var _ SizesService = &SizesServiceOp{}
 
-// Size represents a DigitalOcean Size
+// Size represents a BinaryLane Size
 type Size struct {
 	Slug         string   `json:"slug,omitempty"`
 	Memory       int      `json:"memory,omitempty"`

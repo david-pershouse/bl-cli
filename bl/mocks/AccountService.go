@@ -7,7 +7,7 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -35,10 +35,10 @@ func (m *MockAccountService) EXPECT() *MockAccountServiceMockRecorder {
 }
 
 // Get mocks base method.
-func (m *MockAccountService) Get() (*do.Account, error) {
+func (m *MockAccountService) Get() (*bl.Account, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get")
-	ret0, _ := ret[0].(*do.Account)
+	ret0, _ := ret[0].(*bl.Account)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +50,10 @@ func (mr *MockAccountServiceMockRecorder) Get() *gomock.Call {
 }
 
 // RateLimit mocks base method.
-func (m *MockAccountService) RateLimit() (*do.RateLimit, error) {
+func (m *MockAccountService) RateLimit() (*bl.RateLimit, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RateLimit")
-	ret0, _ := ret[0].(*do.RateLimit)
+	ret0, _ := ret[0].(*bl.RateLimit)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

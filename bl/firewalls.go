@@ -34,10 +34,10 @@ type FirewallsService interface {
 	Create(fr *godo.FirewallRequest) (*Firewall, error)
 	Update(fID string, fr *godo.FirewallRequest) (*Firewall, error)
 	List() (Firewalls, error)
-	ListByDroplet(dID int) (Firewalls, error)
+	ListByServer(sID int) (Firewalls, error)
 	Delete(fID string) error
-	AddDroplets(fID string, dIDs ...int) error
-	RemoveDroplets(fID string, dIDs ...int) error
+	AddServers(fID string, sIDs ...int) error
+	RemoveServers(fID string, sIDs ...int) error
 	AddTags(fID string, tags ...string) error
 	RemoveTags(fID string, tags ...string) error
 	AddRules(fID string, rr *godo.FirewallRulesRequest) error
@@ -100,9 +100,9 @@ func (fs *firewallsService) List() (Firewalls, error) {
 	return paginatedListHelper(listFn)
 }
 
-func (fs *firewallsService) ListByDroplet(dID int) (Firewalls, error) {
+func (fs *firewallsService) ListByServer(sID int) (Firewalls, error) {
 	listFn := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
-		list, resp, err := fs.client.Firewalls.ListByDroplet(context.TODO(), dID, opt)
+		list, resp, err := fs.client.Firewalls.ListByServer(context.TODO(), sID, opt)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -123,13 +123,13 @@ func (fs *firewallsService) Delete(fID string) error {
 	return err
 }
 
-func (fs *firewallsService) AddDroplets(fID string, dIDs ...int) error {
-	_, err := fs.client.Firewalls.AddDroplets(context.TODO(), fID, dIDs...)
+func (fs *firewallsService) AddServers(fID string, sIDs ...int) error {
+	_, err := fs.client.Firewalls.AddServers(context.TODO(), fID, sIDs...)
 	return err
 }
 
-func (fs *firewallsService) RemoveDroplets(fID string, dIDs ...int) error {
-	_, err := fs.client.Firewalls.RemoveDroplets(context.TODO(), fID, dIDs...)
+func (fs *firewallsService) RemoveServers(fID string, sIDs ...int) error {
+	_, err := fs.client.Firewalls.RemoveServers(context.TODO(), fID, sIDs...)
 	return err
 }
 

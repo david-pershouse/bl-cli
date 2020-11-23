@@ -7,8 +7,8 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
+	binarylane "git.mammoth.com.au/github/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -36,10 +36,10 @@ func (m *MockLoadBalancersService) EXPECT() *MockLoadBalancersServiceMockRecorde
 }
 
 // Get mocks base method.
-func (m *MockLoadBalancersService) Get(lbID string) (*do.LoadBalancer, error) {
+func (m *MockLoadBalancersService) Get(lbID string) (*bl.LoadBalancer, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", lbID)
-	ret0, _ := ret[0].(*do.LoadBalancer)
+	ret0, _ := ret[0].(*bl.LoadBalancer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockLoadBalancersServiceMockRecorder) Get(lbID interface{}) *gomock.Ca
 }
 
 // List mocks base method.
-func (m *MockLoadBalancersService) List() (do.LoadBalancers, error) {
+func (m *MockLoadBalancersService) List() (bl.LoadBalancers, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
-	ret0, _ := ret[0].(do.LoadBalancers)
+	ret0, _ := ret[0].(bl.LoadBalancers)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -66,10 +66,10 @@ func (mr *MockLoadBalancersServiceMockRecorder) List() *gomock.Call {
 }
 
 // Create mocks base method.
-func (m *MockLoadBalancersService) Create(lbr *godo.LoadBalancerRequest) (*do.LoadBalancer, error) {
+func (m *MockLoadBalancersService) Create(lbr *binarylane.LoadBalancerRequest) (*bl.LoadBalancer, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", lbr)
-	ret0, _ := ret[0].(*do.LoadBalancer)
+	ret0, _ := ret[0].(*bl.LoadBalancer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -81,10 +81,10 @@ func (mr *MockLoadBalancersServiceMockRecorder) Create(lbr interface{}) *gomock.
 }
 
 // Update mocks base method.
-func (m *MockLoadBalancersService) Update(lbID string, lbr *godo.LoadBalancerRequest) (*do.LoadBalancer, error) {
+func (m *MockLoadBalancersService) Update(lbID string, lbr *binarylane.LoadBalancerRequest) (*bl.LoadBalancer, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", lbID, lbr)
-	ret0, _ := ret[0].(*do.LoadBalancer)
+	ret0, _ := ret[0].(*bl.LoadBalancer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -109,46 +109,46 @@ func (mr *MockLoadBalancersServiceMockRecorder) Delete(lbID interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockLoadBalancersService)(nil).Delete), lbID)
 }
 
-// AddDroplets mocks base method.
-func (m *MockLoadBalancersService) AddDroplets(lbID string, dIDs ...int) error {
+// AddServers mocks base method.
+func (m *MockLoadBalancersService) AddServers(lbID string, sIDs ...int) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{lbID}
-	for _, a := range dIDs {
+	for _, a := range sIDs {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "AddDroplets", varargs...)
+	ret := m.ctrl.Call(m, "AddServers", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// AddDroplets indicates an expected call of AddDroplets.
-func (mr *MockLoadBalancersServiceMockRecorder) AddDroplets(lbID interface{}, dIDs ...interface{}) *gomock.Call {
+// AddServers indicates an expected call of AddServers.
+func (mr *MockLoadBalancersServiceMockRecorder) AddServers(lbID interface{}, sIDs ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{lbID}, dIDs...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddDroplets", reflect.TypeOf((*MockLoadBalancersService)(nil).AddDroplets), varargs...)
+	varargs := append([]interface{}{lbID}, sIDs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddServers", reflect.TypeOf((*MockLoadBalancersService)(nil).AddServers), varargs...)
 }
 
-// RemoveDroplets mocks base method.
-func (m *MockLoadBalancersService) RemoveDroplets(lbID string, dIDs ...int) error {
+// RemoveServers mocks base method.
+func (m *MockLoadBalancersService) RemoveServers(lbID string, sIDs ...int) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{lbID}
-	for _, a := range dIDs {
+	for _, a := range sIDs {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "RemoveDroplets", varargs...)
+	ret := m.ctrl.Call(m, "RemoveServers", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// RemoveDroplets indicates an expected call of RemoveDroplets.
-func (mr *MockLoadBalancersServiceMockRecorder) RemoveDroplets(lbID interface{}, dIDs ...interface{}) *gomock.Call {
+// RemoveServers indicates an expected call of RemoveServers.
+func (mr *MockLoadBalancersServiceMockRecorder) RemoveServers(lbID interface{}, sIDs ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{lbID}, dIDs...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveDroplets", reflect.TypeOf((*MockLoadBalancersService)(nil).RemoveDroplets), varargs...)
+	varargs := append([]interface{}{lbID}, sIDs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveServers", reflect.TypeOf((*MockLoadBalancersService)(nil).RemoveServers), varargs...)
 }
 
 // AddForwardingRules mocks base method.
-func (m *MockLoadBalancersService) AddForwardingRules(lbID string, rules ...godo.ForwardingRule) error {
+func (m *MockLoadBalancersService) AddForwardingRules(lbID string, rules ...binarylane.ForwardingRule) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{lbID}
 	for _, a := range rules {
@@ -167,7 +167,7 @@ func (mr *MockLoadBalancersServiceMockRecorder) AddForwardingRules(lbID interfac
 }
 
 // RemoveForwardingRules mocks base method.
-func (m *MockLoadBalancersService) RemoveForwardingRules(lbID string, rules ...godo.ForwardingRule) error {
+func (m *MockLoadBalancersService) RemoveForwardingRules(lbID string, rules ...binarylane.ForwardingRule) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{lbID}
 	for _, a := range rules {

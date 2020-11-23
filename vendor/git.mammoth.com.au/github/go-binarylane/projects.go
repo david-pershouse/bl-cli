@@ -35,7 +35,7 @@ type ProjectsServiceOp struct {
 	client *Client
 }
 
-// Project represents a DigitalOcean Project configuration.
+// Project represents a BinaryLane Project configuration.
 type Project struct {
 	ID          string `json:"id"`
 	OwnerUUID   string `json:"owner_uuid"`

@@ -26,7 +26,7 @@ var (
 func TestFirewallCommand(t *testing.T) {
 	cmd := Firewall()
 	assert.NotNil(t, cmd)
-	assertCommandNames(t, cmd, "get", "create", "update", "list", "list-by-droplet", "delete", "add-servers", "remove-servers", "add-tags", "remove-tags", "add-rules", "remove-rules")
+	assertCommandNames(t, cmd, "get", "create", "update", "list", "list-by-server", "delete", "add-servers", "remove-servers", "add-tags", "remove-tags", "add-rules", "remove-rules")
 }
 
 func TestFirewallGet(t *testing.T) {
@@ -60,7 +60,7 @@ func TestFirewallCreate(t *testing.T) {
 				},
 			},
 			Tags:       []string{"backend"},
-			DropletIDs: []int{1, 2},
+			ServerIDs: []int{1, 2},
 		}
 		tm.firewalls.EXPECT().Create(firewallCreateRequest).Return(&testFirewall, nil)
 
@@ -105,7 +105,7 @@ func TestFirewallUpdate(t *testing.T) {
 					},
 				},
 			},
-			DropletIDs: []int{1},
+			ServerIDs: []int{1},
 		}
 		tm.firewalls.EXPECT().Update(fID, firewallUpdateRequest).Return(&testFirewall, nil)
 
@@ -129,13 +129,13 @@ func TestFirewallList(t *testing.T) {
 	})
 }
 
-func TestFirewallListByDroplet(t *testing.T) {
+func TestFirewallListByServer(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		dID := 124
-		tm.firewalls.EXPECT().ListByDroplet(dID).Return(testFirewallList, nil)
-		config.Args = append(config.Args, strconv.Itoa(dID))
+		sID := 124
+		tm.firewalls.EXPECT().ListByServer(sID).Return(testFirewallList, nil)
+		config.Args = append(config.Args, strconv.Itoa(sID))
 
-		err := RunFirewallListByDroplet(config)
+		err := RunFirewallListByServer(config)
 		assert.NoError(t, err)
 	})
 }
@@ -153,30 +153,30 @@ func TestFirewallDelete(t *testing.T) {
 	})
 }
 
-func TestFirewallAddDroplets(t *testing.T) {
+func TestFirewallAddServers(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		fID := "ab06e011-6dd1-4034-9293-201f71aba299"
-		dropletIDs := []int{1, 2}
-		tm.firewalls.EXPECT().AddDroplets(fID, dropletIDs[0], dropletIDs[1]).Return(nil)
+		serverIDs := []int{1, 2}
+		tm.firewalls.EXPECT().AddServers(fID, serverIDs[0], serverIDs[1]).Return(nil)
 
 		config.Args = append(config.Args, fID)
 		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"1", "2"})
 
-		err := RunFirewallAddDroplets(config)
+		err := RunFirewallAddServers(config)
 		assert.NoError(t, err)
 	})
 }
 
-func TestFirewallRemoveDroplets(t *testing.T) {
+func TestFirewallRemoveServers(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		fID := "cde2c0d6-41e3-479e-ba60-ad971227232c"
-		dropletIDs := []int{1}
-		tm.firewalls.EXPECT().RemoveDroplets(fID, dropletIDs[0]).Return(nil)
+		serverIDs := []int{1}
+		tm.firewalls.EXPECT().RemoveServers(fID, serverIDs[0]).Return(nil)
 
 		config.Args = append(config.Args, fID)
 		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"1"})
 
-		err := RunFirewallRemoveDroplets(config)
+		err := RunFirewallRemoveServers(config)
 		assert.NoError(t, err)
 	})
 }
@@ -225,7 +225,7 @@ func TestFirewallAddRules(t *testing.T) {
 				PortRange: "8080",
 				Sources: &godo.Sources{
 					Tags:       []string{"backend"},
-					DropletIDs: []int{1, 2, 3},
+					ServerIDs: []int{1, 2, 3},
 				},
 			},
 		}
@@ -246,7 +246,7 @@ func TestFirewallAddRules(t *testing.T) {
 		tm.firewalls.EXPECT().AddRules(fID, firewallRulesRequest).Return(nil)
 
 		config.Args = append(config.Args, fID)
-		config.Doit.Set(config.NS, blcli.ArgInboundRules, "protocol:tcp,ports:80,address:127.0.0.0,address:0.0.0.0/0,address:2604:A880:0002:00D0:0000:0000:32F1:E001 protocol:tcp,ports:8080,tag:backend,droplet_id:1,droplet_id:2,droplet_id:3")
+		config.Doit.Set(config.NS, blcli.ArgInboundRules, "protocol:tcp,ports:80,address:127.0.0.0,address:0.0.0.0/0,address:2604:A880:0002:00D0:0000:0000:32F1:E001 protocol:tcp,ports:8080,tag:backend,server_id:1,server_id:2,server_id:3")
 		config.Doit.Set(config.NS, blcli.ArgOutboundRules, "protocol:tcp,ports:22,load_balancer_uid:lb-uuid")
 
 		err := RunFirewallAddRules(config)

@@ -20,7 +20,7 @@ type RegionsServiceOp struct {
 
 var _ RegionsService = &RegionsServiceOp{}
 
-// Region represents a DigitalOcean Region
+// Region represents a BinaryLane Region
 type Region struct {
 	Slug      string   `json:"slug,omitempty"`
 	Name      string   `json:"name,omitempty"`

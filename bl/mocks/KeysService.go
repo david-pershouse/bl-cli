@@ -7,8 +7,8 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
+	binarylane "git.mammoth.com.au/github/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -36,10 +36,10 @@ func (m *MockKeysService) EXPECT() *MockKeysServiceMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockKeysService) List() (do.SSHKeys, error) {
+func (m *MockKeysService) List() (bl.SSHKeys, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
-	ret0, _ := ret[0].(do.SSHKeys)
+	ret0, _ := ret[0].(bl.SSHKeys)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockKeysServiceMockRecorder) List() *gomock.Call {
 }
 
 // Get mocks base method.
-func (m *MockKeysService) Get(id string) (*do.SSHKey, error) {
+func (m *MockKeysService) Get(id string) (*bl.SSHKey, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", id)
-	ret0, _ := ret[0].(*do.SSHKey)
+	ret0, _ := ret[0].(*bl.SSHKey)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -66,10 +66,10 @@ func (mr *MockKeysServiceMockRecorder) Get(id interface{}) *gomock.Call {
 }
 
 // Create mocks base method.
-func (m *MockKeysService) Create(kcr *godo.KeyCreateRequest) (*do.SSHKey, error) {
+func (m *MockKeysService) Create(kcr *binarylane.KeyCreateRequest) (*bl.SSHKey, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", kcr)
-	ret0, _ := ret[0].(*do.SSHKey)
+	ret0, _ := ret[0].(*bl.SSHKey)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -81,10 +81,10 @@ func (mr *MockKeysServiceMockRecorder) Create(kcr interface{}) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockKeysService) Update(id string, kur *godo.KeyUpdateRequest) (*do.SSHKey, error) {
+func (m *MockKeysService) Update(id string, kur *binarylane.KeyUpdateRequest) (*bl.SSHKey, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", id, kur)
-	ret0, _ := ret[0].(*do.SSHKey)
+	ret0, _ := ret[0].(*bl.SSHKey)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

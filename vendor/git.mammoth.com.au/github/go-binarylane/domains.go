@@ -35,7 +35,7 @@ type DomainsServiceOp struct {
 
 var _ DomainsService = &DomainsServiceOp{}
 
-// Domain represents a DigitalOcean domain
+// Domain represents a BinaryLane domain
 type Domain struct {
 	Name     string `json:"name"`
 	TTL      int    `json:"ttl"`
@@ -70,7 +70,7 @@ type domainRecordsRoot struct {
 	Links         *Links         `json:"links"`
 }
 
-// DomainRecord represents a DigitalOcean DomainRecord
+// DomainRecord represents individual record within a domain
 type DomainRecord struct {
 	ID       int    `json:"id,float64,omitempty"`
 	Type     string `json:"type,omitempty"`
@@ -101,7 +101,7 @@ func (d Domain) String() string {
 	return Stringify(d)
 }
 
-// URN returns the domain name in a valid DO API URN form.
+// URN returns the domain name in a valid BL API URN form.
 func (d Domain) URN() string {
 	return ToURN("Domain", d.Name)
 }

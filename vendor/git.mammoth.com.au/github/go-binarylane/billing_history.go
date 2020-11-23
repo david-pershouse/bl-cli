@@ -23,7 +23,7 @@ type BillingHistoryServiceOp struct {
 
 var _ BillingHistoryService = &BillingHistoryServiceOp{}
 
-// BillingHistory represents a DigitalOcean Billing History
+// BillingHistory represents BinaryLane Billing History
 type BillingHistory struct {
 	BillingHistory []BillingHistoryEntry `json:"billing_history"`
 	Links          *Links                `json:"links"`

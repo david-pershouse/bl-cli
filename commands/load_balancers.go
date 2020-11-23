@@ -85,7 +85,7 @@ With the load-balancer command, you can list, create, or delete load balancers, 
 		"enable proxy protocol")
 	AddBoolFlag(cmdRecordCreate, blcli.ArgEnableBackendKeepalive, "", false,
 		"enable keepalive connections to backend target servers")
-	AddStringFlag(cmdRecordCreate, blcli.ArgTagName, "", "", "droplet tag name")
+	AddStringFlag(cmdRecordCreate, blcli.ArgTagName, "", "", "server tag name")
 	AddStringSliceFlag(cmdRecordCreate, blcli.ArgServerIDs, "", []string{},
 		"A comma-separated list of Server IDs to add to the load balancer, e.g.: `12,33`")
 	AddStringFlag(cmdRecordCreate, blcli.ArgStickySessions, "", "",
@@ -129,14 +129,14 @@ With the load-balancer command, you can list, create, or delete load balancers, 
 	AddBoolFlag(cmdRunRecordDelete, blcli.ArgForce, blcli.ArgShortForce, false,
 		"Delete the load balancer without a confirmation prompt")
 
-	cmdAddDroplets := CmdBuilder(cmd, RunLoadBalancerAddDroplets, "add-servers <id>",
+	cmdAddServers := CmdBuilder(cmd, RunLoadBalancerAddServers, "add-servers <id>",
 		"Add Servers to a load balancer", `Use this command to add Servers to a load balancer.`, Writer)
-	AddStringSliceFlag(cmdAddDroplets, blcli.ArgServerIDs, "", []string{},
+	AddStringSliceFlag(cmdAddServers, blcli.ArgServerIDs, "", []string{},
 		"A comma-separated list of IDs of Server to add to the load balancer, example value: `12,33`")
 
-	cmdRemoveDroplets := CmdBuilder(cmd, RunLoadBalancerRemoveDroplets,
+	cmdRemoveServers := CmdBuilder(cmd, RunLoadBalancerRemoveServers,
 		"remove-servers <id>", "Remove Servers from a load balancer", `Use this command to remove Servers from a load balancer. This command does not destroy any Servers.`, Writer)
-	AddStringSliceFlag(cmdRemoveDroplets, blcli.ArgServerIDs, "", []string{},
+	AddStringSliceFlag(cmdRemoveServers, blcli.ArgServerIDs, "", []string{},
 		"A comma-separated list of IDs of Servers to remove from the load balancer, example value: `12,33`")
 
 	cmdAddForwardingRules := CmdBuilder(cmd, RunLoadBalancerAddForwardingRules,
@@ -244,46 +244,46 @@ func RunLoadBalancerDelete(c *CmdConfig) error {
 	return nil
 }
 
-// RunLoadBalancerAddDroplets adds servers to a load balancer.
-func RunLoadBalancerAddDroplets(c *CmdConfig) error {
+// RunLoadBalancerAddServers adds servers to a load balancer.
+func RunLoadBalancerAddServers(c *CmdConfig) error {
 	err := ensureOneArg(c)
 	if err != nil {
 		return err
 	}
 	lbID := c.Args[0]
 
-	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
+	serverIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
 	if err != nil {
 		return err
 	}
 
-	dropletIDs, err := extractDropletIDs(dropletIDsList)
+	serverIDs, err := extractServerIDs(serverIDsList)
 	if err != nil {
 		return err
 	}
 
-	return c.LoadBalancers().AddDroplets(lbID, dropletIDs...)
+	return c.LoadBalancers().AddServers(lbID, serverIDs...)
 }
 
-// RunLoadBalancerRemoveDroplets removes servers from a load balancer.
-func RunLoadBalancerRemoveDroplets(c *CmdConfig) error {
+// RunLoadBalancerRemoveServers removes servers from a load balancer.
+func RunLoadBalancerRemoveServers(c *CmdConfig) error {
 	err := ensureOneArg(c)
 	if err != nil {
 		return err
 	}
 	lbID := c.Args[0]
 
-	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
+	serverIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
 	if err != nil {
 		return err
 	}
 
-	dropletIDs, err := extractDropletIDs(dropletIDsList)
+	serverIDs, err := extractServerIDs(serverIDsList)
 	if err != nil {
 		return err
 	}
 
-	return c.LoadBalancers().RemoveDroplets(lbID, dropletIDs...)
+	return c.LoadBalancers().RemoveServers(lbID, serverIDs...)
 }
 
 // RunLoadBalancerAddForwardingRules adds forwarding rules to a load balancer.
@@ -447,16 +447,16 @@ func buildRequestFromArgs(c *CmdConfig, r *godo.LoadBalancerRequest) error {
 	}
 	r.EnableBackendKeepalive = enableBackendKeepalive
 
-	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
+	serverIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
 	if err != nil {
 		return err
 	}
 
-	dropletIDs, err := extractDropletIDs(dropletIDsList)
+	serverIDs, err := extractServerIDs(serverIDsList)
 	if err != nil {
 		return err
 	}
-	r.DropletIDs = dropletIDs
+	r.ServerIDs = serverIDs
 
 	ssa, err := c.Doit.GetString(c.NS, blcli.ArgStickySessions)
 	if err != nil {

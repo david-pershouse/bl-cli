@@ -23,7 +23,7 @@ import (
 
 var testAccount = &bl.Account{
 	Account: &godo.Account{
-		DropletLimit:  10,
+		ServerLimit:  10,
 		Email:         "user@example.com",
 		UUID:          "1234",
 		EmailVerified: true,

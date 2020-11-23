@@ -30,7 +30,7 @@ type KeysServiceOp struct {
 
 var _ KeysService = &KeysServiceOp{}
 
-// Key represents a DigitalOcean Key.
+// Key represents a BinaryLane Key.
 type Key struct {
 	ID          int    `json:"id,float64,omitempty"`
 	Name        string `json:"name,omitempty"`
@@ -38,7 +38,7 @@ type Key struct {
 	PublicKey   string `json:"public_key,omitempty"`
 }
 
-// KeyUpdateRequest represents a request to update a DigitalOcean key.
+// KeyUpdateRequest represents a request to update a key.
 type KeyUpdateRequest struct {
 	Name string `json:"name"`
 }

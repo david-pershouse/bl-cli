@@ -31,7 +31,7 @@ type Snapshots []Snapshot
 type SnapshotsService interface {
 	List() (Snapshots, error)
 	ListVolume() (Snapshots, error)
-	ListDroplet() (Snapshots, error)
+	ListServer() (Snapshots, error)
 	Get(string) (*Snapshot, error)
 	Delete(string) error
 }
@@ -107,9 +107,9 @@ func (ss *snapshotsService) ListVolume() (Snapshots, error) {
 	return list, nil
 }
 
-func (ss *snapshotsService) ListDroplet() (Snapshots, error) {
+func (ss *snapshotsService) ListServer() (Snapshots, error) {
 	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
-		list, resp, err := ss.client.Snapshots.ListDroplet(context.TODO(), opt)
+		list, resp, err := ss.client.Snapshots.ListServer(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
 		}

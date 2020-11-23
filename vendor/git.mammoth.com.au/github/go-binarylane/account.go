@@ -20,9 +20,9 @@ type AccountServiceOp struct {
 
 var _ AccountService = &AccountServiceOp{}
 
-// Account represents a DigitalOcean Account
+// Account represents a BinaryLane Account
 type Account struct {
-	DropletLimit    int    `json:"droplet_limit,omitempty"`
+	ServerLimit     int    `json:"server_limit,omitempty"`
 	FloatingIPLimit int    `json:"floating_ip_limit,omitempty"`
 	VolumeLimit     int    `json:"volume_limit,omitempty"`
 	Email           string `json:"email,omitempty"`
@@ -40,7 +40,7 @@ func (r Account) String() string {
 	return Stringify(r)
 }
 
-// Get DigitalOcean account info
+// Get account info
 func (s *AccountServiceOp) Get(ctx context.Context) (*Account, *Response, error) {
 
 	path := "v2/account"

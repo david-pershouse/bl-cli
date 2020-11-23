@@ -7,8 +7,8 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
+	binarylane "git.mammoth.com.au/github/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -36,10 +36,10 @@ func (m *MockFloatingIPsService) EXPECT() *MockFloatingIPsServiceMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockFloatingIPsService) List() (do.FloatingIPs, error) {
+func (m *MockFloatingIPsService) List() (bl.FloatingIPs, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
-	ret0, _ := ret[0].(do.FloatingIPs)
+	ret0, _ := ret[0].(bl.FloatingIPs)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockFloatingIPsServiceMockRecorder) List() *gomock.Call {
 }
 
 // Get mocks base method.
-func (m *MockFloatingIPsService) Get(ip string) (*do.FloatingIP, error) {
+func (m *MockFloatingIPsService) Get(ip string) (*bl.FloatingIP, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", ip)
-	ret0, _ := ret[0].(*do.FloatingIP)
+	ret0, _ := ret[0].(*bl.FloatingIP)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -66,10 +66,10 @@ func (mr *MockFloatingIPsServiceMockRecorder) Get(ip interface{}) *gomock.Call {
 }
 
 // Create mocks base method.
-func (m *MockFloatingIPsService) Create(ficr *godo.FloatingIPCreateRequest) (*do.FloatingIP, error) {
+func (m *MockFloatingIPsService) Create(ficr *binarylane.FloatingIPCreateRequest) (*bl.FloatingIP, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ficr)
-	ret0, _ := ret[0].(*do.FloatingIP)
+	ret0, _ := ret[0].(*bl.FloatingIP)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

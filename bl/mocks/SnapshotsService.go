@@ -7,7 +7,7 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -35,10 +35,10 @@ func (m *MockSnapshotsService) EXPECT() *MockSnapshotsServiceMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockSnapshotsService) List() (do.Snapshots, error) {
+func (m *MockSnapshotsService) List() (bl.Snapshots, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
-	ret0, _ := ret[0].(do.Snapshots)
+	ret0, _ := ret[0].(bl.Snapshots)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +50,10 @@ func (mr *MockSnapshotsServiceMockRecorder) List() *gomock.Call {
 }
 
 // ListVolume mocks base method.
-func (m *MockSnapshotsService) ListVolume() (do.Snapshots, error) {
+func (m *MockSnapshotsService) ListVolume() (bl.Snapshots, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListVolume")
-	ret0, _ := ret[0].(do.Snapshots)
+	ret0, _ := ret[0].(bl.Snapshots)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -64,26 +64,26 @@ func (mr *MockSnapshotsServiceMockRecorder) ListVolume() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListVolume", reflect.TypeOf((*MockSnapshotsService)(nil).ListVolume))
 }
 
-// ListDroplet mocks base method.
-func (m *MockSnapshotsService) ListDroplet() (do.Snapshots, error) {
+// ListServer mocks base method.
+func (m *MockSnapshotsService) ListServer() (bl.Snapshots, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListDroplet")
-	ret0, _ := ret[0].(do.Snapshots)
+	ret := m.ctrl.Call(m, "ListServer")
+	ret0, _ := ret[0].(bl.Snapshots)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ListDroplet indicates an expected call of ListDroplet.
-func (mr *MockSnapshotsServiceMockRecorder) ListDroplet() *gomock.Call {
+// ListServer indicates an expected call of ListServer.
+func (mr *MockSnapshotsServiceMockRecorder) ListServer() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDroplet", reflect.TypeOf((*MockSnapshotsService)(nil).ListDroplet))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListServer", reflect.TypeOf((*MockSnapshotsService)(nil).ListServer))
 }
 
 // Get mocks base method.
-func (m *MockSnapshotsService) Get(arg0 string) (*do.Snapshot, error) {
+func (m *MockSnapshotsService) Get(arg0 string) (*bl.Snapshot, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", arg0)
-	ret0, _ := ret[0].(*do.Snapshot)
+	ret0, _ := ret[0].(*bl.Snapshot)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

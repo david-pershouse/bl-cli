@@ -7,8 +7,8 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
+	binarylane "git.mammoth.com.au/github/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -36,25 +36,25 @@ func (m *MockFloatingIPActionsService) EXPECT() *MockFloatingIPActionsServiceMoc
 }
 
 // Assign mocks base method.
-func (m *MockFloatingIPActionsService) Assign(ip string, dropletID int) (*do.Action, error) {
+func (m *MockFloatingIPActionsService) Assign(ip string, serverID int) (*bl.Action, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Assign", ip, dropletID)
-	ret0, _ := ret[0].(*do.Action)
+	ret := m.ctrl.Call(m, "Assign", ip, serverID)
+	ret0, _ := ret[0].(*bl.Action)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Assign indicates an expected call of Assign.
-func (mr *MockFloatingIPActionsServiceMockRecorder) Assign(ip, dropletID interface{}) *gomock.Call {
+func (mr *MockFloatingIPActionsServiceMockRecorder) Assign(ip, serverID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Assign", reflect.TypeOf((*MockFloatingIPActionsService)(nil).Assign), ip, dropletID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Assign", reflect.TypeOf((*MockFloatingIPActionsService)(nil).Assign), ip, serverID)
 }
 
 // Unassign mocks base method.
-func (m *MockFloatingIPActionsService) Unassign(ip string) (*do.Action, error) {
+func (m *MockFloatingIPActionsService) Unassign(ip string) (*bl.Action, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Unassign", ip)
-	ret0, _ := ret[0].(*do.Action)
+	ret0, _ := ret[0].(*bl.Action)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -66,10 +66,10 @@ func (mr *MockFloatingIPActionsServiceMockRecorder) Unassign(ip interface{}) *go
 }
 
 // Get mocks base method.
-func (m *MockFloatingIPActionsService) Get(ip string, actionID int) (*do.Action, error) {
+func (m *MockFloatingIPActionsService) Get(ip string, actionID int) (*bl.Action, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", ip, actionID)
-	ret0, _ := ret[0].(*do.Action)
+	ret0, _ := ret[0].(*bl.Action)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -81,10 +81,10 @@ func (mr *MockFloatingIPActionsServiceMockRecorder) Get(ip, actionID interface{}
 }
 
 // List mocks base method.
-func (m *MockFloatingIPActionsService) List(ip string, opt *godo.ListOptions) ([]do.Action, error) {
+func (m *MockFloatingIPActionsService) List(ip string, opt *binarylane.ListOptions) ([]bl.Action, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", ip, opt)
-	ret0, _ := ret[0].([]do.Action)
+	ret0, _ := ret[0].([]bl.Action)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

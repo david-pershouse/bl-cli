@@ -14,7 +14,7 @@ const snapshotBasePath = "v2/snapshots"
 type SnapshotsService interface {
 	List(context.Context, *ListOptions) ([]Snapshot, *Response, error)
 	ListVolume(context.Context, *ListOptions) ([]Snapshot, *Response, error)
-	ListDroplet(context.Context, *ListOptions) ([]Snapshot, *Response, error)
+	ListServer(context.Context, *ListOptions) ([]Snapshot, *Response, error)
 	Get(context.Context, string) (*Snapshot, *Response, error)
 	Delete(context.Context, string) (*Response, error)
 }
@@ -27,7 +27,7 @@ type SnapshotsServiceOp struct {
 
 var _ SnapshotsService = &SnapshotsServiceOp{}
 
-// Snapshot represents a DigitalOcean Snapshot
+// Snapshot represents a BinaryLane Snapshot
 type Snapshot struct {
 	ID            string   `json:"id,omitempty"`
 	Name          string   `json:"name,omitempty"`
@@ -63,9 +63,9 @@ func (s *SnapshotsServiceOp) List(ctx context.Context, opt *ListOptions) ([]Snap
 	return s.list(ctx, opt, nil)
 }
 
-// ListDroplet lists all the Server snapshots.
-func (s *SnapshotsServiceOp) ListDroplet(ctx context.Context, opt *ListOptions) ([]Snapshot, *Response, error) {
-	listOpt := listSnapshotOptions{ResourceType: "droplet"}
+// ListServer lists all the Server snapshots.
+func (s *SnapshotsServiceOp) ListServer(ctx context.Context, opt *ListOptions) ([]Snapshot, *Response, error) {
+	listOpt := listSnapshotOptions{ResourceType: "server"}
 	return s.list(ctx, opt, &listOpt)
 }
 

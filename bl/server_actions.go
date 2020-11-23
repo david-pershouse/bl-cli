@@ -64,7 +64,7 @@ func NewServerActionsService(godoClient *godo.Client) ServerActionsService {
 	}
 }
 
-func (das *serverActionsService) handleActionResponse(a *godo.Action, err error) (*Action, error) {
+func (sas *serverActionsService) handleActionResponse(a *godo.Action, err error) (*Action, error) {
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (das *serverActionsService) handleActionResponse(a *godo.Action, err error)
 	return &Action{Action: a}, nil
 }
 
-func (das *serverActionsService) handleTagActionResponse(a []godo.Action, err error) (Actions, error) {
+func (sas *serverActionsService) handleTagActionResponse(a []godo.Action, err error) (Actions, error) {
 	if err != nil {
 		return nil, err
 	}
@@ -86,142 +86,142 @@ func (das *serverActionsService) handleTagActionResponse(a []godo.Action, err er
 	return actions, nil
 }
 
-func (das *serverActionsService) Shutdown(id int) (*Action, error) {
-	a, _, err := das.client.ServerActions.Shutdown(context.TODO(), id)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) Shutdown(id int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.Shutdown(context.TODO(), id)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) ShutdownByTag(tag string) (Actions, error) {
-	a, _, err := das.client.ServerActions.ShutdownByTag(context.TODO(), tag)
-	return das.handleTagActionResponse(a, err)
+func (sas *serverActionsService) ShutdownByTag(tag string) (Actions, error) {
+	a, _, err := sas.client.ServerActions.ShutdownByTag(context.TODO(), tag)
+	return sas.handleTagActionResponse(a, err)
 }
 
-func (das *serverActionsService) PowerOff(id int) (*Action, error) {
-	a, _, err := das.client.ServerActions.PowerOff(context.TODO(), id)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) PowerOff(id int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.PowerOff(context.TODO(), id)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) PowerOffByTag(tag string) (Actions, error) {
-	a, _, err := das.client.ServerActions.PowerOffByTag(context.TODO(), tag)
-	return das.handleTagActionResponse(a, err)
+func (sas *serverActionsService) PowerOffByTag(tag string) (Actions, error) {
+	a, _, err := sas.client.ServerActions.PowerOffByTag(context.TODO(), tag)
+	return sas.handleTagActionResponse(a, err)
 }
 
-func (das *serverActionsService) PowerOn(id int) (*Action, error) {
-	a, _, err := das.client.ServerActions.PowerOn(context.TODO(), id)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) PowerOn(id int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.PowerOn(context.TODO(), id)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) PowerOnByTag(tag string) (Actions, error) {
-	a, _, err := das.client.ServerActions.PowerOnByTag(context.TODO(), tag)
-	return das.handleTagActionResponse(a, err)
+func (sas *serverActionsService) PowerOnByTag(tag string) (Actions, error) {
+	a, _, err := sas.client.ServerActions.PowerOnByTag(context.TODO(), tag)
+	return sas.handleTagActionResponse(a, err)
 }
 
-func (das *serverActionsService) PowerCycle(id int) (*Action, error) {
-	a, _, err := das.client.ServerActions.PowerCycle(context.TODO(), id)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) PowerCycle(id int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.PowerCycle(context.TODO(), id)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) PowerCycleByTag(tag string) (Actions, error) {
-	a, _, err := das.client.ServerActions.PowerCycleByTag(context.TODO(), tag)
-	return das.handleTagActionResponse(a, err)
+func (sas *serverActionsService) PowerCycleByTag(tag string) (Actions, error) {
+	a, _, err := sas.client.ServerActions.PowerCycleByTag(context.TODO(), tag)
+	return sas.handleTagActionResponse(a, err)
 }
 
-func (das *serverActionsService) Reboot(id int) (*Action, error) {
-	a, _, err := das.client.ServerActions.Reboot(context.TODO(), id)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) Reboot(id int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.Reboot(context.TODO(), id)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) Restore(id, imageID int) (*Action, error) {
-	a, _, err := das.client.ServerActions.Restore(context.TODO(), id, imageID)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) Restore(id, imageID int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.Restore(context.TODO(), id, imageID)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) Resize(id int, sizeSlug string, resizeDisk bool) (*Action, error) {
-	a, _, err := das.client.ServerActions.Resize(context.TODO(), id, sizeSlug, resizeDisk)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) Resize(id int, sizeSlug string, resizeDisk bool) (*Action, error) {
+	a, _, err := sas.client.ServerActions.Resize(context.TODO(), id, sizeSlug, resizeDisk)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) Rename(id int, name string) (*Action, error) {
-	a, _, err := das.client.ServerActions.Rename(context.TODO(), id, name)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) Rename(id int, name string) (*Action, error) {
+	a, _, err := sas.client.ServerActions.Rename(context.TODO(), id, name)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) Snapshot(id int, name string) (*Action, error) {
-	a, _, err := das.client.ServerActions.Snapshot(context.TODO(), id, name)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) Snapshot(id int, name string) (*Action, error) {
+	a, _, err := sas.client.ServerActions.Snapshot(context.TODO(), id, name)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) SnapshotByTag(tag string, name string) (Actions, error) {
-	a, _, err := das.client.ServerActions.SnapshotByTag(context.TODO(), tag, name)
-	return das.handleTagActionResponse(a, err)
+func (sas *serverActionsService) SnapshotByTag(tag string, name string) (Actions, error) {
+	a, _, err := sas.client.ServerActions.SnapshotByTag(context.TODO(), tag, name)
+	return sas.handleTagActionResponse(a, err)
 }
 
-func (das *serverActionsService) EnableBackups(id int) (*Action, error) {
-	a, _, err := das.client.ServerActions.EnableBackups(context.TODO(), id)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) EnableBackups(id int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.EnableBackups(context.TODO(), id)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) EnableBackupsByTag(tag string) (Actions, error) {
-	a, _, err := das.client.ServerActions.EnableBackupsByTag(context.TODO(), tag)
-	return das.handleTagActionResponse(a, err)
+func (sas *serverActionsService) EnableBackupsByTag(tag string) (Actions, error) {
+	a, _, err := sas.client.ServerActions.EnableBackupsByTag(context.TODO(), tag)
+	return sas.handleTagActionResponse(a, err)
 }
 
-func (das *serverActionsService) DisableBackups(id int) (*Action, error) {
-	a, _, err := das.client.ServerActions.DisableBackups(context.TODO(), id)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) DisableBackups(id int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.DisableBackups(context.TODO(), id)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) DisableBackupsByTag(tag string) (Actions, error) {
-	a, _, err := das.client.ServerActions.DisableBackupsByTag(context.TODO(), tag)
-	return das.handleTagActionResponse(a, err)
+func (sas *serverActionsService) DisableBackupsByTag(tag string) (Actions, error) {
+	a, _, err := sas.client.ServerActions.DisableBackupsByTag(context.TODO(), tag)
+	return sas.handleTagActionResponse(a, err)
 }
 
-func (das *serverActionsService) PasswordReset(id int) (*Action, error) {
-	a, _, err := das.client.ServerActions.PasswordReset(context.TODO(), id)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) PasswordReset(id int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.PasswordReset(context.TODO(), id)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) RebuildByImageID(id, imageID int) (*Action, error) {
-	a, _, err := das.client.ServerActions.RebuildByImageID(context.TODO(), id, imageID)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) RebuildByImageID(id, imageID int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.RebuildByImageID(context.TODO(), id, imageID)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) RebuildByImageSlug(id int, slug string) (*Action, error) {
-	a, _, err := das.client.ServerActions.RebuildByImageSlug(context.TODO(), id, slug)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) RebuildByImageSlug(id int, slug string) (*Action, error) {
+	a, _, err := sas.client.ServerActions.RebuildByImageSlug(context.TODO(), id, slug)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) ChangeKernel(id, kernelID int) (*Action, error) {
-	a, _, err := das.client.ServerActions.ChangeKernel(context.TODO(), id, kernelID)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) ChangeKernel(id, kernelID int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.ChangeKernel(context.TODO(), id, kernelID)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) EnableIPv6(id int) (*Action, error) {
-	a, _, err := das.client.ServerActions.EnableIPv6(context.TODO(), id)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) EnableIPv6(id int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.EnableIPv6(context.TODO(), id)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) EnableIPv6ByTag(tag string) (Actions, error) {
-	a, _, err := das.client.ServerActions.EnableIPv6ByTag(context.TODO(), tag)
-	return das.handleTagActionResponse(a, err)
+func (sas *serverActionsService) EnableIPv6ByTag(tag string) (Actions, error) {
+	a, _, err := sas.client.ServerActions.EnableIPv6ByTag(context.TODO(), tag)
+	return sas.handleTagActionResponse(a, err)
 }
 
-func (das *serverActionsService) EnablePrivateNetworking(id int) (*Action, error) {
-	a, _, err := das.client.ServerActions.EnablePrivateNetworking(context.TODO(), id)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) EnablePrivateNetworking(id int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.EnablePrivateNetworking(context.TODO(), id)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) EnablePrivateNetworkingByTag(tag string) (Actions, error) {
-	a, _, err := das.client.ServerActions.EnablePrivateNetworkingByTag(context.TODO(), tag)
-	return das.handleTagActionResponse(a, err)
+func (sas *serverActionsService) EnablePrivateNetworkingByTag(tag string) (Actions, error) {
+	a, _, err := sas.client.ServerActions.EnablePrivateNetworkingByTag(context.TODO(), tag)
+	return sas.handleTagActionResponse(a, err)
 }
 
-func (das *serverActionsService) Get(id int, actionID int) (*Action, error) {
-	a, _, err := das.client.ServerActions.Get(context.TODO(), id, actionID)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) Get(id int, actionID int) (*Action, error) {
+	a, _, err := sas.client.ServerActions.Get(context.TODO(), id, actionID)
+	return sas.handleActionResponse(a, err)
 }
 
-func (das *serverActionsService) GetByURI(uri string) (*Action, error) {
-	a, _, err := das.client.ServerActions.GetByURI(context.TODO(), uri)
-	return das.handleActionResponse(a, err)
+func (sas *serverActionsService) GetByURI(uri string) (*Action, error) {
+	a, _, err := sas.client.ServerActions.GetByURI(context.TODO(), uri)
+	return sas.handleActionResponse(a, err)
 }

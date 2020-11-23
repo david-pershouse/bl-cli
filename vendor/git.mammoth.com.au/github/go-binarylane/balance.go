@@ -21,7 +21,7 @@ type BalanceServiceOp struct {
 
 var _ BalanceService = &BalanceServiceOp{}
 
-// Balance represents a DigitalOcean Balance
+// Balance represents a BinaryLane Balance
 type Balance struct {
 	MonthToDateBalance string    `json:"month_to_date_balance"`
 	AccountBalance     string    `json:"account_balance"`
@@ -33,7 +33,7 @@ func (r Balance) String() string {
 	return Stringify(r)
 }
 
-// Get DigitalOcean balance info
+// Get balance info
 func (s *BalanceServiceOp) Get(ctx context.Context) (*Balance, *Response, error) {
 	path := "v2/customers/my/balance"
 

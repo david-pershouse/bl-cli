@@ -15,7 +15,7 @@ const (
 	activeFailure = 3
 )
 
-// WaitForActive waits for a droplet to become active
+// WaitForActive waits for a server to become active
 func WaitForActive(ctx context.Context, client *binarylane.Client, monitorURI string) error {
 	if len(monitorURI) == 0 {
 		return fmt.Errorf("create had no monitor uri")

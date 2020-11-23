@@ -7,8 +7,8 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
+	binarylane "git.mammoth.com.au/github/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -36,10 +36,10 @@ func (m *MockDomainsService) EXPECT() *MockDomainsServiceMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockDomainsService) List() (do.Domains, error) {
+func (m *MockDomainsService) List() (bl.Domains, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
-	ret0, _ := ret[0].(do.Domains)
+	ret0, _ := ret[0].(bl.Domains)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockDomainsServiceMockRecorder) List() *gomock.Call {
 }
 
 // Get mocks base method.
-func (m *MockDomainsService) Get(arg0 string) (*do.Domain, error) {
+func (m *MockDomainsService) Get(arg0 string) (*bl.Domain, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", arg0)
-	ret0, _ := ret[0].(*do.Domain)
+	ret0, _ := ret[0].(*bl.Domain)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -66,10 +66,10 @@ func (mr *MockDomainsServiceMockRecorder) Get(arg0 interface{}) *gomock.Call {
 }
 
 // Create mocks base method.
-func (m *MockDomainsService) Create(arg0 *godo.DomainCreateRequest) (*do.Domain, error) {
+func (m *MockDomainsService) Create(arg0 *binarylane.DomainCreateRequest) (*bl.Domain, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", arg0)
-	ret0, _ := ret[0].(*do.Domain)
+	ret0, _ := ret[0].(*bl.Domain)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -95,10 +95,10 @@ func (mr *MockDomainsServiceMockRecorder) Delete(arg0 interface{}) *gomock.Call 
 }
 
 // Records mocks base method.
-func (m *MockDomainsService) Records(arg0 string) (do.DomainRecords, error) {
+func (m *MockDomainsService) Records(arg0 string) (bl.DomainRecords, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Records", arg0)
-	ret0, _ := ret[0].(do.DomainRecords)
+	ret0, _ := ret[0].(bl.DomainRecords)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -110,10 +110,10 @@ func (mr *MockDomainsServiceMockRecorder) Records(arg0 interface{}) *gomock.Call
 }
 
 // Record mocks base method.
-func (m *MockDomainsService) Record(arg0 string, arg1 int) (*do.DomainRecord, error) {
+func (m *MockDomainsService) Record(arg0 string, arg1 int) (*bl.DomainRecord, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Record", arg0, arg1)
-	ret0, _ := ret[0].(*do.DomainRecord)
+	ret0, _ := ret[0].(*bl.DomainRecord)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -139,10 +139,10 @@ func (mr *MockDomainsServiceMockRecorder) DeleteRecord(arg0, arg1 interface{}) *
 }
 
 // EditRecord mocks base method.
-func (m *MockDomainsService) EditRecord(arg0 string, arg1 int, arg2 *do.DomainRecordEditRequest) (*do.DomainRecord, error) {
+func (m *MockDomainsService) EditRecord(arg0 string, arg1 int, arg2 *bl.DomainRecordEditRequest) (*bl.DomainRecord, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "EditRecord", arg0, arg1, arg2)
-	ret0, _ := ret[0].(*do.DomainRecord)
+	ret0, _ := ret[0].(*bl.DomainRecord)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -154,10 +154,10 @@ func (mr *MockDomainsServiceMockRecorder) EditRecord(arg0, arg1, arg2 interface{
 }
 
 // CreateRecord mocks base method.
-func (m *MockDomainsService) CreateRecord(arg0 string, arg1 *do.DomainRecordEditRequest) (*do.DomainRecord, error) {
+func (m *MockDomainsService) CreateRecord(arg0 string, arg1 *bl.DomainRecordEditRequest) (*bl.DomainRecord, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateRecord", arg0, arg1)
-	ret0, _ := ret[0].(*do.DomainRecord)
+	ret0, _ := ret[0].(*bl.DomainRecord)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

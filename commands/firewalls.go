@@ -48,16 +48,16 @@ Inbound access rules specify the protocol (TCP, UDP, or ICMP), ports, and source
 	- The firewall's name
 	- The status of the firewall. This can be ` + "`" + `waiting` + "`" + `, ` + "`" + `succeeded` + "`" + `, or ` + "`" + `failed` + "`" + `.
 	- The firewall's creation date, in ISO8601 combined date and time format.
-	- Any pending changes to the firewall. These can be ` + "`" + `droplet_id` + "`" + `, ` + "`" + `removing` + "`" + `, and ` + "`" + `status` + "`" + `.
+	- Any pending changes to the firewall. These can be ` + "`" + `server_id` + "`" + `, ` + "`" + `removing` + "`" + `, and ` + "`" + `status` + "`" + `.
 	  When empty, all changes have been successfully applied.
 	- The inbound rules for the firewall.
 	- The outbound rules for the firewall.
 	- The IDs of Servers assigned to the firewall.
 	- The tags assigned to the firewall.
 `
-	inboundRulesTxt := "A comma-separated key-value list that defines an inbound rule, e.g.: `protocol:tcp,ports:22,droplet_id:123`. Use a quoted string of space-separated values for multiple rules."
+	inboundRulesTxt := "A comma-separated key-value list that defines an inbound rule, e.g.: `protocol:tcp,ports:22,server_id:123`. Use a quoted string of space-separated values for multiple rules."
 	outboundRulesTxt := "A comma-separate key-value list the defines an outbound rule, e.g.: `protocol:tcp,ports:22,address:0.0.0.0/0`. Use a quoted string of space-separated values for multiple rules."
-	dropletIDRulesTxt := "A comma-separated list of Server IDs to place behind the cloud firewall, e.g.: `123,456`"
+	serverIDRulesTxt := "A comma-separated list of Server IDs to place behind the cloud firewall, e.g.: `123,456`"
 	tagNameRulesTxt := "A comma-separated list of tag names to apply to the cloud firewall, e.g.: `frontend,backend`"
 
 	CmdBuilder(cmd, RunFirewallGet, "get <id>", "Retrieve information about a cloud firewall", `Use this command to get information about an existing cloud firewall, including:`+fwDetail, Writer, aliasOpt("g"), displayerType(&displayers.Firewall{}))
@@ -66,28 +66,28 @@ Inbound access rules specify the protocol (TCP, UDP, or ICMP), ports, and source
 	AddStringFlag(cmdFirewallCreate, blcli.ArgFirewallName, "", "", "Firewall name", requiredOpt())
 	AddStringFlag(cmdFirewallCreate, blcli.ArgInboundRules, "", "", inboundRulesTxt)
 	AddStringFlag(cmdFirewallCreate, blcli.ArgOutboundRules, "", "", outboundRulesTxt)
-	AddStringSliceFlag(cmdFirewallCreate, blcli.ArgServerIDs, "", []string{}, dropletIDRulesTxt)
+	AddStringSliceFlag(cmdFirewallCreate, blcli.ArgServerIDs, "", []string{}, serverIDRulesTxt)
 	AddStringSliceFlag(cmdFirewallCreate, blcli.ArgTagNames, "", []string{}, tagNameRulesTxt)
 
 	cmdFirewallUpdate := CmdBuilder(cmd, RunFirewallUpdate, "update <id>", "Update a cloud firewall's configuration", `Use this command to update the configuration of an existing cloud firewall. The request should contain a full representation of the Firewall, including existing attributes. Note: Any attributes that are not provided will be reset to their default values.`, Writer, aliasOpt("u"), displayerType(&displayers.Firewall{}))
 	AddStringFlag(cmdFirewallUpdate, blcli.ArgFirewallName, "", "", "Firewall name", requiredOpt())
 	AddStringFlag(cmdFirewallUpdate, blcli.ArgInboundRules, "", "", inboundRulesTxt)
 	AddStringFlag(cmdFirewallUpdate, blcli.ArgOutboundRules, "", "", outboundRulesTxt)
-	AddStringSliceFlag(cmdFirewallUpdate, blcli.ArgServerIDs, "", []string{}, dropletIDRulesTxt)
+	AddStringSliceFlag(cmdFirewallUpdate, blcli.ArgServerIDs, "", []string{}, serverIDRulesTxt)
 	AddStringSliceFlag(cmdFirewallUpdate, blcli.ArgTagNames, "", []string{}, tagNameRulesTxt)
 
 	CmdBuilder(cmd, RunFirewallList, "list", "List the cloud firewalls on your account", `Use this command to retrieve a list of cloud firewalls.`, Writer, aliasOpt("ls"), displayerType(&displayers.Firewall{}))
 
-	CmdBuilder(cmd, RunFirewallListByDroplet, "list-by-droplet <droplet_id>", "List firewalls by Server", `Use this command to list cloud firewalls by the ID of a Server assigned to the firewall.`, Writer, displayerType(&displayers.Firewall{}))
+	CmdBuilder(cmd, RunFirewallListByServer, "list-by-server <server_id>", "List firewalls by Server", `Use this command to list cloud firewalls by the ID of a Server assigned to the firewall.`, Writer, displayerType(&displayers.Firewall{}))
 
 	cmdRunRecordDelete := CmdBuilder(cmd, RunFirewallDelete, "delete <id>...", "Permanently delete a cloud firewall", `Use this command to permanently delete a cloud firewall. This is irreversable, but does not delete any Servers assigned to the cloud firewall.`, Writer, aliasOpt("d", "rm"))
 	AddBoolFlag(cmdRunRecordDelete, blcli.ArgForce, blcli.ArgShortForce, false, "Delete firewall without confirmation prompt")
 
-	cmdAddDroplets := CmdBuilder(cmd, RunFirewallAddDroplets, "add-servers <id>", "Add Servers to a cloud firewall", `Use this command to add Servers to the cloud firewall.`, Writer)
-	AddStringSliceFlag(cmdAddDroplets, blcli.ArgServerIDs, "", []string{}, dropletIDRulesTxt)
+	cmdAddServers := CmdBuilder(cmd, RunFirewallAddServers, "add-servers <id>", "Add Servers to a cloud firewall", `Use this command to add Servers to the cloud firewall.`, Writer)
+	AddStringSliceFlag(cmdAddServers, blcli.ArgServerIDs, "", []string{}, serverIDRulesTxt)
 
-	cmdRemoveDroplets := CmdBuilder(cmd, RunFirewallRemoveDroplets, "remove-servers <id>", "Remove Servers from a cloud firewall", `Use this command to remove Servers from a cloud firewall.`, Writer)
-	AddStringSliceFlag(cmdRemoveDroplets, blcli.ArgServerIDs, "", []string{}, dropletIDRulesTxt)
+	cmdRemoveServers := CmdBuilder(cmd, RunFirewallRemoveServers, "remove-servers <id>", "Remove Servers from a cloud firewall", `Use this command to remove Servers from a cloud firewall.`, Writer)
+	AddStringSliceFlag(cmdRemoveServers, blcli.ArgServerIDs, "", []string{}, serverIDRulesTxt)
 
 	cmdAddTags := CmdBuilder(cmd, RunFirewallAddTags, "add-tags <id>", "Add tags to a cloud firewall", `Use this command to add tags to a cloud firewall. This adds all assets using that tag to the firewall`, Writer)
 	AddStringSliceFlag(cmdAddTags, blcli.ArgTagNames, "", []string{}, tagNameRulesTxt)
@@ -175,19 +175,19 @@ func RunFirewallList(c *CmdConfig) error {
 	return c.Display(items)
 }
 
-// RunFirewallListByDroplet lists Firewalls for a given Server.
-func RunFirewallListByDroplet(c *CmdConfig) error {
+// RunFirewallListByServer lists Firewalls for a given Server.
+func RunFirewallListByServer(c *CmdConfig) error {
 	err := ensureOneArg(c)
 	if err != nil {
 		return err
 	}
-	dID, err := strconv.Atoi(c.Args[0])
+	sID, err := strconv.Atoi(c.Args[0])
 	if err != nil {
-		return fmt.Errorf("invalid droplet id: [%v]", c.Args[0])
+		return fmt.Errorf("invalid server id: [%v]", c.Args[0])
 	}
 
 	fs := c.Firewalls()
-	list, err := fs.ListByDroplet(dID)
+	list, err := fs.ListByServer(sID)
 	if err != nil {
 		return err
 	}
@@ -221,46 +221,46 @@ func RunFirewallDelete(c *CmdConfig) error {
 	return nil
 }
 
-// RunFirewallAddDroplets adds servers to a Firewall.
-func RunFirewallAddDroplets(c *CmdConfig) error {
+// RunFirewallAddServers adds servers to a Firewall.
+func RunFirewallAddServers(c *CmdConfig) error {
 	err := ensureOneArg(c)
 	if err != nil {
 		return err
 	}
 	fID := c.Args[0]
 
-	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
+	serverIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
 	if err != nil {
 		return err
 	}
 
-	dropletIDs, err := extractDropletIDs(dropletIDsList)
+	serverIDs, err := extractServerIDs(serverIDsList)
 	if err != nil {
 		return err
 	}
 
-	return c.Firewalls().AddDroplets(fID, dropletIDs...)
+	return c.Firewalls().AddServers(fID, serverIDs...)
 }
 
-// RunFirewallRemoveDroplets removes servers from a Firewall.
-func RunFirewallRemoveDroplets(c *CmdConfig) error {
+// RunFirewallRemoveServers removes servers from a Firewall.
+func RunFirewallRemoveServers(c *CmdConfig) error {
 	err := ensureOneArg(c)
 	if err != nil {
 		return err
 	}
 	fID := c.Args[0]
 
-	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
+	serverIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
 	if err != nil {
 		return err
 	}
 
-	dropletIDs, err := extractDropletIDs(dropletIDsList)
+	serverIDs, err := extractServerIDs(serverIDsList)
 	if err != nil {
 		return err
 	}
 
-	return c.Firewalls().RemoveDroplets(fID, dropletIDs...)
+	return c.Firewalls().RemoveServers(fID, serverIDs...)
 }
 
 // RunFirewallAddTags adds tags to a Firewall.
@@ -356,16 +356,16 @@ func buildFirewallRequestFromArgs(c *CmdConfig, r *godo.FirewallRequest) error {
 	}
 	r.OutboundRules = outboundRules
 
-	dropletIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
+	serverIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
 	if err != nil {
 		return err
 	}
 
-	dropletIDs, err := extractDropletIDs(dropletIDsList)
+	serverIDs, err := extractServerIDs(serverIDsList)
 	if err != nil {
 		return err
 	}
-	r.DropletIDs = dropletIDs
+	r.ServerIDs = serverIDs
 
 	tagsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgTagNames)
 	if err != nil {
@@ -444,7 +444,7 @@ func extractOutboundRules(s string) (rules []godo.OutboundRule, err error) {
 
 func extractRule(ruleStr string, sd string) (map[string]interface{}, error) {
 	rule := map[string]interface{}{}
-	var dropletIDs []int
+	var serverIDs []int
 	var addresses, lbUIDs, tags []string
 
 	kvs := strings.Split(ruleStr, ",")
@@ -457,12 +457,12 @@ func extractRule(ruleStr string, sd string) (map[string]interface{}, error) {
 		switch pair[0] {
 		case "address":
 			addresses = append(addresses, pair[1])
-		case "droplet_id":
+		case "server_id":
 			i, err := strconv.Atoi(pair[1])
 			if err != nil {
-				return nil, fmt.Errorf("Provided value [%v] for droplet id is not of type int", pair[0])
+				return nil, fmt.Errorf("Provided value [%v] for server id is not of type int", pair[0])
 			}
-			dropletIDs = append(dropletIDs, i)
+			serverIDs = append(serverIDs, i)
 		case "load_balancer_uid":
 			lbUIDs = append(lbUIDs, pair[1])
 		case "tag":
@@ -474,7 +474,7 @@ func extractRule(ruleStr string, sd string) (map[string]interface{}, error) {
 
 	rule[sd] = map[string]interface{}{
 		"addresses":          addresses,
-		"droplet_ids":        dropletIDs,
+		"server_ids":        serverIDs,
 		"load_balancer_uids": lbUIDs,
 		"tags":               tags,
 	}

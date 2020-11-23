@@ -32,7 +32,7 @@ type ImagesServiceOp struct {
 
 var _ ImagesService = &ImagesServiceOp{}
 
-// Image represents a DigitalOcean Image
+// Image represents a BinaryLane Image
 type Image struct {
 	ID            int      `json:"id,float64,omitempty"`
 	Name          string   `json:"name,omitempty"`

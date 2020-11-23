@@ -7,7 +7,7 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -35,10 +35,10 @@ func (m *MockInvoicesService) EXPECT() *MockInvoicesServiceMockRecorder {
 }
 
 // Get mocks base method.
-func (m *MockInvoicesService) Get(arg0 string) (*do.Invoice, error) {
+func (m *MockInvoicesService) Get(arg0 string) (*bl.Invoice, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", arg0)
-	ret0, _ := ret[0].(*do.Invoice)
+	ret0, _ := ret[0].(*bl.Invoice)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -50,10 +50,10 @@ func (mr *MockInvoicesServiceMockRecorder) Get(arg0 interface{}) *gomock.Call {
 }
 
 // List mocks base method.
-func (m *MockInvoicesService) List() (*do.InvoiceList, error) {
+func (m *MockInvoicesService) List() (*bl.InvoiceList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
-	ret0, _ := ret[0].(*do.InvoiceList)
+	ret0, _ := ret[0].(*bl.InvoiceList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,10 +65,10 @@ func (mr *MockInvoicesServiceMockRecorder) List() *gomock.Call {
 }
 
 // GetSummary mocks base method.
-func (m *MockInvoicesService) GetSummary(arg0 string) (*do.InvoiceSummary, error) {
+func (m *MockInvoicesService) GetSummary(arg0 string) (*bl.InvoiceSummary, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSummary", arg0)
-	ret0, _ := ret[0].(*do.InvoiceSummary)
+	ret0, _ := ret[0].(*bl.InvoiceSummary)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

@@ -7,7 +7,7 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -35,10 +35,10 @@ func (m *MockBillingHistoryService) EXPECT() *MockBillingHistoryServiceMockRecor
 }
 
 // List mocks base method.
-func (m *MockBillingHistoryService) List() (*do.BillingHistory, error) {
+func (m *MockBillingHistoryService) List() (*bl.BillingHistory, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
-	ret0, _ := ret[0].(*do.BillingHistory)
+	ret0, _ := ret[0].(*bl.BillingHistory)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

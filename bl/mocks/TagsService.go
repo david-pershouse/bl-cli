@@ -7,8 +7,8 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
+	binarylane "git.mammoth.com.au/github/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -36,10 +36,10 @@ func (m *MockTagsService) EXPECT() *MockTagsServiceMockRecorder {
 }
 
 // List mocks base method.
-func (m *MockTagsService) List() (do.Tags, error) {
+func (m *MockTagsService) List() (bl.Tags, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
-	ret0, _ := ret[0].(do.Tags)
+	ret0, _ := ret[0].(bl.Tags)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockTagsServiceMockRecorder) List() *gomock.Call {
 }
 
 // Get mocks base method.
-func (m *MockTagsService) Get(arg0 string) (*do.Tag, error) {
+func (m *MockTagsService) Get(arg0 string) (*bl.Tag, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", arg0)
-	ret0, _ := ret[0].(*do.Tag)
+	ret0, _ := ret[0].(*bl.Tag)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -66,10 +66,10 @@ func (mr *MockTagsServiceMockRecorder) Get(arg0 interface{}) *gomock.Call {
 }
 
 // Create mocks base method.
-func (m *MockTagsService) Create(arg0 *godo.TagCreateRequest) (*do.Tag, error) {
+func (m *MockTagsService) Create(arg0 *binarylane.TagCreateRequest) (*bl.Tag, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", arg0)
-	ret0, _ := ret[0].(*do.Tag)
+	ret0, _ := ret[0].(*bl.Tag)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -95,7 +95,7 @@ func (mr *MockTagsServiceMockRecorder) Delete(arg0 interface{}) *gomock.Call {
 }
 
 // TagResources mocks base method.
-func (m *MockTagsService) TagResources(arg0 string, arg1 *godo.TagResourcesRequest) error {
+func (m *MockTagsService) TagResources(arg0 string, arg1 *binarylane.TagResourcesRequest) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "TagResources", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -109,7 +109,7 @@ func (mr *MockTagsServiceMockRecorder) TagResources(arg0, arg1 interface{}) *gom
 }
 
 // UntagResources mocks base method.
-func (m *MockTagsService) UntagResources(arg0 string, arg1 *godo.UntagResourcesRequest) error {
+func (m *MockTagsService) UntagResources(arg0 string, arg1 *binarylane.UntagResourcesRequest) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UntagResources", arg0, arg1)
 	ret0, _ := ret[0].(error)

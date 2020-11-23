@@ -61,7 +61,7 @@ func TestLoadBalancerList(t *testing.T) {
 	})
 }
 
-func TestLoadBalancerCreateWithInvalidDropletIDsArgs(t *testing.T) {
+func TestLoadBalancerCreateWithInvalidServerIDsArgs(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"bogus"})
 
@@ -86,7 +86,7 @@ func TestLoadBalancerCreate(t *testing.T) {
 			Name:       "lb-name",
 			Region:     "nyc1",
 			SizeSlug:   "lb-small",
-			DropletIDs: []int{1, 2},
+			ServerIDs: []int{1, 2},
 			StickySessions: &godo.StickySessions{
 				Type: "none",
 			},
@@ -131,7 +131,7 @@ func TestLoadBalancerUpdate(t *testing.T) {
 		r := godo.LoadBalancerRequest{
 			Name:       "lb-name",
 			Region:     "nyc1",
-			DropletIDs: []int{1, 2},
+			ServerIDs: []int{1, 2},
 			StickySessions: &godo.StickySessions{
 				Type:             "cookies",
 				CookieName:       "DO-LB",
@@ -198,42 +198,42 @@ func TestLoadBalancerDeleteNoID(t *testing.T) {
 	})
 }
 
-func TestLoadBalancerAddDroplets(t *testing.T) {
+func TestLoadBalancerAddServers(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		lbID := "cde2c0d6-41e3-479e-ba60-ad971227232c"
-		tm.loadBalancers.EXPECT().AddDroplets(lbID, 1, 23).Return(nil)
+		tm.loadBalancers.EXPECT().AddServers(lbID, 1, 23).Return(nil)
 
 		config.Args = append(config.Args, lbID)
 		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"1", "23"})
 
-		err := RunLoadBalancerAddDroplets(config)
+		err := RunLoadBalancerAddServers(config)
 		assert.NoError(t, err)
 	})
 }
 
-func TestLoadBalancerAddDropletsNoID(t *testing.T) {
+func TestLoadBalancerAddServersNoID(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		err := RunLoadBalancerAddDroplets(config)
+		err := RunLoadBalancerAddServers(config)
 		assert.Error(t, err)
 	})
 }
 
-func TestLoadBalancerRemoveDroplets(t *testing.T) {
+func TestLoadBalancerRemoveServers(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		lbID := "cde2c0d6-41e3-479e-ba60-ad971227232c"
-		tm.loadBalancers.EXPECT().RemoveDroplets(lbID, 321).Return(nil)
+		tm.loadBalancers.EXPECT().RemoveServers(lbID, 321).Return(nil)
 
 		config.Args = append(config.Args, lbID)
 		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"321"})
 
-		err := RunLoadBalancerRemoveDroplets(config)
+		err := RunLoadBalancerRemoveServers(config)
 		assert.NoError(t, err)
 	})
 }
 
-func TestLoadBalancerRemoveDropletsNoID(t *testing.T) {
+func TestLoadBalancerRemoveServersNoID(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		err := RunLoadBalancerRemoveDroplets(config)
+		err := RunLoadBalancerRemoveServers(config)
 		assert.Error(t, err)
 	})
 }

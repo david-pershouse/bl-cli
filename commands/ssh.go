@@ -43,7 +43,7 @@ func SSH(parent *Command) *Command {
 You may specify the user to login with by passing the `+"`"+`--%s`+"`"+` flag. To access the Server on a non-default port, use the `+"`"+`--%s`+"`"+` flag. By default, the connection will be made to the Server's public IP address. In order access it using its private IP address, use the `+"`"+`--%s`+"`"+` flag.
 `, blcli.ArgSSHUser, blcli.ArgsSSHPort, blcli.ArgsSSHPrivateIP)
 
-	cmdSSH := CmdBuilder(parent, RunSSH, "ssh <droplet-id|name>", "Access a Server using SSH", sshDesc, Writer)
+	cmdSSH := CmdBuilder(parent, RunSSH, "ssh <server-id|name>", "Access a Server using SSH", sshDesc, Writer)
 	AddStringFlag(cmdSSH, blcli.ArgSSHUser, "", "root", "SSH user for connection")
 	AddStringFlag(cmdSSH, blcli.ArgsSSHKeyPath, "", path, "Path to SSH private key")
 	AddIntFlag(cmdSSH, blcli.ArgsSSHPort, "", 22, "The remote port sshd is running on")
@@ -54,15 +54,15 @@ You may specify the user to login with by passing the `+"`"+`--%s`+"`"+` flag. T
 	return cmdSSH
 }
 
-// RunSSH finds a droplet to ssh to given input parameters (name or id).
+// RunSSH finds a server to ssh to given input parameters (name or id).
 func RunSSH(c *CmdConfig) error {
 	if len(c.Args) == 0 {
 		return blcli.NewMissingArgsErr(c.NS)
 	}
 
-	dropletID := c.Args[0]
+	serverID := c.Args[0]
 
-	if dropletID == "" {
+	if serverID == "" {
 		return blcli.NewMissingArgsErr(c.NS)
 	}
 
@@ -97,26 +97,26 @@ func RunSSH(c *CmdConfig) error {
 		return err
 	}
 
-	var droplet *bl.Server
+	var server *bl.Server
 
-	ds := c.Servers()
-	if id, err := strconv.Atoi(dropletID); err == nil {
-		// dropletID is an integer
+	ss := c.Servers()
+	if id, err := strconv.Atoi(serverID); err == nil {
+		// serverID is an integer
 
-		doDroplet, err := ds.Get(id)
+		blServer, err := ss.Get(id)
 		if err != nil {
 			return err
 		}
 
-		droplet = doDroplet
+		server = blServer
 	} else {
-		// dropletID is a string
-		droplets, err := ds.List()
+		// serverID is a string
+		servers, err := ss.List()
 		if err != nil {
 			return err
 		}
 
-		shi := extractHostInfo(dropletID)
+		shi := extractHostInfo(serverID)
 
 		if shi.user != "" {
 			user = shi.user
@@ -126,28 +126,28 @@ func RunSSH(c *CmdConfig) error {
 			port = i
 		}
 
-		for _, d := range droplets {
-			if d.Name == shi.host {
-				droplet = &d
+		for _, s := range servers {
+			if s.Name == shi.host {
+				server = &s
 				break
 			}
-			if strconv.Itoa(d.ID) == shi.host {
-				droplet = &d
+			if strconv.Itoa(s.ID) == shi.host {
+				server = &s
 				break
 			}
 		}
 
-		if droplet == nil {
+		if server == nil {
 			return errors.New("Could not find Server")
 		}
 
 	}
 
 	if user == "" {
-		user = defaultSSHUser(droplet)
+		user = defaultSSHUser(server)
 	}
 
-	ip, err := privateIPElsePub(droplet, privateIPChoice)
+	ip, err := privateIPElsePub(server, privateIPChoice)
 	if err != nil {
 		return err
 	}
@@ -160,8 +160,8 @@ func RunSSH(c *CmdConfig) error {
 	return runner.Run()
 }
 
-func defaultSSHUser(droplet *bl.Server) string {
-	slug := strings.ToLower(droplet.Image.Slug)
+func defaultSSHUser(server *bl.Server) string {
+	slug := strings.ToLower(server.Image.Slug)
 	if strings.Contains(slug, "coreos") {
 		return "core"
 	}
@@ -189,9 +189,9 @@ func extractHostInfo(in string) sshHostInfo {
 	}
 }
 
-func privateIPElsePub(droplet *bl.Server, choice bool) (string, error) {
+func privateIPElsePub(server *bl.Server, choice bool) (string, error) {
 	if choice {
-		return droplet.PrivateIPv4()
+		return server.PrivateIPv4()
 	}
-	return droplet.PublicIPv4()
+	return server.PublicIPv4()
 }

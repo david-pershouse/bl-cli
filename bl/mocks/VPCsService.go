@@ -7,8 +7,8 @@ package mocks
 import (
 	reflect "reflect"
 
-	do "git.mammoth.com.au/github/bl-cli/bl"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	bl "git.mammoth.com.au/github/bl-cli/bl"
+	binarylane "git.mammoth.com.au/github/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -36,10 +36,10 @@ func (m *MockVPCsService) EXPECT() *MockVPCsServiceMockRecorder {
 }
 
 // Get mocks base method.
-func (m *MockVPCsService) Get(vpcUUID string) (*do.VPC, error) {
+func (m *MockVPCsService) Get(vpcUUID string) (*bl.VPC, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", vpcUUID)
-	ret0, _ := ret[0].(*do.VPC)
+	ret0, _ := ret[0].(*bl.VPC)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockVPCsServiceMockRecorder) Get(vpcUUID interface{}) *gomock.Call {
 }
 
 // List mocks base method.
-func (m *MockVPCsService) List() (do.VPCs, error) {
+func (m *MockVPCsService) List() (bl.VPCs, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List")
-	ret0, _ := ret[0].(do.VPCs)
+	ret0, _ := ret[0].(bl.VPCs)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -66,10 +66,10 @@ func (mr *MockVPCsServiceMockRecorder) List() *gomock.Call {
 }
 
 // Create mocks base method.
-func (m *MockVPCsService) Create(vpcr *godo.VPCCreateRequest) (*do.VPC, error) {
+func (m *MockVPCsService) Create(vpcr *binarylane.VPCCreateRequest) (*bl.VPC, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", vpcr)
-	ret0, _ := ret[0].(*do.VPC)
+	ret0, _ := ret[0].(*bl.VPC)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -81,10 +81,10 @@ func (mr *MockVPCsServiceMockRecorder) Create(vpcr interface{}) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockVPCsService) Update(vpcUUID string, vpcr *godo.VPCUpdateRequest) (*do.VPC, error) {
+func (m *MockVPCsService) Update(vpcUUID string, vpcr *binarylane.VPCUpdateRequest) (*bl.VPC, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", vpcUUID, vpcr)
-	ret0, _ := ret[0].(*do.VPC)
+	ret0, _ := ret[0].(*bl.VPC)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

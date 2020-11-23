@@ -78,9 +78,9 @@ func NewServersService(client *binarylane.Client) ServersService {
 	}
 }
 
-func (ds *serversService) List() (Servers, error) {
+func (ss *serversService) List() (Servers, error) {
 	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
-		list, resp, err := ds.client.Servers.List(context.TODO(), opt)
+		list, resp, err := ss.client.Servers.List(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -107,9 +107,9 @@ func (ds *serversService) List() (Servers, error) {
 	return list, nil
 }
 
-func (ds *serversService) ListByTag(tagName string) (Servers, error) {
+func (ss *serversService) ListByTag(tagName string) (Servers, error) {
 	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
-		list, resp, err := ds.client.Servers.ListByTag(context.TODO(), tagName, opt)
+		list, resp, err := ss.client.Servers.ListByTag(context.TODO(), tagName, opt)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -136,8 +136,8 @@ func (ds *serversService) ListByTag(tagName string) (Servers, error) {
 	return list, nil
 }
 
-func (ds *serversService) Get(id int) (*Server, error) {
-	d, _, err := ds.client.Servers.Get(context.TODO(), id)
+func (ss *serversService) Get(id int) (*Server, error) {
+	d, _, err := ss.client.Servers.Get(context.TODO(), id)
 	if err != nil {
 		return nil, err
 	}
@@ -145,8 +145,8 @@ func (ds *serversService) Get(id int) (*Server, error) {
 	return &Server{Server: d}, nil
 }
 
-func (ds *serversService) Create(dcr *binarylane.ServerCreateRequest, wait bool) (*Server, error) {
-	d, resp, err := ds.client.Servers.Create(context.TODO(), dcr)
+func (ss *serversService) Create(dcr *binarylane.ServerCreateRequest, wait bool) (*Server, error) {
+	d, resp, err := ss.client.Servers.Create(context.TODO(), dcr)
 	if err != nil {
 		return nil, err
 	}
@@ -161,8 +161,8 @@ func (ds *serversService) Create(dcr *binarylane.ServerCreateRequest, wait bool)
 		}
 
 		if action != nil {
-			_ = util.WaitForActive(context.TODO(), ds.client, action.HREF)
-			server, err := ds.Get(d.ID)
+			_ = util.WaitForActive(context.TODO(), ss.client, action.HREF)
+			server, err := ss.Get(d.ID)
 			if err != nil {
 				return nil, err
 			}
@@ -173,33 +173,33 @@ func (ds *serversService) Create(dcr *binarylane.ServerCreateRequest, wait bool)
 	return &Server{Server: d}, nil
 }
 
-func (ds *serversService) CreateMultiple(dmcr *binarylane.ServerMultiCreateRequest) (Servers, error) {
-	servers, _, err := ds.client.Servers.CreateMultiple(context.TODO(), dmcr)
+func (ss *serversService) CreateMultiple(dmcr *binarylane.ServerMultiCreateRequest) (Servers, error) {
+	binarylaneServers, _, err := ss.client.Servers.CreateMultiple(context.TODO(), dmcr)
 	if err != nil {
 		return nil, err
 	}
 
-	var droplets Servers
-	for _, d := range servers {
-		droplets = append(droplets, Server{Server: &d})
+	var servers Servers
+	for _, d := range binarylaneServers {
+		servers = append(servers, Server{Server: &d})
 	}
 
-	return droplets, nil
+	return servers, nil
 }
 
-func (ds *serversService) Delete(id int) error {
-	_, err := ds.client.Servers.Delete(context.TODO(), id)
+func (ss *serversService) Delete(id int) error {
+	_, err := ss.client.Servers.Delete(context.TODO(), id)
 	return err
 }
 
-func (ds *serversService) DeleteByTag(tag string) error {
-	_, err := ds.client.Servers.DeleteByTag(context.TODO(), tag)
+func (ss *serversService) DeleteByTag(tag string) error {
+	_, err := ss.client.Servers.DeleteByTag(context.TODO(), tag)
 	return err
 }
 
-func (ds *serversService) Kernels(id int) (Kernels, error) {
+func (ss *serversService) Kernels(id int) (Kernels, error) {
 	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
-		list, resp, err := ds.client.Servers.Kernels(context.TODO(), id, opt)
+		list, resp, err := ss.client.Servers.Kernels(context.TODO(), id, opt)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -226,9 +226,9 @@ func (ds *serversService) Kernels(id int) (Kernels, error) {
 	return list, nil
 }
 
-func (ds *serversService) Snapshots(id int) (Images, error) {
+func (ss *serversService) Snapshots(id int) (Images, error) {
 	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
-		list, resp, err := ds.client.Servers.Snapshots(context.TODO(), id, opt)
+		list, resp, err := ss.client.Servers.Snapshots(context.TODO(), id, opt)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -255,9 +255,9 @@ func (ds *serversService) Snapshots(id int) (Images, error) {
 	return list, nil
 }
 
-func (ds *serversService) Backups(id int) (Images, error) {
+func (ss *serversService) Backups(id int) (Images, error) {
 	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
-		list, resp, err := ds.client.Servers.Backups(context.TODO(), id, opt)
+		list, resp, err := ss.client.Servers.Backups(context.TODO(), id, opt)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -284,9 +284,9 @@ func (ds *serversService) Backups(id int) (Images, error) {
 	return list, nil
 }
 
-func (ds *serversService) Actions(id int) (Actions, error) {
+func (ss *serversService) Actions(id int) (Actions, error) {
 	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
-		list, resp, err := ds.client.Servers.Actions(context.TODO(), id, opt)
+		list, resp, err := ss.client.Servers.Actions(context.TODO(), id, opt)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -313,16 +313,16 @@ func (ds *serversService) Actions(id int) (Actions, error) {
 	return list, nil
 }
 
-func (ds *serversService) Neighbors(id int) (Servers, error) {
-	list, _, err := ds.client.Servers.Neighbors(context.TODO(), id)
+func (ss *serversService) Neighbors(id int) (Servers, error) {
+	list, _, err := ss.client.Servers.Neighbors(context.TODO(), id)
 	if err != nil {
 		return nil, err
 	}
 
-	droplets := make(Servers, len(list))
+	servers := make(Servers, len(list))
 	for i := range list {
-		droplets[i] = Server{&list[i]}
+		servers[i] = Server{&list[i]}
 	}
 
-	return droplets, nil
+	return servers, nil
 }

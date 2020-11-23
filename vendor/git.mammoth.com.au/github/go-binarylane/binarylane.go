@@ -29,9 +29,9 @@ const (
 	headerRateReset     = "RateLimit-Reset"
 )
 
-// Client manages communication with DigitalOcean V2 API.
+// Client manages communication with BinaryLane API.
 type Client struct {
-	// HTTP client used to communicate with the DO API.
+	// HTTP client used to communicate with the API.
 	client *http.Client
 
 	// Base URL for API requests.
@@ -68,7 +68,7 @@ type Client struct {
 	Projects          ProjectsService
 	VPCs              VPCsService
 
-	// Optional function called after every successful request made to the DO APIs
+	// Optional function called after every successful request made to the API
 	onRequestCompleted RequestCompletionCallback
 }
 
@@ -85,7 +85,7 @@ type ListOptions struct {
 	PerPage int `url:"per_page,omitempty"`
 }
 
-// Response is a DigitalOcean response. This wraps the standard http.Response returned from DigitalOcean.
+// Response is a BinaryLane response. This wraps the standard http.Response returned from the API.
 type Response struct {
 	*http.Response
 
@@ -165,7 +165,7 @@ func NewFromToken(token string) *Client {
 // http.Client to perform all requests.
 //
 // Users who wish to pass their own http.Client should use this method. If
-// you're in need of further customization, the godo.New method allows more
+// you're in need of further customization, the binarylane.New method allows more
 // options, such as setting a custom URL or a custom user agent string.
 func NewClient(httpClient *http.Client) *Client {
 	if httpClient == nil {
@@ -264,7 +264,7 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body int
 	return req, nil
 }
 
-// OnRequestCompleted sets the DO API request completion callback
+// OnRequestCompleted sets the API request completion callback
 func (c *Client) OnRequestCompleted(rc RequestCompletionCallback) {
 	c.onRequestCompleted = rc
 }

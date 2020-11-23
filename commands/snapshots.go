@@ -48,7 +48,7 @@ func Snapshot() *Command {
 	cmdRunSnapshotList := CmdBuilder(cmd, RunSnapshotList, "list [glob]",
 		"List Server and volume snapshots", "List information about Server and block storage volume snapshots, including:"+snapshotDetail,
 		Writer, aliasOpt("ls"), displayerType(&displayers.Snapshot{}))
-	AddStringFlag(cmdRunSnapshotList, blcli.ArgResourceType, "", "", "Filter by resource type (`droplet` or `volume`)")
+	AddStringFlag(cmdRunSnapshotList, blcli.ArgResourceType, "", "", "Filter by resource type (`server` or `volume`)")
 	AddStringFlag(cmdRunSnapshotList, blcli.ArgRegionSlug, "", "", "Filter by regional availability")
 
 	CmdBuilder(cmd, RunSnapshotGet, "get <snapshot-id>...",
@@ -91,8 +91,8 @@ func RunSnapshotList(c *CmdConfig) error {
 	var matchedList []bl.Snapshot
 	var list []bl.Snapshot
 
-	if restype == "droplet" {
-		list, err = ss.ListDroplet()
+	if restype == "server" {
+		list, err = ss.ListServer()
 		if err != nil {
 			return err
 		}

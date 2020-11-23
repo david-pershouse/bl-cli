@@ -99,7 +99,7 @@ var (
 	testKernelList        = bl.Kernels{testKernel}
 	testFloatingIP        = bl.FloatingIP{
 		FloatingIP: &binarylane.FloatingIP{
-			Droplet: testServer.Server,
+			Server: testServer.Server,
 			Region:  testServer.Region,
 			IP:      "127.0.0.1",
 		},

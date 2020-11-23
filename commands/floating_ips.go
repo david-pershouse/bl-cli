@@ -67,19 +67,19 @@ func RunFloatingIPCreate(c *CmdConfig) error {
 
 	// ignore errors since we don't know which one is valid
 	region, _ := c.Doit.GetString(c.NS, blcli.ArgRegionSlug)
-	dropletID, _ := c.Doit.GetInt(c.NS, blcli.ArgServerID)
+	serverID, _ := c.Doit.GetInt(c.NS, blcli.ArgServerID)
 
-	if region == "" && dropletID == 0 {
+	if region == "" && serverID == 0 {
 		return blcli.NewMissingArgsErr("Region and Server ID can't both be blank.")
 	}
 
-	if region != "" && dropletID != 0 {
+	if region != "" && serverID != 0 {
 		return fmt.Errorf("Specify region or Server ID when creating a floating IP address.")
 	}
 
 	req := &godo.FloatingIPCreateRequest{
 		Region:    region,
-		DropletID: dropletID,
+		ServerID: serverID,
 	}
 
 	ip, err := fis.Create(req)

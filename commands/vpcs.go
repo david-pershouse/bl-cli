@@ -15,6 +15,7 @@ package commands
 
 import (
 	"fmt"
+	"strconv"
 
 	"git.mammoth.com.au/github/bl-cli"
 	"git.mammoth.com.au/github/bl-cli/bl"
@@ -86,10 +87,14 @@ func RunVPCGet(c *CmdConfig) error {
 	if err != nil {
 		return err
 	}
-	vpcUUID := c.Args[0]
+
+	vpcID, err := strconv.Atoi(c.Args[0])
+	if err != nil {
+		return err
+	}
 
 	vpcs := c.VPCs()
-	vpc, err := vpcs.Get(vpcUUID)
+	vpc, err := vpcs.Get(vpcID)
 	if err != nil {
 		return err
 	}
@@ -152,7 +157,10 @@ func RunVPCUpdate(c *CmdConfig) error {
 	if len(c.Args) == 0 {
 		return blcli.NewMissingArgsErr(c.NS)
 	}
-	vpcUUID := c.Args[0]
+	vpcID, err := strconv.Atoi(c.Args[0])
+	if err != nil {
+		return err
+	}
 
 	r := new(godo.VPCUpdateRequest)
 	name, err := c.Doit.GetString(c.NS, blcli.ArgVPCName)
@@ -177,7 +185,7 @@ func RunVPCUpdate(c *CmdConfig) error {
 	}
 
 	vpcs := c.VPCs()
-	vpc, err := vpcs.Update(vpcUUID, r)
+	vpc, err := vpcs.Update(vpcID, r)
 	if err != nil {
 		return err
 	}
@@ -192,7 +200,10 @@ func RunVPCDelete(c *CmdConfig) error {
 	if err != nil {
 		return err
 	}
-	vpcUUID := c.Args[0]
+	vpcID, err := strconv.Atoi(c.Args[0])
+	if err != nil {
+		return err
+	}
 
 	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
@@ -201,7 +212,7 @@ func RunVPCDelete(c *CmdConfig) error {
 
 	if force || AskForConfirmDelete("VPC", 1) == nil {
 		vpcs := c.VPCs()
-		if err := vpcs.Delete(vpcUUID); err != nil {
+		if err := vpcs.Delete(vpcID); err != nil {
 			return err
 		}
 	} else {

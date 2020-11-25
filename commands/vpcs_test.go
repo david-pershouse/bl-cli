@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"strconv"
 	"testing"
 
 	"git.mammoth.com.au/github/bl-cli"
@@ -32,10 +33,10 @@ func TestVPCsCommand(t *testing.T) {
 
 func TestVPCGet(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		vpcUUID := "e819b321-a9a1-4078-b437-8e6b8bf13530"
-		tm.vpcs.EXPECT().Get(vpcUUID).Return(&testVPC, nil)
+		vpcID := 2
+		tm.vpcs.EXPECT().Get(vpcID).Return(&testVPC, nil)
 
-		config.Args = append(config.Args, vpcUUID)
+		config.Args = append(config.Args, strconv.Itoa(vpcID))
 
 		err := RunVPCGet(config)
 		assert.NoError(t, err)
@@ -82,17 +83,17 @@ func TestVPCUpdate(t *testing.T) {
 	tests := []struct {
 		desc            string
 		setup           func(*CmdConfig)
-		expectedVPCId   string
+		expectedVPCId   int
 		expectedRequest *godo.VPCUpdateRequest
 	}{
 		{
 			desc: "update vpc name",
 			setup: func(in *CmdConfig) {
-				in.Args = append(in.Args, "vpc-uuid")
+				in.Args = append(in.Args, "2")
 				in.Doit.Set(in.NS, blcli.ArgVPCName, "update-vpc-name-test")
 
 			},
-			expectedVPCId: "vpc-uuid",
+			expectedVPCId: 2,
 			expectedRequest: &godo.VPCUpdateRequest{
 				Name: "update-vpc-name-test",
 			},
@@ -101,12 +102,12 @@ func TestVPCUpdate(t *testing.T) {
 		{
 			desc: "update vpc name and description",
 			setup: func(in *CmdConfig) {
-				in.Args = append(in.Args, "vpc-uuid")
+				in.Args = append(in.Args, "2")
 				in.Doit.Set(in.NS, blcli.ArgVPCName, "update-vpc-name-test")
 				in.Doit.Set(in.NS, blcli.ArgVPCDescription, "i am a new desc")
 
 			},
-			expectedVPCId: "vpc-uuid",
+			expectedVPCId: 2,
 			expectedRequest: &godo.VPCUpdateRequest{
 				Name:        "update-vpc-name-test",
 				Description: "i am a new desc",
@@ -116,12 +117,12 @@ func TestVPCUpdate(t *testing.T) {
 		{
 			desc: "update vpc name and description and set to default",
 			setup: func(in *CmdConfig) {
-				in.Args = append(in.Args, "vpc-uuid")
+				in.Args = append(in.Args, "2")
 				in.Doit.Set(in.NS, blcli.ArgVPCName, "update-vpc-name-test")
 				in.Doit.Set(in.NS, blcli.ArgVPCDescription, "i am a new desc")
 				in.Doit.Set(in.NS, blcli.ArgVPCDefault, true)
 			},
-			expectedVPCId: "vpc-uuid",
+			expectedVPCId: 2,
 			expectedRequest: &godo.VPCUpdateRequest{
 				Name:        "update-vpc-name-test",
 				Description: "i am a new desc",
@@ -153,10 +154,10 @@ func TestVPCUpdatefNoID(t *testing.T) {
 
 func TestVPCDelete(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		vpcUUID := "e819b321-a9a1-4078-b437-8e6b8bf13530"
-		tm.vpcs.EXPECT().Delete(vpcUUID).Return(nil)
+		vpcID := 2
+		tm.vpcs.EXPECT().Delete(vpcID).Return(nil)
 
-		config.Args = append(config.Args, vpcUUID)
+		config.Args = append(config.Args, strconv.Itoa(vpcID))
 		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunVPCDelete(config)

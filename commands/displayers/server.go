@@ -17,6 +17,7 @@ import (
 	"fmt"
 	"io"
 	"sort"
+	"strconv"
 	"strings"
 
 	"git.mammoth.com.au/github/bl-cli/bl"
@@ -34,7 +35,7 @@ func (d *Server) JSON(out io.Writer) error {
 
 func (d *Server) Cols() []string {
 	cols := []string{
-		"ID", "Name", "PublicIPv4", "PrivateIPv4", "PublicIPv6", "Memory", "VCPUs", "Disk", "Region", "Image", "VPCUUID", "Status", "Tags", "Features", "Volumes",
+		"ID", "Name", "PublicIPv4", "PrivateIPv4", "PublicIPv6", "Memory", "VCPUs", "Disk", "Region", "Image", "VPCID", "Status", "Tags", "Features", "Volumes",
 	}
 	return cols
 }
@@ -43,7 +44,7 @@ func (d *Server) ColMap() map[string]string {
 	return map[string]string{
 		"ID": "ID", "Name": "Name", "PublicIPv4": "Public IPv4", "PrivateIPv4": "Private IPv4", "PublicIPv6": "Public IPv6",
 		"Memory": "Memory", "VCPUs": "VCPUs", "Disk": "Disk",
-		"Region": "Region", "Image": "Image", "VPCUUID": "VPC UUID", "Status": "Status",
+		"Region": "Region", "Image": "Image", "VPCID": "VPC ID", "Status": "Status",
 		"Tags": "Tags", "Features": "Features", "Volumes": "Volumes",
 		"SizeSlug": "Size Slug",
 	}
@@ -60,10 +61,14 @@ func (d *Server) KV() []map[string]interface{} {
 		ip6, _ := d.PublicIPv6()
 		features := strings.Join(d.Features, ",")
 		volumes := strings.Join(d.VolumeIDs, ",")
+		vpcID := ""
+		if d.VPCID != 0 {
+			vpcID = strconv.Itoa(d.VPCID)
+		}
 		m := map[string]interface{}{
 			"ID": d.ID, "Name": d.Name, "PublicIPv4": ip, "PrivateIPv4": privIP, "PublicIPv6": ip6,
 			"Memory": d.Memory, "VCPUs": d.Vcpus, "Disk": d.Disk,
-			"Region": d.Region.Slug, "Image": image, "VPCUUID": d.VPCUUID, "Status": d.Status,
+			"Region": d.Region.Slug, "Image": image, "VPCID": vpcID, "Status": d.Status,
 			"Tags": tags, "Features": features, "Volumes": volumes,
 			"SizeSlug": d.SizeSlug,
 		}

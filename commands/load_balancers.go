@@ -76,7 +76,7 @@ With the load-balancer command, you can list, create, or delete load balancers, 
 		"The load balancer's region, e.g.: `nyc1`", requiredOpt())
 	AddStringFlag(cmdRecordCreate, blcli.ArgSizeSlug, "", "lb-small",
 		"The load balancer's size, e.g.: `lb-small`", requiredOpt())
-	AddStringFlag(cmdRecordCreate, blcli.ArgVPCUUID, "", "", "The UUID of the VPC to create the load balancer in")
+	AddStringFlag(cmdRecordCreate, blcli.ArgVPCID, "", "", "The ID of the VPC to create the load balancer in")
 	AddStringFlag(cmdRecordCreate, blcli.ArgLoadBalancerAlgorithm, "",
 		"round_robin", "The algorithm to use when traffic is distributed across your Servers; possible values: `round_robin` or `least_connections`")
 	AddBoolFlag(cmdRecordCreate, blcli.ArgRedirectHTTPToHTTPS, "", false,
@@ -103,7 +103,7 @@ With the load-balancer command, you can list, create, or delete load balancers, 
 		"The load balancer's region, e.g.: `nyc1`", requiredOpt())
 	AddStringFlag(cmdRecordUpdate, blcli.ArgSizeSlug, "", "",
 		"The load balancer's size, e.g.: `lb-small`", requiredOpt())
-	AddStringFlag(cmdRecordUpdate, blcli.ArgVPCUUID, "", "", "The UUID of the VPC to create the load balancer in")
+	AddStringFlag(cmdRecordUpdate, blcli.ArgVPCID, "", "", "The ID of the VPC to create the load balancer in")
 	AddStringFlag(cmdRecordUpdate, blcli.ArgLoadBalancerAlgorithm, "",
 		"round_robin", "The algorithm to use when traffic is distributed across your Servers; possible values: `round_robin` or `least_connections`")
 	AddBoolFlag(cmdRecordUpdate, blcli.ArgRedirectHTTPToHTTPS, "", false,
@@ -423,11 +423,11 @@ func buildRequestFromArgs(c *CmdConfig, r *godo.LoadBalancerRequest) error {
 	}
 	r.Tag = tag
 
-	vpcUUID, err := c.Doit.GetString(c.NS, blcli.ArgVPCUUID)
+	vpcID, err := c.Doit.GetInt(c.NS, blcli.ArgVPCID)
 	if err != nil {
 		return err
 	}
-	r.VPCUUID = vpcUUID
+	r.VPCID = vpcID
 
 	redirectHTTPToHTTPS, err := c.Doit.GetBool(c.NS, blcli.ArgRedirectHTTPToHTTPS)
 	if err != nil {

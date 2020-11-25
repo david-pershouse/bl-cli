@@ -45,7 +45,7 @@ type LoadBalancer struct {
 	RedirectHttpToHttps    bool             `json:"redirect_http_to_https,omitempty"`
 	EnableProxyProtocol    bool             `json:"enable_proxy_protocol,omitempty"`
 	EnableBackendKeepalive bool             `json:"enable_backend_keepalive,omitempty"`
-	VPCUUID                string           `json:"vpc_uuid,omitempty"`
+	VPCID                  int              `json:"vpc_id,float64,omitempty"`
 }
 
 // String creates a human-readable description of a LoadBalancer.
@@ -72,7 +72,7 @@ func (l LoadBalancer) AsRequest() *LoadBalancerRequest {
 		EnableProxyProtocol:    l.EnableProxyProtocol,
 		EnableBackendKeepalive: l.EnableBackendKeepalive,
 		HealthCheck:            l.HealthCheck,
-		VPCUUID:                l.VPCUUID,
+		VPCID:                  l.VPCID,
 	}
 
 	if l.HealthCheck != nil {
@@ -147,7 +147,7 @@ type LoadBalancerRequest struct {
 	RedirectHttpToHttps    bool             `json:"redirect_http_to_https,omitempty"`
 	EnableProxyProtocol    bool             `json:"enable_proxy_protocol,omitempty"`
 	EnableBackendKeepalive bool             `json:"enable_backend_keepalive,omitempty"`
-	VPCUUID                string           `json:"vpc_uuid,omitempty"`
+	VPCID                  int              `json:"vpc_id,omitempty"`
 }
 
 // String creates a human-readable description of a LoadBalancerRequest.

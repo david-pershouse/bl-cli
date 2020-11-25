@@ -38,8 +38,8 @@ const (
 	ArgAppSpec = "spec"
 	// ArgAppLogType the type of log.
 	ArgAppLogType = "type"
-	// ArgVPCUUID is a VPC UUID argument.
-	ArgVPCUUID = "vpc-uuid"
+	// ArgVPCID is a VPC ID argument.
+	ArgVPCID = "vpc-id"
 	// ArgCommandWait is a wait for a resource to be created argument.
 	ArgCommandWait = "wait"
 	// ArgServerID is a server id argument.

@@ -71,7 +71,7 @@ func TestServerBackupList(t *testing.T) {
 func TestServerCreate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		volumeUUID := "00000000-0000-4000-8000-000000000000"
-		vpcUUID := "00000000-0000-4000-8000-000000000000"
+		vpcID := 2
 		dcr := &binarylane.ServerCreateRequest{
 			Name:    "server",
 			Region:  "dev0",
@@ -86,7 +86,7 @@ func TestServerCreate(t *testing.T) {
 			IPv6:              false,
 			PrivateNetworking: false,
 			Monitoring:        false,
-			VPCUUID:           vpcUUID,
+			VPCID:             vpcID,
 			UserData:          "#cloud-config",
 			Tags:              []string{"one", "two"},
 		}
@@ -98,7 +98,7 @@ func TestServerCreate(t *testing.T) {
 		config.Doit.Set(config.NS, blcli.ArgSizeSlug, "1gb")
 		config.Doit.Set(config.NS, blcli.ArgImage, "image")
 		config.Doit.Set(config.NS, blcli.ArgUserData, "#cloud-config")
-		config.Doit.Set(config.NS, blcli.ArgVPCUUID, vpcUUID)
+		config.Doit.Set(config.NS, blcli.ArgVPCID, vpcID)
 		config.Doit.Set(config.NS, blcli.ArgVolumeList, []string{"test-volume", volumeUUID})
 		config.Doit.Set(config.NS, blcli.ArgTagNames, []string{"one", "two"})
 

@@ -29,11 +29,11 @@ type VPCs []VPC
 
 // VPCsService is the godo VPCsService interface.
 type VPCsService interface {
-	Get(vpcUUID string) (*VPC, error)
+	Get(id int) (*VPC, error)
 	List() (VPCs, error)
 	Create(vpcr *godo.VPCCreateRequest) (*VPC, error)
-	Update(vpcUUID string, vpcr *godo.VPCUpdateRequest) (*VPC, error)
-	Delete(vpcUUID string) error
+	Update(id int, vpcr *godo.VPCUpdateRequest) (*VPC, error)
+	Delete(id int) error
 }
 
 var _ VPCsService = &vpcsService{}
@@ -49,8 +49,8 @@ func NewVPCsService(client *godo.Client) VPCsService {
 	}
 }
 
-func (v *vpcsService) Get(vpcUUID string) (*VPC, error) {
-	vpc, _, err := v.client.VPCs.Get(context.TODO(), vpcUUID)
+func (v *vpcsService) Get(id int) (*VPC, error) {
+	vpc, _, err := v.client.VPCs.Get(context.TODO(), id)
 	if err != nil {
 		return nil, err
 	}
@@ -96,8 +96,8 @@ func (v *vpcsService) Create(vpcr *godo.VPCCreateRequest) (*VPC, error) {
 	return &VPC{VPC: vpc}, nil
 }
 
-func (v *vpcsService) Update(vpcUUID string, vpcr *godo.VPCUpdateRequest) (*VPC, error) {
-	vpc, _, err := v.client.VPCs.Update(context.TODO(), vpcUUID, vpcr)
+func (v *vpcsService) Update(id int, vpcr *godo.VPCUpdateRequest) (*VPC, error) {
+	vpc, _, err := v.client.VPCs.Update(context.TODO(), id, vpcr)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func (v *vpcsService) Update(vpcUUID string, vpcr *godo.VPCUpdateRequest) (*VPC,
 	return &VPC{VPC: vpc}, nil
 }
 
-func (v *vpcsService) Delete(vpcUUID string) error {
-	_, err := v.client.VPCs.Delete(context.TODO(), vpcUUID)
+func (v *vpcsService) Delete(id int) error {
+	_, err := v.client.VPCs.Delete(context.TODO(), id)
 	return err
 }

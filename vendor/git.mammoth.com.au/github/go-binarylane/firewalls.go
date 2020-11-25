@@ -177,8 +177,8 @@ func (fw *FirewallsServiceOp) List(ctx context.Context, opt *ListOptions) ([]Fir
 }
 
 // ListByServer Firewalls.
-func (fw *FirewallsServiceOp) ListByServer(ctx context.Context, dID int, opt *ListOptions) ([]Firewall, *Response, error) {
-	basePath := path.Join(serverBasePath, strconv.Itoa(dID), "firewalls")
+func (fw *FirewallsServiceOp) ListByServer(ctx context.Context, sID int, opt *ListOptions) ([]Firewall, *Response, error) {
+	basePath := path.Join(serverBasePath, strconv.Itoa(sID), "firewalls")
 	path, err := addOptions(basePath, opt)
 	if err != nil {
 		return nil, nil, err

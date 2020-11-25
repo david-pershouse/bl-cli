@@ -85,7 +85,7 @@ func Server() *Command {
 	AddStringFlag(cmdServerCreate, blcli.ArgImage, "", "", "An ID or slug indicating the image the Server will be based-on (e.g. `ubuntu-20-04-x64`). Use the commands under `doctl compute image` to find additional images.",
 		requiredOpt())
 	AddStringFlag(cmdServerCreate, blcli.ArgTagName, "", "", "A tag name to be applied to the Server")
-	AddStringFlag(cmdServerCreate, blcli.ArgVPCUUID, "", "", "The UUID of a non-default VPC to create the Server in")
+	AddStringFlag(cmdServerCreate, blcli.ArgVPCID, "", "", "The ID of a non-default VPC to create the Server in")
 	AddStringSliceFlag(cmdServerCreate, blcli.ArgTagNames, "", []string{}, "A list of tag names to be applied to the Server")
 
 	AddStringSliceFlag(cmdServerCreate, blcli.ArgVolumeList, "", []string{}, "A list of block storage volume IDs to attach to the Server")
@@ -207,7 +207,7 @@ func RunServerCreate(c *CmdConfig) error {
 		return err
 	}
 
-	vpcUUID, err := c.Doit.GetString(c.NS, blcli.ArgVPCUUID)
+	vpcID, err := c.Doit.GetInt(c.NS, blcli.ArgVPCID)
 	if err != nil {
 		return err
 	}
@@ -278,7 +278,7 @@ func RunServerCreate(c *CmdConfig) error {
 			Monitoring:        monitoring,
 			SSHKeys:           sshKeys,
 			UserData:          userData,
-			VPCUUID:           vpcUUID,
+			VPCID:             vpcID,
 			Tags:              tagNames,
 		}
 

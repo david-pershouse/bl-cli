@@ -60,16 +60,16 @@ type Server struct {
 	Kernel           *Kernel       `json:"kernel,omitempty"`
 	Tags             []string      `json:"tags,omitempty"`
 	VolumeIDs        []string      `json:"volume_ids"`
-	VPCUUID          string        `json:"vpc_uuid,omitempty"`
+	VPCID            int           `json:"vpc_id,omitempty"`
 }
 
 // PublicIPv4 returns the public IPv4 address for the Server.
-func (d *Server) PublicIPv4() (string, error) {
-	if d.Networks == nil {
+func (s *Server) PublicIPv4() (string, error) {
+	if s.Networks == nil {
 		return "", errNoNetworks
 	}
 
-	for _, v4 := range d.Networks.V4 {
+	for _, v4 := range s.Networks.V4 {
 		if v4.Type == "public" {
 			return v4.IPAddress, nil
 		}
@@ -79,12 +79,12 @@ func (d *Server) PublicIPv4() (string, error) {
 }
 
 // PrivateIPv4 returns the private IPv4 address for the Server.
-func (d *Server) PrivateIPv4() (string, error) {
-	if d.Networks == nil {
+func (s *Server) PrivateIPv4() (string, error) {
+	if s.Networks == nil {
 		return "", errNoNetworks
 	}
 
-	for _, v4 := range d.Networks.V4 {
+	for _, v4 := range s.Networks.V4 {
 		if v4.Type == "private" {
 			return v4.IPAddress, nil
 		}
@@ -94,12 +94,12 @@ func (d *Server) PrivateIPv4() (string, error) {
 }
 
 // PublicIPv6 returns the public IPv6 address for the Server.
-func (d *Server) PublicIPv6() (string, error) {
-	if d.Networks == nil {
+func (s *Server) PublicIPv6() (string, error) {
+	if s.Networks == nil {
 		return "", errNoNetworks
 	}
 
-	for _, v6 := range d.Networks.V6 {
+	for _, v6 := range s.Networks.V6 {
 		if v6.Type == "public" {
 			return v6.IPAddress, nil
 		}
@@ -122,13 +122,13 @@ type BackupWindow struct {
 }
 
 // Convert Server to a string
-func (d Server) String() string {
-	return Stringify(d)
+func (s Server) String() string {
+	return Stringify(s)
 }
 
 // URN returns the servers ID in a valid BL API URN form.
-func (d Server) URN() string {
-	return ToURN("Server", d.ID)
+func (s Server) URN() string {
+	return ToURN("Server", s.ID)
 }
 
 type serverRoot struct {
@@ -227,7 +227,7 @@ type ServerCreateRequest struct {
 	UserData          string               `json:"user_data,omitempty"`
 	Volumes           []ServerCreateVolume `json:"volumes,omitempty"`
 	Tags              []string             `json:"tags"`
-	VPCUUID           string               `json:"vpc_uuid,omitempty"`
+	VPCID             int                  `json:"vpc_id,omitempty"`
 }
 
 // ServerMultiCreateRequest is a request to create multiple Servers.
@@ -243,7 +243,7 @@ type ServerMultiCreateRequest struct {
 	Monitoring        bool                 `json:"monitoring"`
 	UserData          string               `json:"user_data,omitempty"`
 	Tags              []string             `json:"tags"`
-	VPCUUID           string               `json:"vpc_uuid,omitempty"`
+	VPCID             int                  `json:"vpc_id,omitempty"`
 }
 
 func (d ServerCreateRequest) String() string {

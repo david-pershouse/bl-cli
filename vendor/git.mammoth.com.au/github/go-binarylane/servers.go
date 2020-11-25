@@ -60,7 +60,7 @@ type Server struct {
 	Kernel           *Kernel       `json:"kernel,omitempty"`
 	Tags             []string      `json:"tags,omitempty"`
 	VolumeIDs        []string      `json:"volume_ids"`
-	VPCID            int           `json:"vpc_id,omitempty"`
+	VPCID            int           `json:"vpc_id,float64,omitempty"`
 }
 
 // PublicIPv4 returns the public IPv4 address for the Server.

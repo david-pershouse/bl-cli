@@ -29,15 +29,15 @@ type LoadBalancers []LoadBalancer
 
 // LoadBalancersService is the godo LoadBalancersService interface.
 type LoadBalancersService interface {
-	Get(lbID string) (*LoadBalancer, error)
+	Get(lbID int) (*LoadBalancer, error)
 	List() (LoadBalancers, error)
 	Create(lbr *godo.LoadBalancerRequest) (*LoadBalancer, error)
-	Update(lbID string, lbr *godo.LoadBalancerRequest) (*LoadBalancer, error)
-	Delete(lbID string) error
-	AddServers(lbID string, sIDs ...int) error
-	RemoveServers(lbID string, sIDs ...int) error
-	AddForwardingRules(lbID string, rules ...godo.ForwardingRule) error
-	RemoveForwardingRules(lbID string, rules ...godo.ForwardingRule) error
+	Update(lbID int, lbr *godo.LoadBalancerRequest) (*LoadBalancer, error)
+	Delete(lbID int) error
+	AddServers(lbID int, sIDs ...int) error
+	RemoveServers(lbID int, sIDs ...int) error
+	AddForwardingRules(lbID int, rules ...godo.ForwardingRule) error
+	RemoveForwardingRules(lbID int, rules ...godo.ForwardingRule) error
 }
 
 var _ LoadBalancersService = &loadBalancersService{}
@@ -53,7 +53,7 @@ func NewLoadBalancersService(client *godo.Client) LoadBalancersService {
 	}
 }
 
-func (lbs *loadBalancersService) Get(lbID string) (*LoadBalancer, error) {
+func (lbs *loadBalancersService) Get(lbID int) (*LoadBalancer, error) {
 	lb, _, err := lbs.client.LoadBalancers.Get(context.TODO(), lbID)
 	if err != nil {
 		return nil, err
@@ -100,7 +100,7 @@ func (lbs *loadBalancersService) Create(lbr *godo.LoadBalancerRequest) (*LoadBal
 	return &LoadBalancer{LoadBalancer: lb}, nil
 }
 
-func (lbs *loadBalancersService) Update(lbID string, lbr *godo.LoadBalancerRequest) (*LoadBalancer, error) {
+func (lbs *loadBalancersService) Update(lbID int, lbr *godo.LoadBalancerRequest) (*LoadBalancer, error) {
 	lb, _, err := lbs.client.LoadBalancers.Update(context.TODO(), lbID, lbr)
 	if err != nil {
 		return nil, err
@@ -109,27 +109,27 @@ func (lbs *loadBalancersService) Update(lbID string, lbr *godo.LoadBalancerReque
 	return &LoadBalancer{LoadBalancer: lb}, nil
 }
 
-func (lbs *loadBalancersService) Delete(lbID string) error {
+func (lbs *loadBalancersService) Delete(lbID int) error {
 	_, err := lbs.client.LoadBalancers.Delete(context.TODO(), lbID)
 	return err
 }
 
-func (lbs *loadBalancersService) AddServers(lbID string, sIDs ...int) error {
+func (lbs *loadBalancersService) AddServers(lbID int, sIDs ...int) error {
 	_, err := lbs.client.LoadBalancers.AddServers(context.TODO(), lbID, sIDs...)
 	return err
 }
 
-func (lbs *loadBalancersService) RemoveServers(lbID string, sIDs ...int) error {
+func (lbs *loadBalancersService) RemoveServers(lbID int, sIDs ...int) error {
 	_, err := lbs.client.LoadBalancers.RemoveServers(context.TODO(), lbID, sIDs...)
 	return err
 }
 
-func (lbs *loadBalancersService) AddForwardingRules(lbID string, rules ...godo.ForwardingRule) error {
+func (lbs *loadBalancersService) AddForwardingRules(lbID int, rules ...godo.ForwardingRule) error {
 	_, err := lbs.client.LoadBalancers.AddForwardingRules(context.TODO(), lbID, rules...)
 	return err
 }
 
-func (lbs *loadBalancersService) RemoveForwardingRules(lbID string, rules ...godo.ForwardingRule) error {
+func (lbs *loadBalancersService) RemoveForwardingRules(lbID int, rules ...godo.ForwardingRule) error {
 	_, err := lbs.client.LoadBalancers.RemoveForwardingRules(context.TODO(), lbID, rules...)
 	return err
 }

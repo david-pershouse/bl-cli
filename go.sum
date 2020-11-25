@@ -37,6 +37,8 @@ git.mammoth.com.au/github/go-binarylane v0.0.0-20201123015952-248f8b62fe83 h1:9U
 git.mammoth.com.au/github/go-binarylane v0.0.0-20201123015952-248f8b62fe83/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
 git.mammoth.com.au/github/go-binarylane v0.0.0-20201125045645-6b227d3b6a60 h1:fChi/4ts/RTV6S1P4PzBBol6lhmCxFPqM3uS6pGLh1g=
 git.mammoth.com.au/github/go-binarylane v0.0.0-20201125045645-6b227d3b6a60/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
+git.mammoth.com.au/github/go-binarylane v0.0.0-20201125061031-df8e06888761 h1:7q8bcUAXl2L0dN9BN1AZEsyPKR/jy7ZMNwb5XCuvFYo=
+git.mammoth.com.au/github/go-binarylane v0.0.0-20201125061031-df8e06888761/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
 github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=

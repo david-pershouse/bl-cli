@@ -156,7 +156,10 @@ func RunLoadBalancerGet(c *CmdConfig) error {
 	if err != nil {
 		return err
 	}
-	id := c.Args[0]
+	id, err := strconv.Atoi(c.Args[0])
+	if err != nil {
+		return err
+	}
 
 	lbs := c.LoadBalancers()
 	lb, err := lbs.Get(id)
@@ -202,7 +205,10 @@ func RunLoadBalancerUpdate(c *CmdConfig) error {
 	if len(c.Args) == 0 {
 		return blcli.NewMissingArgsErr(c.NS)
 	}
-	lbID := c.Args[0]
+	lbID, err := strconv.Atoi(c.Args[0])
+	if err != nil {
+		return err
+	}
 
 	r := new(godo.LoadBalancerRequest)
 	if err := buildRequestFromArgs(c, r); err != nil {
@@ -225,7 +231,10 @@ func RunLoadBalancerDelete(c *CmdConfig) error {
 	if err != nil {
 		return err
 	}
-	lbID := c.Args[0]
+	lbID, err := strconv.Atoi(c.Args[0])
+	if err != nil {
+		return err
+	}
 
 	force, err := c.Doit.GetBool(c.NS, blcli.ArgForce)
 	if err != nil {
@@ -250,7 +259,10 @@ func RunLoadBalancerAddServers(c *CmdConfig) error {
 	if err != nil {
 		return err
 	}
-	lbID := c.Args[0]
+	lbID, err := strconv.Atoi(c.Args[0])
+	if err != nil {
+		return err
+	}
 
 	serverIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
 	if err != nil {
@@ -271,7 +283,10 @@ func RunLoadBalancerRemoveServers(c *CmdConfig) error {
 	if err != nil {
 		return err
 	}
-	lbID := c.Args[0]
+	lbID, err := strconv.Atoi(c.Args[0])
+	if err != nil {
+		return err
+	}
 
 	serverIDsList, err := c.Doit.GetStringSlice(c.NS, blcli.ArgServerIDs)
 	if err != nil {
@@ -292,7 +307,10 @@ func RunLoadBalancerAddForwardingRules(c *CmdConfig) error {
 	if err != nil {
 		return err
 	}
-	lbID := c.Args[0]
+	lbID, err := strconv.Atoi(c.Args[0])
+	if err != nil {
+		return err
+	}
 
 	fra, err := c.Doit.GetString(c.NS, blcli.ArgForwardingRules)
 	if err != nil {
@@ -313,7 +331,10 @@ func RunLoadBalancerRemoveForwardingRules(c *CmdConfig) error {
 	if err != nil {
 		return err
 	}
-	lbID := c.Args[0]
+	lbID, err := strconv.Atoi(c.Args[0])
+	if err != nil {
+		return err
+	}
 
 	fra, err := c.Doit.GetString(c.NS, blcli.ArgForwardingRules)
 	if err != nil {

@@ -17,6 +17,7 @@ import (
 	"fmt"
 	"io"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"git.mammoth.com.au/github/bl-cli/bl"
@@ -81,6 +82,11 @@ func (lb *LoadBalancer) KV() []map[string]interface{} {
 			forwardingRules = append(forwardingRules, prettyPrintStruct(r))
 		}
 
+		vpcID := ""
+		if l.VPCID != 0 {
+			vpcID = strconv.Itoa(l.VPCID)
+		}
+
 		o := map[string]interface{}{
 			"ID":                  l.ID,
 			"IP":                  l.IP,
@@ -90,7 +96,7 @@ func (lb *LoadBalancer) KV() []map[string]interface{} {
 			"Algorithm":           l.Algorithm,
 			"Region":              l.Region.Slug,
 			"Size":                l.SizeSlug,
-			"VPCID":             l.VPCID,
+			"VPCID":               vpcID,
 			"Tag":                 l.Tag,
 			"ServerIDs":          strings.Trim(strings.Replace(fmt.Sprint(l.ServerIDs), " ", ",", -1), "[]"),
 			"RedirectHttpToHttps": l.RedirectHttpToHttps,

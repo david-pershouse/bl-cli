@@ -20,7 +20,7 @@ import (
 
 const (
 	libraryVersion = "1.0.0"
-	defaultBaseURL = "https://vps-api.mammoth.digital/"
+	defaultBaseURL = "https://api.binarylane.com.au/"
 	userAgent      = "go-binarylane/" + libraryVersion
 	mediaType      = "application/json"
 

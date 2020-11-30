@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"strconv"
 	"testing"
 
 	"git.mammoth.com.au/github/bl-cli"
@@ -35,10 +36,10 @@ func TestLoadBalancerCommand(t *testing.T) {
 
 func TestLoadBalancerGet(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		lbID := "cde2c0d6-41e3-479e-ba60-ad971227232c"
+		lbID := 1
 		tm.loadBalancers.EXPECT().Get(lbID).Return(&testLoadBalancer, nil)
 
-		config.Args = append(config.Args, lbID)
+		config.Args = append(config.Args, strconv.Itoa(lbID))
 
 		err := RunLoadBalancerGet(config)
 		assert.NoError(t, err)
@@ -127,7 +128,7 @@ func TestLoadBalancerCreate(t *testing.T) {
 
 func TestLoadBalancerUpdate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		lbID := "cde2c0d6-41e3-479e-ba60-ad971227232c"
+		lbID := 1
 		r := godo.LoadBalancerRequest{
 			Name:       "lb-name",
 			Region:     "nyc1",
@@ -157,7 +158,7 @@ func TestLoadBalancerUpdate(t *testing.T) {
 
 		tm.loadBalancers.EXPECT().Update(lbID, &r).Return(&testLoadBalancer, nil)
 
-		config.Args = append(config.Args, lbID)
+		config.Args = append(config.Args, strconv.Itoa(lbID))
 		config.Doit.Set(config.NS, blcli.ArgRegionSlug, "nyc1")
 		config.Doit.Set(config.NS, blcli.ArgSizeSlug, "")
 		config.Doit.Set(config.NS, blcli.ArgLoadBalancerName, "lb-name")
@@ -180,10 +181,10 @@ func TestLoadBalancerUpdateNoID(t *testing.T) {
 
 func TestLoadBalancerDelete(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		lbID := "cde2c0d6-41e3-479e-ba60-ad971227232c"
+		lbID := 1
 		tm.loadBalancers.EXPECT().Delete(lbID).Return(nil)
 
-		config.Args = append(config.Args, lbID)
+		config.Args = append(config.Args, strconv.Itoa(lbID))
 		config.Doit.Set(config.NS, blcli.ArgForce, true)
 
 		err := RunLoadBalancerDelete(config)
@@ -200,10 +201,10 @@ func TestLoadBalancerDeleteNoID(t *testing.T) {
 
 func TestLoadBalancerAddServers(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		lbID := "cde2c0d6-41e3-479e-ba60-ad971227232c"
+		lbID := 1
 		tm.loadBalancers.EXPECT().AddServers(lbID, 1, 23).Return(nil)
 
-		config.Args = append(config.Args, lbID)
+		config.Args = append(config.Args, strconv.Itoa(lbID))
 		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"1", "23"})
 
 		err := RunLoadBalancerAddServers(config)
@@ -220,10 +221,10 @@ func TestLoadBalancerAddServersNoID(t *testing.T) {
 
 func TestLoadBalancerRemoveServers(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		lbID := "cde2c0d6-41e3-479e-ba60-ad971227232c"
+		lbID := 1
 		tm.loadBalancers.EXPECT().RemoveServers(lbID, 321).Return(nil)
 
-		config.Args = append(config.Args, lbID)
+		config.Args = append(config.Args, strconv.Itoa(lbID))
 		config.Doit.Set(config.NS, blcli.ArgServerIDs, []string{"321"})
 
 		err := RunLoadBalancerRemoveServers(config)
@@ -240,7 +241,7 @@ func TestLoadBalancerRemoveServersNoID(t *testing.T) {
 
 func TestLoadBalancerAddForwardingRules(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		lbID := "cde2c0d6-41e3-479e-ba60-ad971227232c"
+		lbID := 1
 		forwardingRule := godo.ForwardingRule{
 			EntryProtocol:  "http",
 			EntryPort:      80,
@@ -249,7 +250,7 @@ func TestLoadBalancerAddForwardingRules(t *testing.T) {
 		}
 		tm.loadBalancers.EXPECT().AddForwardingRules(lbID, forwardingRule).Return(nil)
 
-		config.Args = append(config.Args, lbID)
+		config.Args = append(config.Args, strconv.Itoa(lbID))
 		config.Doit.Set(config.NS, blcli.ArgForwardingRules, "entry_protocol:http,entry_port:80,target_protocol:http,target_port:80")
 
 		err := RunLoadBalancerAddForwardingRules(config)
@@ -266,7 +267,7 @@ func TestLoadBalancerAddForwardingRulesNoID(t *testing.T) {
 
 func TestLoadBalancerRemoveForwardingRules(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		lbID := "cde2c0d6-41e3-479e-ba60-ad971227232c"
+		lbID := 1
 		forwardingRules := []godo.ForwardingRule{
 			{
 				EntryProtocol:  "http",
@@ -284,7 +285,7 @@ func TestLoadBalancerRemoveForwardingRules(t *testing.T) {
 		}
 		tm.loadBalancers.EXPECT().RemoveForwardingRules(lbID, forwardingRules[0], forwardingRules[1]).Return(nil)
 
-		config.Args = append(config.Args, lbID)
+		config.Args = append(config.Args, strconv.Itoa(lbID))
 		config.Doit.Set(config.NS, blcli.ArgForwardingRules, "entry_protocol:http,entry_port:80,target_protocol:http,target_port:80 entry_protocol:tcp,entry_port:3306,target_protocol:tcp,target_port:3306,tls_passthrough:true")
 
 		err := RunLoadBalancerRemoveForwardingRules(config)

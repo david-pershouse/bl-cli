@@ -36,7 +36,7 @@ func (m *MockLoadBalancersService) EXPECT() *MockLoadBalancersServiceMockRecorde
 }
 
 // Get mocks base method.
-func (m *MockLoadBalancersService) Get(lbID string) (*bl.LoadBalancer, error) {
+func (m *MockLoadBalancersService) Get(lbID int) (*bl.LoadBalancer, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", lbID)
 	ret0, _ := ret[0].(*bl.LoadBalancer)
@@ -81,7 +81,7 @@ func (mr *MockLoadBalancersServiceMockRecorder) Create(lbr interface{}) *gomock.
 }
 
 // Update mocks base method.
-func (m *MockLoadBalancersService) Update(lbID string, lbr *binarylane.LoadBalancerRequest) (*bl.LoadBalancer, error) {
+func (m *MockLoadBalancersService) Update(lbID int, lbr *binarylane.LoadBalancerRequest) (*bl.LoadBalancer, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", lbID, lbr)
 	ret0, _ := ret[0].(*bl.LoadBalancer)
@@ -96,7 +96,7 @@ func (mr *MockLoadBalancersServiceMockRecorder) Update(lbID, lbr interface{}) *g
 }
 
 // Delete mocks base method.
-func (m *MockLoadBalancersService) Delete(lbID string) error {
+func (m *MockLoadBalancersService) Delete(lbID int) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", lbID)
 	ret0, _ := ret[0].(error)
@@ -110,7 +110,7 @@ func (mr *MockLoadBalancersServiceMockRecorder) Delete(lbID interface{}) *gomock
 }
 
 // AddServers mocks base method.
-func (m *MockLoadBalancersService) AddServers(lbID string, sIDs ...int) error {
+func (m *MockLoadBalancersService) AddServers(lbID int, sIDs ...int) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{lbID}
 	for _, a := range sIDs {
@@ -129,7 +129,7 @@ func (mr *MockLoadBalancersServiceMockRecorder) AddServers(lbID interface{}, sID
 }
 
 // RemoveServers mocks base method.
-func (m *MockLoadBalancersService) RemoveServers(lbID string, sIDs ...int) error {
+func (m *MockLoadBalancersService) RemoveServers(lbID int, sIDs ...int) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{lbID}
 	for _, a := range sIDs {
@@ -148,7 +148,7 @@ func (mr *MockLoadBalancersServiceMockRecorder) RemoveServers(lbID interface{}, 
 }
 
 // AddForwardingRules mocks base method.
-func (m *MockLoadBalancersService) AddForwardingRules(lbID string, rules ...binarylane.ForwardingRule) error {
+func (m *MockLoadBalancersService) AddForwardingRules(lbID int, rules ...binarylane.ForwardingRule) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{lbID}
 	for _, a := range rules {
@@ -167,7 +167,7 @@ func (mr *MockLoadBalancersServiceMockRecorder) AddForwardingRules(lbID interfac
 }
 
 // RemoveForwardingRules mocks base method.
-func (m *MockLoadBalancersService) RemoveForwardingRules(lbID string, rules ...binarylane.ForwardingRule) error {
+func (m *MockLoadBalancersService) RemoveForwardingRules(lbID int, rules ...binarylane.ForwardingRule) error {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{lbID}
 	for _, a := range rules {

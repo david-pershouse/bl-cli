@@ -51,8 +51,6 @@ var (
 	Token string
 	//Trace toggles http tracing output
 	Trace bool
-	//Verbose toggle verbose output on and off
-	Verbose bool
 
 	requiredColor = color.New(color.Bold).SprintfFunc()
 )
@@ -78,7 +76,6 @@ func init() {
 
 	rootPFlagSet.StringVarP(&Context, blcli.ArgContext, "", "", "Specify a custom authentication context name")
 	rootPFlagSet.BoolVarP(&Trace, "trace", "", false, "Show a log of network activity while performing a command")
-	rootPFlagSet.BoolVarP(&Verbose, blcli.ArgVerbose, "v", false, "Enable verbose output")
 
 	addCommands()
 

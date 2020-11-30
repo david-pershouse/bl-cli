@@ -63,9 +63,9 @@ func Server() *Command {
 	CmdBuilder(cmd, RunServerBackups, "backups <server-id>", "List Server backups", `Use this command to list Server backups.`, Writer,
 		aliasOpt("b"), displayerType(&displayers.Image{}))
 
-	serverCreateLongDesc := `Use this command to create a new Server. Required values are name, region, size, and image. For example, to create an Ubuntu 20.04 with 1 vCPU and 1 GB of RAM in the NYC1 datacenter region, run:
+	serverCreateLongDesc := `Use this command to create a new Server. Required values are name, region, size, and image. For example, to create an Ubuntu 20.04 with 1 vCPU and 1 GB of RAM in the Sydney region, run:
 
-	doctl compute server create --image ubuntu-20-04-x64 --size s-1vcpu-1gb --region nyc1 example.com
+	bl compute server create --image ubuntu-20-04-lts --size a-2010 --region syd example.com
 `
 
 	cmdServerCreate := CmdBuilder(cmd, RunServerCreate, "create <server-name>...", "Create a new Server", serverCreateLongDesc, Writer,
@@ -74,15 +74,15 @@ func Server() *Command {
 	AddStringFlag(cmdServerCreate, blcli.ArgUserData, "", "", "User-data to configure the Server on first boot")
 	AddStringFlag(cmdServerCreate, blcli.ArgUserDataFile, "", "", "The path to a file containing user-data to configure the Server on first boot")
 	AddBoolFlag(cmdServerCreate, blcli.ArgCommandWait, "", false, "Wait for Server creation to complete before returning")
-	AddStringFlag(cmdServerCreate, blcli.ArgRegionSlug, "", "", "A slug indicating the region where the Server will be created (e.g. `nyc1`). Run `doctl compute region list` for a list of valid regions.",
+	AddStringFlag(cmdServerCreate, blcli.ArgRegionSlug, "", "", "A slug indicating the region where the Server will be created (e.g. `syd`). Run `bl compute region list` for a list of valid regions.",
 		requiredOpt())
-	AddStringFlag(cmdServerCreate, blcli.ArgSizeSlug, "", "", "A slug indicating the size of the Server (e.g. `s-1vcpu-1gb`). Run `doctl compute size list` for a list of valid sizes.",
+	AddStringFlag(cmdServerCreate, blcli.ArgSizeSlug, "", "", "A slug indicating the size of the Server (e.g. `a-2010`). Run `bl compute size list` for a list of valid sizes.",
 		requiredOpt())
 	AddBoolFlag(cmdServerCreate, blcli.ArgBackups, "", false, "Enables backups for the Server")
 	AddBoolFlag(cmdServerCreate, blcli.ArgIPv6, "", false, "Enables IPv6 support and assigns an IPv6 address")
 	AddBoolFlag(cmdServerCreate, blcli.ArgPrivateNetworking, "", false, "Enables private networking for the Server by provisioning it inside of your account's default VPC for the region")
 	AddBoolFlag(cmdServerCreate, blcli.ArgMonitoring, "", false, "Install the DigitalOcean agent for additional monitoring")
-	AddStringFlag(cmdServerCreate, blcli.ArgImage, "", "", "An ID or slug indicating the image the Server will be based-on (e.g. `ubuntu-20-04-x64`). Use the commands under `doctl compute image` to find additional images.",
+	AddStringFlag(cmdServerCreate, blcli.ArgImage, "", "", "An ID or slug indicating the image the Server will be based-on (e.g. `ubuntu-20-04-lts`). Use the commands under `bl compute image` to find additional images.",
 		requiredOpt())
 	AddStringFlag(cmdServerCreate, blcli.ArgTagName, "", "", "A tag name to be applied to the Server")
 	AddStringFlag(cmdServerCreate, blcli.ArgVPCID, "", "", "The ID of a non-default VPC to create the Server in")

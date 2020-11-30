@@ -58,8 +58,8 @@ With the vpcs command, you can list, create, or delete VPCs, and manage their co
 		"The VPC's name", requiredOpt())
 	AddStringFlag(cmdRecordCreate, blcli.ArgVPCDescription, "", "", "The VPC's name")
 	AddStringFlag(cmdRecordCreate, blcli.ArgVPCIPRange, "", "",
-		"The range of IP addresses in the VPC in CIDR notation, e.g.: `10.116.0.0/20`")
-	AddStringFlag(cmdRecordCreate, blcli.ArgRegionSlug, "", "", "The VPC's region slug, e.g.: `nyc1`", requiredOpt())
+		"The range of IP addresses in the VPC in CIDR notation, e.g.: `10.240.0.0/16`")
+	AddStringFlag(cmdRecordCreate, blcli.ArgRegionSlug, "", "", "The VPC's region slug, e.g.: `syd`", requiredOpt())
 
 	cmdRecordUpdate := CmdBuilder(cmd, RunVPCUpdate, "update <id>",
 		"Update a VPC's configuration", `Use this command to update the configuration of a specified VPC.`, Writer, aliasOpt("u"))

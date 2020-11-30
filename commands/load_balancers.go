@@ -73,7 +73,7 @@ With the load-balancer command, you can list, create, or delete load balancers, 
 	AddStringFlag(cmdRecordCreate, blcli.ArgLoadBalancerName, "", "",
 		"The load balancer's name", requiredOpt())
 	AddStringFlag(cmdRecordCreate, blcli.ArgRegionSlug, "", "",
-		"The load balancer's region, e.g.: `nyc1`", requiredOpt())
+		"The load balancer's region, e.g.: `syd`", requiredOpt())
 	AddStringFlag(cmdRecordCreate, blcli.ArgSizeSlug, "", "lb-small",
 		"The load balancer's size, e.g.: `lb-small`", requiredOpt())
 	AddStringFlag(cmdRecordCreate, blcli.ArgVPCID, "", "", "The ID of the VPC to create the load balancer in")
@@ -100,7 +100,7 @@ With the load-balancer command, you can list, create, or delete load balancers, 
 	AddStringFlag(cmdRecordUpdate, blcli.ArgLoadBalancerName, "", "",
 		"The load balancer's name", requiredOpt())
 	AddStringFlag(cmdRecordUpdate, blcli.ArgRegionSlug, "", "",
-		"The load balancer's region, e.g.: `nyc1`", requiredOpt())
+		"The load balancer's region, e.g.: `syd`", requiredOpt())
 	AddStringFlag(cmdRecordUpdate, blcli.ArgSizeSlug, "", "",
 		"The load balancer's size, e.g.: `lb-small`", requiredOpt())
 	AddStringFlag(cmdRecordUpdate, blcli.ArgVPCID, "", "", "The ID of the VPC to create the load balancer in")

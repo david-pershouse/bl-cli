@@ -130,7 +130,7 @@ func RunAuthInit(retrieveUserTokenFunc func() (string, error)) func(c *CmdConfig
 		fmt.Fprintln(c.Out)
 		fmt.Fprint(c.Out, "Validating token... ")
 
-		// need to initial the godo client since we've changed the configuration.
+		// need to initial the binarylane client since we've changed the configuration.
 		if err := c.initServices(c); err != nil {
 			return fmt.Errorf("Unable to initialize BinaryLane API client with new token: %s", err)
 		}

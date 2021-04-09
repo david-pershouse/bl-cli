@@ -20,7 +20,7 @@ import (
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
 	"github.com/binarylane/bl-cli/commands/displayers"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -105,7 +105,7 @@ func RunImageActionsTransfer(c *CmdConfig) error {
 		return err
 	}
 
-	req := &godo.ActionRequest{
+	req := &binarylane.ActionRequest{
 		"type":   "transfer",
 		"region": region,
 	}

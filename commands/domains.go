@@ -21,7 +21,7 @@ import (
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
 	"github.com/binarylane/bl-cli/commands/displayers"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -107,7 +107,7 @@ func RunDomainCreate(c *CmdConfig) error {
 		return err
 	}
 
-	req := &godo.DomainCreateRequest{
+	req := &binarylane.DomainCreateRequest{
 		Name:      domainName,
 		IPAddress: ipAddress,
 	}

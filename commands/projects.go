@@ -20,7 +20,7 @@ import (
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
 	"github.com/binarylane/bl-cli/commands/displayers"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -162,7 +162,7 @@ func RunProjectsGet(c *CmdConfig) error {
 
 // RunProjectsCreate creates a new Project with a given configuration.
 func RunProjectsCreate(c *CmdConfig) error {
-	r := new(godo.CreateProjectRequest)
+	r := new(binarylane.CreateProjectRequest)
 	if err := buildProjectsCreateRequestFromArgs(c, r); err != nil {
 		return err
 	}
@@ -184,7 +184,7 @@ func RunProjectsUpdate(c *CmdConfig) error {
 	}
 	id := c.Args[0]
 
-	r := new(godo.UpdateProjectRequest)
+	r := new(binarylane.UpdateProjectRequest)
 	if err := buildProjectsUpdateRequestFromArgs(c, r); err != nil {
 		return err
 	}
@@ -311,7 +311,7 @@ func validateURN(urn string) ([]string, bool) {
 	return parts, true
 }
 
-func buildProjectsCreateRequestFromArgs(c *CmdConfig, r *godo.CreateProjectRequest) error {
+func buildProjectsCreateRequestFromArgs(c *CmdConfig, r *binarylane.CreateProjectRequest) error {
 	name, err := c.Doit.GetString(c.NS, blcli.ArgProjectName)
 	if err != nil {
 		return err
@@ -339,7 +339,7 @@ func buildProjectsCreateRequestFromArgs(c *CmdConfig, r *godo.CreateProjectReque
 	return nil
 }
 
-func buildProjectsUpdateRequestFromArgs(c *CmdConfig, r *godo.UpdateProjectRequest) error {
+func buildProjectsUpdateRequestFromArgs(c *CmdConfig, r *binarylane.UpdateProjectRequest) error {
 	if c.Doit.IsSet(blcli.ArgProjectName) {
 		name, err := c.Doit.GetString(c.NS, blcli.ArgProjectName)
 		if err != nil {

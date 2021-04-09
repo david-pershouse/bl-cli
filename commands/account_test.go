@@ -17,12 +17,12 @@ import (
 	"testing"
 
 	"github.com/binarylane/bl-cli/bl"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 var testAccount = &bl.Account{
-	Account: &godo.Account{
+	Account: &binarylane.Account{
 		ServerLimit:  10,
 		Email:         "user@example.com",
 		UUID:          "1234",

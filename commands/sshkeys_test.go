@@ -21,12 +21,12 @@ import (
 
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testKey     = bl.SSHKey{Key: &godo.Key{ID: 1, Fingerprint: "fingerprint"}}
+	testKey     = bl.SSHKey{Key: &binarylane.Key{ID: 1, Fingerprint: "fingerprint"}}
 	testKeyList = bl.SSHKeys{testKey}
 )
 
@@ -69,7 +69,7 @@ func TestKeysGetByFingerprint(t *testing.T) {
 
 func TestKeysCreate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		kcr := &godo.KeyCreateRequest{Name: "the key", PublicKey: "fingerprint"}
+		kcr := &binarylane.KeyCreateRequest{Name: "the key", PublicKey: "fingerprint"}
 		tm.keys.EXPECT().Create(kcr).Return(&testKey, nil)
 
 		config.Args = append(config.Args, "the key")
@@ -110,7 +110,7 @@ func TestKeysDeleteByFingerprint(t *testing.T) {
 
 func TestKeysUpdateByID(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		kur := &godo.KeyUpdateRequest{Name: "the key"}
+		kur := &binarylane.KeyUpdateRequest{Name: "the key"}
 		tm.keys.EXPECT().Update("1", kur).Return(&testKey, nil)
 
 		config.Args = append(config.Args, "1")
@@ -125,7 +125,7 @@ func TestKeysUpdateByID(t *testing.T) {
 
 func TestKeysUpdateByFingerprint(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		kur := &godo.KeyUpdateRequest{Name: "the key"}
+		kur := &binarylane.KeyUpdateRequest{Name: "the key"}
 		tm.keys.EXPECT().Update("fingerprint", kur).Return(&testKey, nil)
 
 		config.Args = append(config.Args, "fingerprint")
@@ -146,7 +146,7 @@ func TestSSHPublicKeyImportWithName(t *testing.T) {
 	defer os.Remove(path)
 
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		kcr := &godo.KeyCreateRequest{Name: "custom", PublicKey: pubkey}
+		kcr := &binarylane.KeyCreateRequest{Name: "custom", PublicKey: pubkey}
 		tm.keys.EXPECT().Create(kcr).Return(&testKey, nil)
 
 		config.Args = append(config.Args, "custom")

@@ -16,12 +16,12 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// Snapshot is a wrapper for godo.Snapshot
+// Snapshot is a wrapper for binarylane.Snapshot
 type Snapshot struct {
-	*godo.Snapshot
+	*binarylane.Snapshot
 }
 
 // Snapshots is a slice of Snapshot.
@@ -37,20 +37,20 @@ type SnapshotsService interface {
 }
 
 type snapshotsService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ SnapshotsService = &snapshotsService{}
 
 // NewSnapshotsService builds a SnapshotsService instance.
-func NewSnapshotsService(client *godo.Client) SnapshotsService {
+func NewSnapshotsService(client *binarylane.Client) SnapshotsService {
 	return &snapshotsService{
 		client: client,
 	}
 }
 
 func (ss *snapshotsService) List() (Snapshots, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := ss.client.Snapshots.List(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -71,7 +71,7 @@ func (ss *snapshotsService) List() (Snapshots, error) {
 
 	list := make(Snapshots, len(si))
 	for i := range si {
-		a := si[i].(godo.Snapshot)
+		a := si[i].(binarylane.Snapshot)
 		list[i] = Snapshot{Snapshot: &a}
 	}
 
@@ -79,7 +79,7 @@ func (ss *snapshotsService) List() (Snapshots, error) {
 }
 
 func (ss *snapshotsService) ListVolume() (Snapshots, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := ss.client.Snapshots.ListVolume(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -100,7 +100,7 @@ func (ss *snapshotsService) ListVolume() (Snapshots, error) {
 
 	list := make(Snapshots, len(si))
 	for i := range si {
-		a := si[i].(godo.Snapshot)
+		a := si[i].(binarylane.Snapshot)
 		list[i] = Snapshot{Snapshot: &a}
 	}
 
@@ -108,7 +108,7 @@ func (ss *snapshotsService) ListVolume() (Snapshots, error) {
 }
 
 func (ss *snapshotsService) ListServer() (Snapshots, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := ss.client.Snapshots.ListServer(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -129,7 +129,7 @@ func (ss *snapshotsService) ListServer() (Snapshots, error) {
 
 	list := make(Snapshots, len(si))
 	for i := range si {
-		a := si[i].(godo.Snapshot)
+		a := si[i].(binarylane.Snapshot)
 		list[i] = Snapshot{Snapshot: &a}
 	}
 

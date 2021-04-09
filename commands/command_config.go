@@ -59,7 +59,7 @@ type CmdConfig struct {
 }
 
 // NewCmdConfig creates an instance of a CmdConfig.
-func NewCmdConfig(ns string, dc blcli.Config, out io.Writer, args []string, initGodo bool) (*CmdConfig, error) {
+func NewCmdConfig(ns string, dc blcli.Config, out io.Writer, args []string, initClient bool) (*CmdConfig, error) {
 
 	cmdConfig := &CmdConfig{
 		NS:   ns,
@@ -69,32 +69,32 @@ func NewCmdConfig(ns string, dc blcli.Config, out io.Writer, args []string, init
 
 		initServices: func(c *CmdConfig) error {
 			accessToken := c.getContextAccessToken()
-			godoClient, err := c.Doit.GetGodoClient(Trace, accessToken)
+			client, err := c.Doit.GetGodoClient(Trace, accessToken)
 			if err != nil {
 				return fmt.Errorf("Unable to initialize BinaryLane API client: %s", err)
 			}
 
-			c.Keys = func() bl.KeysService { return bl.NewKeysService(godoClient) }
-			c.Sizes = func() bl.SizesService { return bl.NewSizesService(godoClient) }
-			c.Regions = func() bl.RegionsService { return bl.NewRegionsService(godoClient) }
-			c.Images = func() bl.ImagesService { return bl.NewImagesService(godoClient) }
-			c.ImageActions = func() bl.ImageActionsService { return bl.NewImageActionsService(godoClient) }
-			c.FloatingIPs = func() bl.FloatingIPsService { return bl.NewFloatingIPsService(godoClient) }
-			c.FloatingIPActions = func() bl.FloatingIPActionsService { return bl.NewFloatingIPActionsService(godoClient) }
-			c.Servers = func() bl.ServersService { return bl.NewServersService(godoClient) }
-			c.ServerActions = func() bl.ServerActionsService { return bl.NewServerActionsService(godoClient) }
-			c.Domains = func() bl.DomainsService { return bl.NewDomainsService(godoClient) }
-			c.Actions = func() bl.ActionsService { return bl.NewActionsService(godoClient) }
-			c.Account = func() bl.AccountService { return bl.NewAccountService(godoClient) }
-			c.Balance = func() bl.BalanceService { return bl.NewBalanceService(godoClient) }
-			c.BillingHistory = func() bl.BillingHistoryService { return bl.NewBillingHistoryService(godoClient) }
-			c.Invoices = func() bl.InvoicesService { return bl.NewInvoicesService(godoClient) }
-			c.Tags = func() bl.TagsService { return bl.NewTagsService(godoClient) }
-			c.Snapshots = func() bl.SnapshotsService { return bl.NewSnapshotsService(godoClient) }
-			c.LoadBalancers = func() bl.LoadBalancersService { return bl.NewLoadBalancersService(godoClient) }
-			c.Firewalls = func() bl.FirewallsService { return bl.NewFirewallsService(godoClient) }
-			c.Projects = func() bl.ProjectsService { return bl.NewProjectsService(godoClient) }
-			c.VPCs = func() bl.VPCsService { return bl.NewVPCsService(godoClient) }
+			c.Keys = func() bl.KeysService { return bl.NewKeysService(client) }
+			c.Sizes = func() bl.SizesService { return bl.NewSizesService(client) }
+			c.Regions = func() bl.RegionsService { return bl.NewRegionsService(client) }
+			c.Images = func() bl.ImagesService { return bl.NewImagesService(client) }
+			c.ImageActions = func() bl.ImageActionsService { return bl.NewImageActionsService(client) }
+			c.FloatingIPs = func() bl.FloatingIPsService { return bl.NewFloatingIPsService(client) }
+			c.FloatingIPActions = func() bl.FloatingIPActionsService { return bl.NewFloatingIPActionsService(client) }
+			c.Servers = func() bl.ServersService { return bl.NewServersService(client) }
+			c.ServerActions = func() bl.ServerActionsService { return bl.NewServerActionsService(client) }
+			c.Domains = func() bl.DomainsService { return bl.NewDomainsService(client) }
+			c.Actions = func() bl.ActionsService { return bl.NewActionsService(client) }
+			c.Account = func() bl.AccountService { return bl.NewAccountService(client) }
+			c.Balance = func() bl.BalanceService { return bl.NewBalanceService(client) }
+			c.BillingHistory = func() bl.BillingHistoryService { return bl.NewBillingHistoryService(client) }
+			c.Invoices = func() bl.InvoicesService { return bl.NewInvoicesService(client) }
+			c.Tags = func() bl.TagsService { return bl.NewTagsService(client) }
+			c.Snapshots = func() bl.SnapshotsService { return bl.NewSnapshotsService(client) }
+			c.LoadBalancers = func() bl.LoadBalancersService { return bl.NewLoadBalancersService(client) }
+			c.Firewalls = func() bl.FirewallsService { return bl.NewFirewallsService(client) }
+			c.Projects = func() bl.ProjectsService { return bl.NewProjectsService(client) }
+			c.VPCs = func() bl.VPCsService { return bl.NewVPCsService(client) }
 
 			return nil
 		},
@@ -136,7 +136,7 @@ func NewCmdConfig(ns string, dc blcli.Config, out io.Writer, args []string, init
 		},
 	}
 
-	if initGodo {
+	if initClient {
 		if err := cmdConfig.initServices(cmdConfig); err != nil {
 			return nil, err
 		}

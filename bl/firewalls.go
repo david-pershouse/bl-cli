@@ -17,22 +17,22 @@ import (
 	"context"
 	"errors"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// Firewall wraps a godo Firewall.
+// Firewall wraps a binarylane Firewall.
 type Firewall struct {
-	*godo.Firewall
+	*binarylane.Firewall
 }
 
 // Firewalls is a slice of Firewall.
 type Firewalls []Firewall
 
-// FirewallsService is the godo FirewallsService interface.
+// FirewallsService is the binarylane FirewallsService interface.
 type FirewallsService interface {
 	Get(fID string) (*Firewall, error)
-	Create(fr *godo.FirewallRequest) (*Firewall, error)
-	Update(fID string, fr *godo.FirewallRequest) (*Firewall, error)
+	Create(fr *binarylane.FirewallRequest) (*Firewall, error)
+	Update(fID string, fr *binarylane.FirewallRequest) (*Firewall, error)
 	List() (Firewalls, error)
 	ListByServer(sID int) (Firewalls, error)
 	Delete(fID string) error
@@ -40,18 +40,18 @@ type FirewallsService interface {
 	RemoveServers(fID string, sIDs ...int) error
 	AddTags(fID string, tags ...string) error
 	RemoveTags(fID string, tags ...string) error
-	AddRules(fID string, rr *godo.FirewallRulesRequest) error
-	RemoveRules(fID string, rr *godo.FirewallRulesRequest) error
+	AddRules(fID string, rr *binarylane.FirewallRulesRequest) error
+	RemoveRules(fID string, rr *binarylane.FirewallRulesRequest) error
 }
 
 var _ FirewallsService = &firewallsService{}
 
 type firewallsService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 // NewFirewallsService builds an instance of FirewallsService.
-func NewFirewallsService(client *godo.Client) FirewallsService {
+func NewFirewallsService(client *binarylane.Client) FirewallsService {
 	return &firewallsService{client: client}
 }
 
@@ -64,7 +64,7 @@ func (fs *firewallsService) Get(fID string) (*Firewall, error) {
 	return &Firewall{Firewall: f}, nil
 }
 
-func (fs *firewallsService) Create(fr *godo.FirewallRequest) (*Firewall, error) {
+func (fs *firewallsService) Create(fr *binarylane.FirewallRequest) (*Firewall, error) {
 	f, _, err := fs.client.Firewalls.Create(context.TODO(), fr)
 	if err != nil {
 		return nil, err
@@ -73,7 +73,7 @@ func (fs *firewallsService) Create(fr *godo.FirewallRequest) (*Firewall, error) 
 	return &Firewall{Firewall: f}, nil
 }
 
-func (fs *firewallsService) Update(fID string, fr *godo.FirewallRequest) (*Firewall, error) {
+func (fs *firewallsService) Update(fID string, fr *binarylane.FirewallRequest) (*Firewall, error) {
 	f, _, err := fs.client.Firewalls.Update(context.TODO(), fID, fr)
 	if err != nil {
 		return nil, err
@@ -83,7 +83,7 @@ func (fs *firewallsService) Update(fID string, fr *godo.FirewallRequest) (*Firew
 }
 
 func (fs *firewallsService) List() (Firewalls, error) {
-	listFn := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	listFn := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := fs.client.Firewalls.List(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -101,7 +101,7 @@ func (fs *firewallsService) List() (Firewalls, error) {
 }
 
 func (fs *firewallsService) ListByServer(sID int) (Firewalls, error) {
-	listFn := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	listFn := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := fs.client.Firewalls.ListByServer(context.TODO(), sID, opt)
 		if err != nil {
 			return nil, nil, err
@@ -143,17 +143,17 @@ func (fs *firewallsService) RemoveTags(fID string, tags ...string) error {
 	return err
 }
 
-func (fs *firewallsService) AddRules(fID string, rr *godo.FirewallRulesRequest) error {
+func (fs *firewallsService) AddRules(fID string, rr *binarylane.FirewallRulesRequest) error {
 	_, err := fs.client.Firewalls.AddRules(context.TODO(), fID, rr)
 	return err
 }
 
-func (fs *firewallsService) RemoveRules(fID string, rr *godo.FirewallRulesRequest) error {
+func (fs *firewallsService) RemoveRules(fID string, rr *binarylane.FirewallRulesRequest) error {
 	_, err := fs.client.Firewalls.RemoveRules(context.TODO(), fID, rr)
 	return err
 }
 
-func paginatedListHelper(listFn func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error)) (Firewalls, error) {
+func paginatedListHelper(listFn func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error)) (Firewalls, error) {
 	si, err := PaginateResp(listFn)
 	if err != nil {
 		return nil, err
@@ -161,7 +161,7 @@ func paginatedListHelper(listFn func(opt *godo.ListOptions) ([]interface{}, *god
 
 	list := make([]Firewall, len(si))
 	for i := range si {
-		a, ok := si[i].(godo.Firewall)
+		a, ok := si[i].(binarylane.Firewall)
 		if !ok {
 			return nil, errors.New("unexpected value in response")
 		}

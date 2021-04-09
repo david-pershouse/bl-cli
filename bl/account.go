@@ -15,17 +15,17 @@ package bl
 
 import (
 	"context"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// Account is a wrapper for godo.Account.
+// Account is a wrapper for binarylane.Account.
 type Account struct {
-	*godo.Account
+	*binarylane.Account
 }
 
-// RateLimit is a wrapper for godo.Rate.
+// RateLimit is a wrapper for binarylane.Rate.
 type RateLimit struct {
-	*godo.Rate
+	*binarylane.Rate
 }
 
 // AccountService is an interface for interacting with BinaryLane's account api.
@@ -35,25 +35,25 @@ type AccountService interface {
 }
 
 type accountService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ AccountService = &accountService{}
 
 // NewAccountService builds an AccountService instance.
-func NewAccountService(godoClient *godo.Client) AccountService {
+func NewAccountService(client *binarylane.Client) AccountService {
 	return &accountService{
-		client: godoClient,
+		client: client,
 	}
 }
 
 func (as *accountService) Get() (*Account, error) {
-	godoAccount, _, err := as.client.Account.Get(context.TODO())
+	binarylaneAccount, _, err := as.client.Account.Get(context.TODO())
 	if err != nil {
 		return nil, err
 	}
 
-	account := &Account{Account: godoAccount}
+	account := &Account{Account: binarylaneAccount}
 	return account, nil
 }
 

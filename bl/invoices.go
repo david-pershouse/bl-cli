@@ -16,27 +16,27 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// Invoice is a wrapper for godo.Invoice
+// Invoice is a wrapper for binarylane.Invoice
 type Invoice struct {
-	*godo.Invoice
+	*binarylane.Invoice
 }
 
-// InvoiceItem is a wrapper for godo.InvoiceItem
+// InvoiceItem is a wrapper for binarylane.InvoiceItem
 type InvoiceItem struct {
-	*godo.InvoiceItem
+	*binarylane.InvoiceItem
 }
 
-// InvoiceSummary is a wrapper for godo.InvoiceSummary
+// InvoiceSummary is a wrapper for binarylane.InvoiceSummary
 type InvoiceSummary struct {
-	*godo.InvoiceSummary
+	*binarylane.InvoiceSummary
 }
 
 // InvoiceList is a the results when listing invoices
 type InvoiceList struct {
-	*godo.InvoiceList
+	*binarylane.InvoiceList
 }
 
 // InvoicesService is an interface for interacting with BinaryLane's invoices api.
@@ -49,22 +49,22 @@ type InvoicesService interface {
 }
 
 type invoicesService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ InvoicesService = &invoicesService{}
 
 // NewInvoicesService builds an InvoicesService instance.
-func NewInvoicesService(client *godo.Client) InvoicesService {
+func NewInvoicesService(client *binarylane.Client) InvoicesService {
 	return &invoicesService{
 		client: client,
 	}
 }
 
 func (is *invoicesService) List() (*InvoiceList, error) {
-	var invoicePreview godo.InvoiceListItem
+	var invoicePreview binarylane.InvoiceListItem
 
-	listFn := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	listFn := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		invoiceList, resp, err := is.client.Invoices.List(context.Background(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -82,13 +82,13 @@ func (is *invoicesService) List() (*InvoiceList, error) {
 	if err != nil {
 		return nil, err
 	}
-	list := make([]godo.InvoiceListItem, len(paginatedList))
+	list := make([]binarylane.InvoiceListItem, len(paginatedList))
 	for i := range paginatedList {
-		list[i] = paginatedList[i].(godo.InvoiceListItem)
+		list[i] = paginatedList[i].(binarylane.InvoiceListItem)
 	}
 
 	return &InvoiceList{
-		InvoiceList: &godo.InvoiceList{
+		InvoiceList: &binarylane.InvoiceList{
 			Invoices:       list,
 			InvoicePreview: invoicePreview,
 		},
@@ -96,7 +96,7 @@ func (is *invoicesService) List() (*InvoiceList, error) {
 }
 
 func (is *invoicesService) Get(uuid string) (*Invoice, error) {
-	listFn := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	listFn := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		invoice, resp, err := is.client.Invoices.Get(context.Background(), uuid, opt)
 		if err != nil {
 			return nil, nil, err
@@ -113,13 +113,13 @@ func (is *invoicesService) Get(uuid string) (*Invoice, error) {
 		return nil, err
 	}
 
-	list := make([]godo.InvoiceItem, len(paginatedList))
+	list := make([]binarylane.InvoiceItem, len(paginatedList))
 	for i := range paginatedList {
-		list[i] = paginatedList[i].(godo.InvoiceItem)
+		list[i] = paginatedList[i].(binarylane.InvoiceItem)
 	}
 
 	return &Invoice{
-		Invoice: &godo.Invoice{
+		Invoice: &binarylane.Invoice{
 			InvoiceItems: list,
 		},
 	}, nil

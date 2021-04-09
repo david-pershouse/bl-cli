@@ -19,7 +19,7 @@ import (
 	"strconv"
 	"sync"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
 const maxFetchPages = 5
@@ -41,11 +41,11 @@ func (pl *paginatedList) append(items ...interface{}) {
 }
 
 // Generator is a function that generates the list to be paginated.
-type Generator func(*godo.ListOptions) ([]interface{}, *godo.Response, error)
+type Generator func(*binarylane.ListOptions) ([]interface{}, *binarylane.Response, error)
 
 // PaginateResp paginates a Response.
 func PaginateResp(gen Generator) ([]interface{}, error) {
-	opt := &godo.ListOptions{Page: 1, PerPage: perPage}
+	opt := &binarylane.ListOptions{Page: 1, PerPage: perPage}
 
 	l := paginatedList{}
 
@@ -92,12 +92,12 @@ func PaginateResp(gen Generator) ([]interface{}, error) {
 }
 
 func fetchPage(gen Generator, page int) ([]interface{}, error) {
-	opt := &godo.ListOptions{Page: page, PerPage: perPage}
+	opt := &binarylane.ListOptions{Page: page, PerPage: perPage}
 	items, _, err := gen(opt)
 	return items, err
 }
 
-func lastPage(resp *godo.Response) (int, error) {
+func lastPage(resp *binarylane.Response) (int, error) {
 	if resp.Links == nil || resp.Links.Pages == nil {
 		// no other pages
 		return 1, nil

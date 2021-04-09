@@ -22,7 +22,7 @@ import (
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
 	"github.com/binarylane/bl-cli/commands/displayers"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -185,7 +185,7 @@ func RunLoadBalancerList(c *CmdConfig) error {
 
 // RunLoadBalancerCreate creates a new load balancer with a given configuration.
 func RunLoadBalancerCreate(c *CmdConfig) error {
-	r := new(godo.LoadBalancerRequest)
+	r := new(binarylane.LoadBalancerRequest)
 	if err := buildRequestFromArgs(c, r); err != nil {
 		return err
 	}
@@ -210,7 +210,7 @@ func RunLoadBalancerUpdate(c *CmdConfig) error {
 		return err
 	}
 
-	r := new(godo.LoadBalancerRequest)
+	r := new(binarylane.LoadBalancerRequest)
 	if err := buildRequestFromArgs(c, r); err != nil {
 		return err
 	}
@@ -349,7 +349,7 @@ func RunLoadBalancerRemoveForwardingRules(c *CmdConfig) error {
 	return c.LoadBalancers().RemoveForwardingRules(lbID, forwardingRules...)
 }
 
-func extractForwardingRules(s string) (forwardingRules []godo.ForwardingRule, err error) {
+func extractForwardingRules(s string) (forwardingRules []binarylane.ForwardingRule, err error) {
 	if len(s) == 0 {
 		return forwardingRules, err
 	}
@@ -357,7 +357,7 @@ func extractForwardingRules(s string) (forwardingRules []godo.ForwardingRule, er
 	list := strings.Split(s, " ")
 
 	for _, v := range list {
-		forwardingRule := new(godo.ForwardingRule)
+		forwardingRule := new(binarylane.ForwardingRule)
 		if err := fillStructFromStringSliceArgs(forwardingRule, v); err != nil {
 			return nil, err
 		}
@@ -413,7 +413,7 @@ func fillStructFromStringSliceArgs(obj interface{}, s string) error {
 	return nil
 }
 
-func buildRequestFromArgs(c *CmdConfig, r *godo.LoadBalancerRequest) error {
+func buildRequestFromArgs(c *CmdConfig, r *binarylane.LoadBalancerRequest) error {
 	name, err := c.Doit.GetString(c.NS, blcli.ArgLoadBalancerName)
 	if err != nil {
 		return err
@@ -484,7 +484,7 @@ func buildRequestFromArgs(c *CmdConfig, r *godo.LoadBalancerRequest) error {
 		return err
 	}
 
-	stickySession := new(godo.StickySessions)
+	stickySession := new(binarylane.StickySessions)
 	if err := fillStructFromStringSliceArgs(stickySession, ssa); err != nil {
 		return err
 	}
@@ -495,7 +495,7 @@ func buildRequestFromArgs(c *CmdConfig, r *godo.LoadBalancerRequest) error {
 		return err
 	}
 
-	healthCheck := new(godo.HealthCheck)
+	healthCheck := new(binarylane.HealthCheck)
 	if err := fillStructFromStringSliceArgs(healthCheck, hca); err != nil {
 		return err
 	}

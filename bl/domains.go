@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"net/http"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
 const (
@@ -26,22 +26,22 @@ const (
 	domainRecordPath  = "v2/domains/%s/records/%d"
 )
 
-// Domain wraps a godo Domain.
+// Domain wraps a binarylane Domain.
 type Domain struct {
-	*godo.Domain
+	*binarylane.Domain
 }
 
 // Domains is a slice of Domain.
 type Domains []Domain
 
-// DomainRecord wraps a godo DomainRecord.
+// DomainRecord wraps a binarylane DomainRecord.
 type DomainRecord struct {
-	*godo.DomainRecord
+	*binarylane.DomainRecord
 }
 
-// A DomainRecordEditRequest is used in place of godo's DomainRecordEditRequest
+// A DomainRecordEditRequest is used in place of binarylane's DomainRecordEditRequest
 // in order to work around the fact that we cannot send a port value of 0 via
-// godo due to Go's JSON encoding logic.
+// binarylane due to Go's JSON encoding logic.
 type DomainRecordEditRequest struct {
 	Type     string `json:"type,omitempty"`
 	Name     string `json:"name,omitempty"`
@@ -57,11 +57,11 @@ type DomainRecordEditRequest struct {
 // DomainRecords is a slice of DomainRecord.
 type DomainRecords []DomainRecord
 
-// DomainsService is the godo DOmainsService interface.
+// DomainsService is the binarylane DOmainsService interface.
 type DomainsService interface {
 	List() (Domains, error)
 	Get(string) (*Domain, error)
-	Create(*godo.DomainCreateRequest) (*Domain, error)
+	Create(*binarylane.DomainCreateRequest) (*Domain, error)
 	Delete(string) error
 
 	Records(string) (DomainRecords, error)
@@ -72,20 +72,20 @@ type DomainsService interface {
 }
 
 type domainsService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ DomainsService = &domainsService{}
 
 // NewDomainsService builds an instance of DomainsService.
-func NewDomainsService(client *godo.Client) DomainsService {
+func NewDomainsService(client *binarylane.Client) DomainsService {
 	return &domainsService{
 		client: client,
 	}
 }
 
 func (ds *domainsService) List() (Domains, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := ds.client.Domains.List(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -106,7 +106,7 @@ func (ds *domainsService) List() (Domains, error) {
 
 	list := make(Domains, len(si))
 	for i := range si {
-		d := si[i].(godo.Domain)
+		d := si[i].(binarylane.Domain)
 		list[i] = Domain{Domain: &d}
 	}
 
@@ -122,7 +122,7 @@ func (ds *domainsService) Get(name string) (*Domain, error) {
 	return &Domain{Domain: d}, nil
 }
 
-func (ds *domainsService) Create(dcr *godo.DomainCreateRequest) (*Domain, error) {
+func (ds *domainsService) Create(dcr *binarylane.DomainCreateRequest) (*Domain, error) {
 	d, _, err := ds.client.Domains.Create(context.TODO(), dcr)
 	if err != nil {
 		return nil, err
@@ -137,7 +137,7 @@ func (ds *domainsService) Delete(name string) error {
 }
 
 func (ds *domainsService) Records(name string) (DomainRecords, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := ds.client.Domains.Records(context.TODO(), name, opt)
 		if err != nil {
 			return nil, nil, err
@@ -158,7 +158,7 @@ func (ds *domainsService) Records(name string) (DomainRecords, error) {
 
 	list := make(DomainRecords, len(si))
 	for i := range si {
-		dr := si[i].(godo.DomainRecord)
+		dr := si[i].(binarylane.DomainRecord)
 		list[i] = DomainRecord{DomainRecord: &dr}
 	}
 
@@ -181,20 +181,20 @@ func (ds *domainsService) DeleteRecord(domain string, id int) error {
 
 // domainRecordRoot is the root of an individual Domain Record response.
 //
-// Copied from godo.
+// Copied from binarylane.
 type domainRecordRoot struct {
 	DomainRecord *DomainRecord `json:"domain_record"`
 }
 
 func (ds *domainsService) EditRecord(domain string, id int, drer *DomainRecordEditRequest) (*DomainRecord, error) {
 	if len(domain) < 1 {
-		return nil, godo.NewArgError("domain", "cannot be an empty string")
+		return nil, binarylane.NewArgError("domain", "cannot be an empty string")
 	}
 	if id < 1 {
-		return nil, godo.NewArgError("id", "cannot be less than 1")
+		return nil, binarylane.NewArgError("id", "cannot be less than 1")
 	}
 	if drer == nil {
-		return nil, godo.NewArgError("editRequest", "cannot be nil")
+		return nil, binarylane.NewArgError("editRequest", "cannot be nil")
 	}
 
 	path := fmt.Sprintf(domainRecordPath, domain, id)
@@ -212,10 +212,10 @@ func (ds *domainsService) EditRecord(domain string, id int, drer *DomainRecordEd
 
 func (ds *domainsService) CreateRecord(domain string, drer *DomainRecordEditRequest) (*DomainRecord, error) {
 	if len(domain) < 1 {
-		return nil, godo.NewArgError("domain", "cannot be empty string")
+		return nil, binarylane.NewArgError("domain", "cannot be empty string")
 	}
 	if drer == nil {
-		return nil, godo.NewArgError("createRequest", "cannot be nil")
+		return nil, binarylane.NewArgError("createRequest", "cannot be nil")
 	}
 
 	path := fmt.Sprintf(domainRecordsPath, domain)

@@ -18,7 +18,7 @@ import (
 	"testing"
 
 	"github.com/binarylane/bl-cli"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -93,7 +93,7 @@ func TestImagesNoID(t *testing.T) {
 
 func TestImagesUpdate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		iur := &godo.ImageUpdateRequest{Name: "new-name"}
+		iur := &binarylane.ImageUpdateRequest{Name: "new-name"}
 		tm.images.EXPECT().Update(testImage.ID, iur).Return(&testImage, nil)
 
 		config.Args = append(config.Args, strconv.Itoa(testImage.ID))
@@ -133,7 +133,7 @@ func TestImagesDeleteMultiple(t *testing.T) {
 func TestImagesCreate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		addr := "https://www.example.com/registry/demo-image.tar"
-		r := godo.CustomImageCreateRequest{
+		r := binarylane.CustomImageCreateRequest{
 			Name:   "test-image",
 			Url:    addr,
 			Region: "nyc1",

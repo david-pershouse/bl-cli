@@ -17,16 +17,16 @@ import (
 	"sync"
 	"testing"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 func Test_PaginateResp(t *testing.T) {
 	var mu sync.Mutex
 	currentPage := 0
-	resp := &godo.Response{Links: &godo.Links{Pages: &godo.Pages{Last: "http://example.com/?page=5"}}}
+	resp := &binarylane.Response{Links: &binarylane.Links{Pages: &binarylane.Pages{Last: "http://example.com/?page=5"}}}
 
-	gen := func(*godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	gen := func(*binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		mu.Lock()
 		defer mu.Unlock()
 		currentPage++
@@ -40,9 +40,9 @@ func Test_PaginateResp(t *testing.T) {
 }
 
 func Test_Pagination_fetchPage(t *testing.T) {
-	gen := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	gen := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		items := []interface{}{}
-		resp := &godo.Response{}
+		resp := &binarylane.Response{}
 
 		assert.Equal(t, 10, opt.Page)
 
@@ -54,27 +54,27 @@ func Test_Pagination_fetchPage(t *testing.T) {
 
 func Test_Pagination_lastPage(t *testing.T) {
 	cases := []struct {
-		r        *godo.Response
+		r        *binarylane.Response
 		lastPage int
 		isValid  bool
 	}{
 		{
-			r: &godo.Response{
-				Links: &godo.Links{
-					Pages: &godo.Pages{Last: "http://example.com/?page=1"},
+			r: &binarylane.Response{
+				Links: &binarylane.Links{
+					Pages: &binarylane.Pages{Last: "http://example.com/?page=1"},
 				},
 			},
 			lastPage: 1,
 			isValid:  true,
 		},
 		{
-			r:        &godo.Response{Links: &godo.Links{}},
+			r:        &binarylane.Response{Links: &binarylane.Links{}},
 			lastPage: 1,
 			isValid:  true,
 		},
 
 		{
-			r:        &godo.Response{Links: nil},
+			r:        &binarylane.Response{Links: nil},
 			lastPage: 1,
 			isValid:  true,
 		},

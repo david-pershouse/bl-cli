@@ -15,12 +15,12 @@ package bl
 
 import (
 	"context"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// Balance is a wrapper for godo.Balance.
+// Balance is a wrapper for binarylane.Balance.
 type Balance struct {
-	*godo.Balance
+	*binarylane.Balance
 }
 
 // BalanceService is an interface for interacting with BinaryLane's balance api.
@@ -29,24 +29,24 @@ type BalanceService interface {
 }
 
 type balanceService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ BalanceService = &balanceService{}
 
 // NewBalanceService builds an BalanceService instance.
-func NewBalanceService(godoClient *godo.Client) BalanceService {
+func NewBalanceService(client *binarylane.Client) BalanceService {
 	return &balanceService{
-		client: godoClient,
+		client: client,
 	}
 }
 
 func (as *balanceService) Get() (*Balance, error) {
-	godoBalance, _, err := as.client.Balance.Get(context.TODO())
+	binarylaneBalance, _, err := as.client.Balance.Get(context.TODO())
 	if err != nil {
 		return nil, err
 	}
 
-	balance := &Balance{Balance: godoBalance}
+	balance := &Balance{Balance: binarylaneBalance}
 	return balance, nil
 }

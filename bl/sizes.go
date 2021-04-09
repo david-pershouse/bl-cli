@@ -16,37 +16,37 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// Size wraps godo Size.
+// Size wraps binarylane Size.
 type Size struct {
-	*godo.Size
+	*binarylane.Size
 }
 
 // Sizes is a slice of Size.
 type Sizes []Size
 
-// SizesService is the godo SizesService interface.
+// SizesService is the binarylane SizesService interface.
 type SizesService interface {
 	List() (Sizes, error)
 }
 
 type sizesService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ SizesService = &sizesService{}
 
 // NewSizesService builds an instance of SizesService.
-func NewSizesService(client *godo.Client) SizesService {
+func NewSizesService(client *binarylane.Client) SizesService {
 	return &sizesService{
 		client: client,
 	}
 }
 
 func (rs *sizesService) List() (Sizes, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := rs.client.Sizes.List(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -67,7 +67,7 @@ func (rs *sizesService) List() (Sizes, error) {
 
 	list := make(Sizes, len(si))
 	for i := range si {
-		r := si[i].(godo.Size)
+		r := si[i].(binarylane.Size)
 		list[i] = Size{Size: &r}
 	}
 

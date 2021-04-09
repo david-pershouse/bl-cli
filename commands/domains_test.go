@@ -18,16 +18,16 @@ import (
 
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testDomain     = bl.Domain{Domain: &godo.Domain{Name: "example.com"}}
+	testDomain     = bl.Domain{Domain: &binarylane.Domain{Name: "example.com"}}
 	testDomainList = bl.Domains{
 		testDomain,
 	}
-	testRecord     = bl.DomainRecord{DomainRecord: &godo.DomainRecord{ID: 1}}
+	testRecord     = bl.DomainRecord{DomainRecord: &binarylane.DomainRecord{ID: 1}}
 	testRecordList = bl.DomainRecords{testRecord}
 )
 
@@ -39,7 +39,7 @@ func TestDomainsCommand(t *testing.T) {
 
 func TestDomainsCreate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		dcr := &godo.DomainCreateRequest{Name: "example.com", IPAddress: "127.0.0.1"}
+		dcr := &binarylane.DomainCreateRequest{Name: "example.com", IPAddress: "127.0.0.1"}
 		tm.domains.EXPECT().Create(dcr).Return(&testDomain, nil)
 
 		config.Args = append(config.Args, testDomain.Name)

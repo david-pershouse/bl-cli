@@ -18,41 +18,41 @@ import (
 	"fmt"
 	"strconv"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// SSHKey wraps godo Key.
+// SSHKey wraps binarylane Key.
 type SSHKey struct {
-	*godo.Key
+	*binarylane.Key
 }
 
 // SSHKeys is a slice of SSHKey
 type SSHKeys []SSHKey
 
-// KeysService is the godo KeysService interface.
+// KeysService is the binarylane KeysService interface.
 type KeysService interface {
 	List() (SSHKeys, error)
 	Get(id string) (*SSHKey, error)
-	Create(kcr *godo.KeyCreateRequest) (*SSHKey, error)
-	Update(id string, kur *godo.KeyUpdateRequest) (*SSHKey, error)
+	Create(kcr *binarylane.KeyCreateRequest) (*SSHKey, error)
+	Update(id string, kur *binarylane.KeyUpdateRequest) (*SSHKey, error)
 	Delete(id string) error
 }
 
 type keysService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ KeysService = &keysService{}
 
 // NewKeysService builds an instance of KeysService.
-func NewKeysService(client *godo.Client) KeysService {
+func NewKeysService(client *binarylane.Client) KeysService {
 	return &keysService{
 		client: client,
 	}
 }
 
 func (ks *keysService) List() (SSHKeys, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := ks.client.Keys.List(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -73,7 +73,7 @@ func (ks *keysService) List() (SSHKeys, error) {
 
 	list := make(SSHKeys, len(si))
 	for i := range si {
-		k := si[i].(godo.Key)
+		k := si[i].(binarylane.Key)
 		list[i] = SSHKey{Key: &k}
 	}
 
@@ -82,7 +82,7 @@ func (ks *keysService) List() (SSHKeys, error) {
 
 func (ks *keysService) Get(id string) (*SSHKey, error) {
 	var err error
-	var k *godo.Key
+	var k *binarylane.Key
 
 	if i, aerr := strconv.Atoi(id); aerr == nil {
 		k, _, err = ks.client.Keys.GetByID(context.TODO(), i)
@@ -101,7 +101,7 @@ func (ks *keysService) Get(id string) (*SSHKey, error) {
 	return &SSHKey{Key: k}, nil
 }
 
-func (ks *keysService) Create(kcr *godo.KeyCreateRequest) (*SSHKey, error) {
+func (ks *keysService) Create(kcr *binarylane.KeyCreateRequest) (*SSHKey, error) {
 	k, _, err := ks.client.Keys.Create(context.TODO(), kcr)
 	if err != nil {
 		return nil, err
@@ -110,8 +110,8 @@ func (ks *keysService) Create(kcr *godo.KeyCreateRequest) (*SSHKey, error) {
 	return &SSHKey{Key: k}, nil
 }
 
-func (ks *keysService) Update(id string, kur *godo.KeyUpdateRequest) (*SSHKey, error) {
-	var k *godo.Key
+func (ks *keysService) Update(id string, kur *binarylane.KeyUpdateRequest) (*SSHKey, error) {
+	var k *binarylane.Key
 	var err error
 	if i, aerr := strconv.Atoi(id); aerr == nil {
 		k, _, err = ks.client.Keys.UpdateByID(context.TODO(), i, kur)

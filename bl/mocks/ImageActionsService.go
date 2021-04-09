@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	bl "github.com/binarylane/bl-cli/bl"
-	binarylane "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	gomock "github.com/golang/mock/gomock"
 )
 

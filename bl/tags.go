@@ -16,12 +16,12 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// Tag is a wrapper for godo.Tag
+// Tag is a wrapper for binarylane.Tag
 type Tag struct {
-	*godo.Tag
+	*binarylane.Tag
 }
 
 // Tags is a slice of Tag.
@@ -31,27 +31,27 @@ type Tags []Tag
 type TagsService interface {
 	List() (Tags, error)
 	Get(string) (*Tag, error)
-	Create(*godo.TagCreateRequest) (*Tag, error)
+	Create(*binarylane.TagCreateRequest) (*Tag, error)
 	Delete(string) error
-	TagResources(string, *godo.TagResourcesRequest) error
-	UntagResources(string, *godo.UntagResourcesRequest) error
+	TagResources(string, *binarylane.TagResourcesRequest) error
+	UntagResources(string, *binarylane.UntagResourcesRequest) error
 }
 
 type tagsService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ TagsService = (*tagsService)(nil)
 
 // NewTagsService builds a TagsService instance.
-func NewTagsService(godoClient *godo.Client) TagsService {
+func NewTagsService(client *binarylane.Client) TagsService {
 	return &tagsService{
-		client: godoClient,
+		client: client,
 	}
 }
 
 func (ts *tagsService) List() (Tags, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := ts.client.Tags.List(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -72,7 +72,7 @@ func (ts *tagsService) List() (Tags, error) {
 
 	list := make(Tags, len(si))
 	for i := range si {
-		a := si[i].(godo.Tag)
+		a := si[i].(binarylane.Tag)
 		list[i] = Tag{Tag: &a}
 	}
 
@@ -88,7 +88,7 @@ func (ts *tagsService) Get(name string) (*Tag, error) {
 	return &Tag{Tag: t}, nil
 }
 
-func (ts *tagsService) Create(tcr *godo.TagCreateRequest) (*Tag, error) {
+func (ts *tagsService) Create(tcr *binarylane.TagCreateRequest) (*Tag, error) {
 	t, _, err := ts.client.Tags.Create(context.TODO(), tcr)
 	if err != nil {
 		return nil, err
@@ -102,12 +102,12 @@ func (ts *tagsService) Delete(name string) error {
 	return err
 }
 
-func (ts *tagsService) TagResources(name string, trr *godo.TagResourcesRequest) error {
+func (ts *tagsService) TagResources(name string, trr *binarylane.TagResourcesRequest) error {
 	_, err := ts.client.Tags.TagResources(context.TODO(), name, trr)
 	return err
 }
 
-func (ts *tagsService) UntagResources(name string, urr *godo.UntagResourcesRequest) error {
+func (ts *tagsService) UntagResources(name string, urr *binarylane.UntagResourcesRequest) error {
 	_, err := ts.client.Tags.UntagResources(context.TODO(), name, urr)
 	return err
 }

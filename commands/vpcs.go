@@ -20,7 +20,7 @@ import (
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
 	"github.com/binarylane/bl-cli/commands/displayers"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -117,7 +117,7 @@ func RunVPCList(c *CmdConfig) error {
 
 // RunVPCCreate creates a new VPC with a given configuration.
 func RunVPCCreate(c *CmdConfig) error {
-	r := new(godo.VPCCreateRequest)
+	r := new(binarylane.VPCCreateRequest)
 	name, err := c.Doit.GetString(c.NS, blcli.ArgVPCName)
 	if err != nil {
 		return err
@@ -162,7 +162,7 @@ func RunVPCUpdate(c *CmdConfig) error {
 		return err
 	}
 
-	r := new(godo.VPCUpdateRequest)
+	r := new(binarylane.VPCUpdateRequest)
 	name, err := c.Doit.GetString(c.NS, blcli.ArgVPCName)
 	if err != nil {
 		return err

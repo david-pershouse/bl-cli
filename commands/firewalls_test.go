@@ -6,14 +6,14 @@ import (
 
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 
 	"github.com/stretchr/testify/assert"
 )
 
 var (
 	testFirewall = bl.Firewall{
-		Firewall: &godo.Firewall{
+		Firewall: &binarylane.Firewall{
 			Name: "my firewall",
 		},
 	}
@@ -43,18 +43,18 @@ func TestFirewallGet(t *testing.T) {
 
 func TestFirewallCreate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		firewallCreateRequest := &godo.FirewallRequest{
+		firewallCreateRequest := &binarylane.FirewallRequest{
 			Name: "firewall",
-			InboundRules: []godo.InboundRule{
+			InboundRules: []binarylane.InboundRule{
 				{
 					Protocol:  "icmp",
 					PortRange: "",
-					Sources:   &godo.Sources{},
+					Sources:   &binarylane.Sources{},
 				},
 				{
 					Protocol:  "tcp",
 					PortRange: "8000-9000",
-					Sources: &godo.Sources{
+					Sources: &binarylane.Sources{
 						Addresses: []string{"127.0.0.0", "0::/0", "::/1"},
 					},
 				},
@@ -77,22 +77,22 @@ func TestFirewallCreate(t *testing.T) {
 func TestFirewallUpdate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		fID := "ab06e011-6dd1-4034-9293-201f71aba299"
-		firewallUpdateRequest := &godo.FirewallRequest{
+		firewallUpdateRequest := &binarylane.FirewallRequest{
 			Name: "firewall",
-			InboundRules: []godo.InboundRule{
+			InboundRules: []binarylane.InboundRule{
 				{
 					Protocol:  "tcp",
 					PortRange: "8000-9000",
-					Sources: &godo.Sources{
+					Sources: &binarylane.Sources{
 						Addresses: []string{"127.0.0.0"},
 					},
 				},
 			},
-			OutboundRules: []godo.OutboundRule{
+			OutboundRules: []binarylane.OutboundRule{
 				{
 					Protocol:  "tcp",
 					PortRange: "8080",
-					Destinations: &godo.Destinations{
+					Destinations: &binarylane.Destinations{
 						LoadBalancerUIDs: []string{"lb-uuid"},
 						Tags:             []string{"new-servers"},
 					},
@@ -100,7 +100,7 @@ func TestFirewallUpdate(t *testing.T) {
 				{
 					Protocol:  "tcp",
 					PortRange: "80",
-					Destinations: &godo.Destinations{
+					Destinations: &binarylane.Destinations{
 						Addresses: []string{"192.168.0.0"},
 					},
 				},
@@ -212,33 +212,33 @@ func TestFirewallRemoveTags(t *testing.T) {
 func TestFirewallAddRules(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		fID := "ab06e011-6dd1-4034-9293-201f71aba299"
-		inboundRules := []godo.InboundRule{
+		inboundRules := []binarylane.InboundRule{
 			{
 				Protocol:  "tcp",
 				PortRange: "80",
-				Sources: &godo.Sources{
+				Sources: &binarylane.Sources{
 					Addresses: []string{"127.0.0.0", "0.0.0.0/0", "2604:A880:0002:00D0:0000:0000:32F1:E001"},
 				},
 			},
 			{
 				Protocol:  "tcp",
 				PortRange: "8080",
-				Sources: &godo.Sources{
+				Sources: &binarylane.Sources{
 					Tags:       []string{"backend"},
 					ServerIDs: []int{1, 2, 3},
 				},
 			},
 		}
-		outboundRules := []godo.OutboundRule{
+		outboundRules := []binarylane.OutboundRule{
 			{
 				Protocol:  "tcp",
 				PortRange: "22",
-				Destinations: &godo.Destinations{
+				Destinations: &binarylane.Destinations{
 					LoadBalancerUIDs: []string{"lb-uuid"},
 				},
 			},
 		}
-		firewallRulesRequest := &godo.FirewallRulesRequest{
+		firewallRulesRequest := &binarylane.FirewallRulesRequest{
 			InboundRules:  inboundRules,
 			OutboundRules: outboundRules,
 		}
@@ -257,26 +257,26 @@ func TestFirewallAddRules(t *testing.T) {
 func TestFirewallRemoveRules(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		fID := "ab06e011-6dd1-4034-9293-201f71aba299"
-		inboundRules := []godo.InboundRule{
+		inboundRules := []binarylane.InboundRule{
 			{
 				Protocol:  "tcp",
 				PortRange: "80",
-				Sources: &godo.Sources{
+				Sources: &binarylane.Sources{
 					Addresses: []string{"0.0.0.0/0"},
 				},
 			},
 		}
-		outboundRules := []godo.OutboundRule{
+		outboundRules := []binarylane.OutboundRule{
 			{
 				Protocol:  "tcp",
 				PortRange: "22",
-				Destinations: &godo.Destinations{
+				Destinations: &binarylane.Destinations{
 					Tags:      []string{"back:end"},
 					Addresses: []string{"::/0"},
 				},
 			},
 		}
-		firewallRulesRequest := &godo.FirewallRulesRequest{
+		firewallRulesRequest := &binarylane.FirewallRulesRequest{
 			InboundRules:  inboundRules,
 			OutboundRules: outboundRules,
 		}

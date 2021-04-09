@@ -20,7 +20,7 @@ import (
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
 	"github.com/binarylane/bl-cli/commands/displayers"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -77,7 +77,7 @@ func RunFloatingIPCreate(c *CmdConfig) error {
 		return fmt.Errorf("Specify region or Server ID when creating a floating IP address.")
 	}
 
-	req := &godo.FloatingIPCreateRequest{
+	req := &binarylane.FloatingIPCreateRequest{
 		Region:    region,
 		ServerID: serverID,
 	}

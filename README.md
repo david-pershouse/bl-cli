@@ -171,7 +171,7 @@ This will create the necessary directory structure and configuration file to sto
 
 ### Logging into multiple BinaryLane accounts
 
-`bl-cli` allows you to log in to multiple DigitalOcean accounts at the same time and easily switch between them with the use of authentication contexts.
+`bl-cli` allows you to log in to multiple BinaryLane accounts at the same time and easily switch between them with the use of authentication contexts.
 
 By default, a context named `default` is used. To create a new context, run `bl auth init --context <new-context-name>`. You may also pass the new context's name using the `BINARYLANE_CONTEXT` environment variable. You will be prompted for your API access token which will be associated with the new context.
 

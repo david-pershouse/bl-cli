@@ -8,7 +8,7 @@ echo "generating changelog"
 current_dir=$(pwd)
 cd "$(mktemp -d)"
 
-go install github.com/digitalocean/github-changelog-generator@latest
+go install github.com/digitalocean/github-changelog-generator
 
 tfile=$(mktemp)
 github-changelog-generator -org binarylane -repo bl-cli >"$tfile"

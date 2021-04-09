@@ -27,9 +27,9 @@ import (
 	"strconv"
 	"strings"
 
-	"git.mammoth.com.au/github/bl-cli/pkg/runner"
-	"git.mammoth.com.au/github/bl-cli/pkg/ssh"
-	"git.mammoth.com.au/github/go-binarylane"
+	"github.com/binarylane/bl-cli/pkg/runner"
+	"github.com/binarylane/bl-cli/pkg/ssh"
+	"github.com/binarylane/go-binarylane"
 	"github.com/blang/semver"
 	"github.com/spf13/viper"
 	"golang.org/x/oauth2"

@@ -7,7 +7,7 @@ package mocks
 import (
 	reflect "reflect"
 
-	bl "git.mammoth.com.au/github/bl-cli/bl"
+	bl "github.com/binarylane/bl-cli/bl"
 	gomock "github.com/golang/mock/gomock"
 )
 

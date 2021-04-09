@@ -14,7 +14,7 @@ limitations under the License.
 package commands
 
 import (
-	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"github.com/binarylane/bl-cli/commands/displayers"
 	"github.com/spf13/cobra"
 )
 

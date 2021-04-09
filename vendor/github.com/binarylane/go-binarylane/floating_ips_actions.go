@@ -25,7 +25,7 @@ type FloatingIPActionsServiceOp struct {
 // Assign a floating IP to a server.
 func (s *FloatingIPActionsServiceOp) Assign(ctx context.Context, ip string, serverID int) (*Action, *Response, error) {
 	request := &ActionRequest{
-		"type":       "assign",
+		"type":      "assign",
 		"server_id": serverID,
 	}
 	return s.doAction(ctx, ip, request)

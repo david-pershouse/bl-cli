@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	libraryVersion = "1.0.0"
+	libraryVersion = "0.1.0"
 	defaultBaseURL = "https://api.binarylane.com.au/"
 	userAgent      = "go-binarylane/" + libraryVersion
 	mediaType      = "application/json"

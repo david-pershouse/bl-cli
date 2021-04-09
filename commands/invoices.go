@@ -17,8 +17,8 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/commands/displayers"
+	"github.com/binarylane/bl-cli"
+	"github.com/binarylane/bl-cli/commands/displayers"
 	"github.com/spf13/cobra"
 )
 

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"git.mammoth.com.au/github/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
 const (

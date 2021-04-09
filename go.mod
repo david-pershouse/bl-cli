@@ -1,9 +1,9 @@
-module git.mammoth.com.au/github/bl-cli
+module github.com/binarylane/bl-cli
 
 go 1.15
 
 require (
-	git.mammoth.com.au/github/go-binarylane v0.0.0-20201126043615-0b707bc96730
+	github.com/binarylane/go-binarylane v0.1.0
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/cpuguy83/go-md2man v1.0.10 // indirect
 	github.com/creack/pty v1.1.11

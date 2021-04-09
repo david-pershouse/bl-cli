@@ -16,7 +16,7 @@ package main
 import (
 	"log"
 
-	"git.mammoth.com.au/github/bl-cli/commands"
+	"github.com/binarylane/bl-cli/commands"
 )
 
 func main() {

@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/bl"
+	"github.com/binarylane/bl-cli/bl"
 )
 
 type FloatingIP struct {

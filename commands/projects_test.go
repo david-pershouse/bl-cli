@@ -3,9 +3,9 @@ package commands
 import (
 	"testing"
 
-	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/bl"
-	"git.mammoth.com.au/github/go-binarylane"
+	"github.com/binarylane/bl-cli"
+	"github.com/binarylane/bl-cli/bl"
+	"github.com/binarylane/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 

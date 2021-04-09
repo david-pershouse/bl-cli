@@ -151,7 +151,7 @@ mocks:
 
 .PHONY: _upgrade_binarylane
 _upgrade_binarylane:
-	go get -u git.mammoth.com.au/github/binarylane
+	go get -u github.com/binarylane/go-binarylane
 
 .PHONY: upgrade_binarylane
 upgrade_binarylane: _upgrade_binarylane vendor mocks

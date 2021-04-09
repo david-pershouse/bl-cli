@@ -1,7 +1,7 @@
-# git.mammoth.com.au/github/go-binarylane v0.0.0-20201126043615-0b707bc96730
+# github.com/binarylane/go-binarylane v0.1.0
 ## explicit
-git.mammoth.com.au/github/go-binarylane
-git.mammoth.com.au/github/go-binarylane/util
+github.com/binarylane/go-binarylane
+github.com/binarylane/go-binarylane/util
 # github.com/blang/semver v3.5.1+incompatible
 ## explicit
 github.com/blang/semver

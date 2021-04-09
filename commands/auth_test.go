@@ -21,8 +21,8 @@ import (
 
 	"errors"
 
-	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/bl"
+	"github.com/binarylane/bl-cli"
+	"github.com/binarylane/bl-cli/bl"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )

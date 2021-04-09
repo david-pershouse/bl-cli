@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"git.mammoth.com.au/github/bl-cli/bl"
+	"github.com/binarylane/bl-cli/bl"
 
 	"github.com/stretchr/testify/assert"
 )

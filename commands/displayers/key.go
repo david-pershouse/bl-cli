@@ -16,7 +16,7 @@ package displayers
 import (
 	"io"
 
-	"git.mammoth.com.au/github/bl-cli/bl"
+	"github.com/binarylane/bl-cli/bl"
 )
 
 // Key is used to display the SSH Key results from a `list` operation.

@@ -13,7 +13,7 @@ limitations under the License.
 
 package blcli
 
-import "git.mammoth.com.au/github/bl-cli/pkg/runner"
+import "github.com/binarylane/bl-cli/pkg/runner"
 
 // MockRunner is an implemenation of Runner for mocking.
 type MockRunner struct {

@@ -20,8 +20,8 @@ import (
 	"testing"
 	"time"
 
-	"git.mammoth.com.au/github/bl-cli/bl"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	"github.com/binarylane/bl-cli/bl"
+	godo "github.com/binarylane/go-binarylane"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )

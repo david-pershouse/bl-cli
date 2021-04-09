@@ -18,7 +18,7 @@ import (
 	"strconv"
 	"strings"
 
-	"git.mammoth.com.au/github/bl-cli/bl"
+	"github.com/binarylane/bl-cli/bl"
 )
 
 type Snapshot struct {

@@ -16,7 +16,7 @@ package bl
 import (
 	"context"
 
-	godo "git.mammoth.com.au/github/go-binarylane"
+	godo "github.com/binarylane/go-binarylane"
 )
 
 //Action is a wrapper for godo.Action

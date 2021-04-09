@@ -16,8 +16,8 @@ package bl
 import (
 	"context"
 
-	"git.mammoth.com.au/github/go-binarylane"
-	"git.mammoth.com.au/github/go-binarylane/util"
+	"github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane/util"
 )
 
 // ServerIPTable is a table of interface IPS.

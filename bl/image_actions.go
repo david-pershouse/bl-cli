@@ -16,7 +16,7 @@ package bl
 import (
 	"context"
 
-	godo "git.mammoth.com.au/github/go-binarylane"
+	godo "github.com/binarylane/go-binarylane"
 )
 
 // ImageActionsService is an interface for interacting with BinaryLane's image action api.

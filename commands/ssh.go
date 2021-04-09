@@ -22,9 +22,9 @@ import (
 	"strconv"
 	"strings"
 
-	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/bl"
-	"git.mammoth.com.au/github/bl-cli/pkg/ssh"
+	"github.com/binarylane/bl-cli"
+	"github.com/binarylane/bl-cli/bl"
+	"github.com/binarylane/bl-cli/pkg/ssh"
 )
 
 var (

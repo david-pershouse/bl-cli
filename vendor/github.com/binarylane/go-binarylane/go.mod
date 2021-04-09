@@ -1,4 +1,4 @@
-module git.mammoth.com.au/github/go-binarylane
+module github.com/binarylane/go-binarylane
 
 go 1.14
 

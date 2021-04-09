@@ -19,7 +19,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"git.mammoth.com.au/github/bl-cli/commands"
+	"github.com/binarylane/bl-cli/commands"
 	"github.com/spf13/cobra"
 	"github.com/spf13/cobra/doc"
 )

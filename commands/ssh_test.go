@@ -17,9 +17,9 @@ import (
 	"strconv"
 	"testing"
 
-	"git.mammoth.com.au/github/bl-cli"
-	"git.mammoth.com.au/github/bl-cli/pkg/runner"
-	"git.mammoth.com.au/github/bl-cli/pkg/ssh"
+	"github.com/binarylane/bl-cli"
+	"github.com/binarylane/bl-cli/pkg/runner"
+	"github.com/binarylane/bl-cli/pkg/ssh"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
 )

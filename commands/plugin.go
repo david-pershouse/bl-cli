@@ -19,8 +19,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"git.mammoth.com.au/github/bl-cli/commands/displayers"
-	"git.mammoth.com.au/github/bl-cli/pluginhost"
+	"github.com/binarylane/bl-cli/commands/displayers"
+	"github.com/binarylane/bl-cli/pluginhost"
 	"github.com/spf13/cobra"
 )
 

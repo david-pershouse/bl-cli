@@ -20,7 +20,7 @@ import (
 	"net/rpc/jsonrpc"
 	"os"
 
-	"git.mammoth.com.au/github/bl-cli"
+	"github.com/binarylane/bl-cli"
 	"github.com/natefinch/pie"
 	"github.com/spf13/viper"
 )

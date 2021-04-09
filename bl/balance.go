@@ -15,7 +15,7 @@ package bl
 
 import (
 	"context"
-	godo "git.mammoth.com.au/github/go-binarylane"
+	godo "github.com/binarylane/go-binarylane"
 )
 
 // Balance is a wrapper for godo.Balance.

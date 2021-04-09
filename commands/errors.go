@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"os"
 
-	"git.mammoth.com.au/github/bl-cli"
+	"github.com/binarylane/bl-cli"
 	"github.com/fatih/color"
 	"github.com/shiena/ansicolor"
 	"github.com/spf13/viper"

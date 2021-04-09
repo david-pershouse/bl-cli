@@ -31,16 +31,6 @@ cloud.google.com/go/storage v1.6.0/go.mod h1:N7U0C8pVQ/+NIKOBQyamJIeKQKkZ+mxpohl
 cloud.google.com/go/storage v1.8.0/go.mod h1:Wv1Oy7z6Yz3DshWRJFhqM/UCfaWIRTdp0RXyy7KQOVs=
 cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9ullr3+Kg0=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
-git.mammoth.com.au/github/go-binarylane v0.0.0-20201107032515-2dbe2d0b8fd9 h1:9H8Vg5kPcz+qCDjFg0FwymG/Msj/cVkQimHYrLvfps4=
-git.mammoth.com.au/github/go-binarylane v0.0.0-20201107032515-2dbe2d0b8fd9/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
-git.mammoth.com.au/github/go-binarylane v0.0.0-20201123015952-248f8b62fe83 h1:9UrS1SFqWRFLS9OtEOCwOQVfKcIokCsT4oUdBZ7Kyxs=
-git.mammoth.com.au/github/go-binarylane v0.0.0-20201123015952-248f8b62fe83/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
-git.mammoth.com.au/github/go-binarylane v0.0.0-20201125045645-6b227d3b6a60 h1:fChi/4ts/RTV6S1P4PzBBol6lhmCxFPqM3uS6pGLh1g=
-git.mammoth.com.au/github/go-binarylane v0.0.0-20201125045645-6b227d3b6a60/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
-git.mammoth.com.au/github/go-binarylane v0.0.0-20201125061031-df8e06888761 h1:7q8bcUAXl2L0dN9BN1AZEsyPKR/jy7ZMNwb5XCuvFYo=
-git.mammoth.com.au/github/go-binarylane v0.0.0-20201125061031-df8e06888761/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
-git.mammoth.com.au/github/go-binarylane v0.0.0-20201126043615-0b707bc96730 h1:V1Uw71WEsAs14A0N9r6rhhBVQEEs7jOZMRhvWXO0i/Q=
-git.mammoth.com.au/github/go-binarylane v0.0.0-20201126043615-0b707bc96730/go.mod h1:PVehy5Ci4aRcPDSXuc1pTSgh20NtUsq6quqdym7516A=
 github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
@@ -50,6 +40,8 @@ github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRF
 github.com/armon/consul-api v0.0.0-20180202201655-eb2c6b5be1b6/go.mod h1:grANhF5doyWs3UAsr3K4I6qtAmlQcZDesFNEHPZAzj8=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
 github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+CedLV8=
+github.com/binarylane/go-binarylane v0.1.0 h1:69RHqulbqrdGlEVy9op9fpAiqwB4zGyZ598zMnkclvA=
+github.com/binarylane/go-binarylane v0.1.0/go.mod h1:VCxGlstfXZQ0IjZEm3WCtCx6ovRBxnvGJ7CnBZIGXhI=
 github.com/blang/semver v3.5.1+incompatible h1:cQNTCjp13qL8KC3Nbxr/y2Bqb63oX6wdnnjpJbkM4JQ=
 github.com/blang/semver v3.5.1+incompatible/go.mod h1:kRBLl5iJ+tD4TcOOxsy/0fnwebNt5EWlYSAyrTnjyyk=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=

@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"net/http"
 
-	godo "git.mammoth.com.au/github/go-binarylane"
+	godo "github.com/binarylane/go-binarylane"
 )
 
 const (

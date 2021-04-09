@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"git.mammoth.com.au/github/bl-cli"
+	"github.com/binarylane/bl-cli"
 	"github.com/spf13/cobra"
 )
 

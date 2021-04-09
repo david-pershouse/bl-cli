@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"strconv"
 
-	godo "git.mammoth.com.au/github/go-binarylane"
+	godo "github.com/binarylane/go-binarylane"
 )
 
 // SSHKey wraps godo Key.

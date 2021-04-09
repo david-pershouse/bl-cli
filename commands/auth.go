@@ -23,7 +23,7 @@ import (
 	"strings"
 	"syscall"
 
-	blcli "github.com/binarylane/bl-cli"
+	"github.com/binarylane/bl-cli"
 
 	"golang.org/x/crypto/ssh/terminal"
 

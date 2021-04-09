@@ -22,7 +22,7 @@ import (
 	"sync"
 	"text/template"
 
-	blcli "github.com/binarylane/bl-cli"
+	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
 	"github.com/binarylane/bl-cli/commands/displayers"
 	"github.com/binarylane/go-binarylane"

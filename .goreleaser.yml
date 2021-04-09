@@ -1,4 +1,4 @@
-project_name: bl-cli
+project_name: bl
 
 builds:
 - main: ./cmd/bl/main.go

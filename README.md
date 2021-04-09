@@ -178,7 +178,7 @@ By default, a context named `default` is used. To create a new context, run `bl 
 To use a non-default context, pass the context name to any `bl` command. For example:
 
 ```
-bl compute droplet list --context <new-context-name>
+bl compute server list --context <new-context-name>
 ```
 
 To set a new default context, run `bl auth switch --context <new-context-name>`. This command will save the current context to the config file and use it for all commands by default if a context is not specified.

@@ -16,38 +16,38 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// LoadBalancer wraps a godo LoadBalancer.
+// LoadBalancer wraps a binarylane LoadBalancer.
 type LoadBalancer struct {
-	*godo.LoadBalancer
+	*binarylane.LoadBalancer
 }
 
 // LoadBalancers is a slice of LoadBalancer.
 type LoadBalancers []LoadBalancer
 
-// LoadBalancersService is the godo LoadBalancersService interface.
+// LoadBalancersService is the binarylane LoadBalancersService interface.
 type LoadBalancersService interface {
 	Get(lbID int) (*LoadBalancer, error)
 	List() (LoadBalancers, error)
-	Create(lbr *godo.LoadBalancerRequest) (*LoadBalancer, error)
-	Update(lbID int, lbr *godo.LoadBalancerRequest) (*LoadBalancer, error)
+	Create(lbr *binarylane.LoadBalancerRequest) (*LoadBalancer, error)
+	Update(lbID int, lbr *binarylane.LoadBalancerRequest) (*LoadBalancer, error)
 	Delete(lbID int) error
 	AddServers(lbID int, sIDs ...int) error
 	RemoveServers(lbID int, sIDs ...int) error
-	AddForwardingRules(lbID int, rules ...godo.ForwardingRule) error
-	RemoveForwardingRules(lbID int, rules ...godo.ForwardingRule) error
+	AddForwardingRules(lbID int, rules ...binarylane.ForwardingRule) error
+	RemoveForwardingRules(lbID int, rules ...binarylane.ForwardingRule) error
 }
 
 var _ LoadBalancersService = &loadBalancersService{}
 
 type loadBalancersService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 // NewLoadBalancersService builds an instance of LoadBalancersService.
-func NewLoadBalancersService(client *godo.Client) LoadBalancersService {
+func NewLoadBalancersService(client *binarylane.Client) LoadBalancersService {
 	return &loadBalancersService{
 		client: client,
 	}
@@ -63,7 +63,7 @@ func (lbs *loadBalancersService) Get(lbID int) (*LoadBalancer, error) {
 }
 
 func (lbs *loadBalancersService) List() (LoadBalancers, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := lbs.client.LoadBalancers.List(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -84,14 +84,14 @@ func (lbs *loadBalancersService) List() (LoadBalancers, error) {
 
 	list := make([]LoadBalancer, len(si))
 	for i := range si {
-		a := si[i].(godo.LoadBalancer)
+		a := si[i].(binarylane.LoadBalancer)
 		list[i] = LoadBalancer{LoadBalancer: &a}
 	}
 
 	return list, nil
 }
 
-func (lbs *loadBalancersService) Create(lbr *godo.LoadBalancerRequest) (*LoadBalancer, error) {
+func (lbs *loadBalancersService) Create(lbr *binarylane.LoadBalancerRequest) (*LoadBalancer, error) {
 	lb, _, err := lbs.client.LoadBalancers.Create(context.TODO(), lbr)
 	if err != nil {
 		return nil, err
@@ -100,7 +100,7 @@ func (lbs *loadBalancersService) Create(lbr *godo.LoadBalancerRequest) (*LoadBal
 	return &LoadBalancer{LoadBalancer: lb}, nil
 }
 
-func (lbs *loadBalancersService) Update(lbID int, lbr *godo.LoadBalancerRequest) (*LoadBalancer, error) {
+func (lbs *loadBalancersService) Update(lbID int, lbr *binarylane.LoadBalancerRequest) (*LoadBalancer, error) {
 	lb, _, err := lbs.client.LoadBalancers.Update(context.TODO(), lbID, lbr)
 	if err != nil {
 		return nil, err
@@ -124,12 +124,12 @@ func (lbs *loadBalancersService) RemoveServers(lbID int, sIDs ...int) error {
 	return err
 }
 
-func (lbs *loadBalancersService) AddForwardingRules(lbID int, rules ...godo.ForwardingRule) error {
+func (lbs *loadBalancersService) AddForwardingRules(lbID int, rules ...binarylane.ForwardingRule) error {
 	_, err := lbs.client.LoadBalancers.AddForwardingRules(context.TODO(), lbID, rules...)
 	return err
 }
 
-func (lbs *loadBalancersService) RemoveForwardingRules(lbID int, rules ...godo.ForwardingRule) error {
+func (lbs *loadBalancersService) RemoveForwardingRules(lbID int, rules ...binarylane.ForwardingRule) error {
 	_, err := lbs.client.LoadBalancers.RemoveForwardingRules(context.TODO(), lbID, rules...)
 	return err
 }

@@ -17,7 +17,7 @@ import (
 	"testing"
 
 	"github.com/binarylane/bl-cli"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -47,7 +47,7 @@ func TestFloatingIPsGet(t *testing.T) {
 
 func TestFloatingIPsCreate_Server(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		ficr := &godo.FloatingIPCreateRequest{ServerID: 1}
+		ficr := &binarylane.FloatingIPCreateRequest{ServerID: 1}
 		tm.floatingIPs.EXPECT().Create(ficr).Return(&testFloatingIP, nil)
 
 		config.Doit.Set(config.NS, blcli.ArgServerID, 1)
@@ -59,7 +59,7 @@ func TestFloatingIPsCreate_Server(t *testing.T) {
 
 func TestFloatingIPsCreate_Region(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		ficr := &godo.FloatingIPCreateRequest{Region: "dev0"}
+		ficr := &binarylane.FloatingIPCreateRequest{Region: "dev0"}
 		tm.floatingIPs.EXPECT().Create(ficr).Return(&testFloatingIP, nil)
 
 		config.Doit.Set(config.NS, blcli.ArgRegionSlug, "dev0")

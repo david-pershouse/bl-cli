@@ -19,12 +19,12 @@ import (
 
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testAction     = bl.Action{Action: &godo.Action{ID: 1, Region: &godo.Region{Slug: "dev0"}}}
+	testAction     = bl.Action{Action: &binarylane.Action{ID: 1, Region: &binarylane.Region{Slug: "dev0"}}}
 	testActionList = bl.Actions{
 		testAction,
 	}
@@ -76,13 +76,13 @@ func Test_filterActions(t *testing.T) {
 	}
 
 	actions := bl.Actions{
-		{Action: &godo.Action{
+		{Action: &binarylane.Action{
 			ResourceType: "foo", RegionSlug: "nyc1", Status: "completed", Type: "alpha",
-			CompletedAt: &godo.Timestamp{Time: time.Date(2015, time.April, 2, 12, 0, 0, 0, time.UTC)},
+			CompletedAt: &binarylane.Timestamp{Time: time.Date(2015, time.April, 2, 12, 0, 0, 0, time.UTC)},
 		}},
-		{Action: &godo.Action{
+		{Action: &binarylane.Action{
 			ResourceType: "bar", RegionSlug: "fra1", Status: "completed", Type: "beta",
-			CompletedAt: &godo.Timestamp{Time: time.Date(2016, time.April, 2, 12, 0, 0, 0, time.UTC)},
+			CompletedAt: &binarylane.Timestamp{Time: time.Date(2016, time.April, 2, 12, 0, 0, 0, time.UTC)},
 		}},
 	}
 

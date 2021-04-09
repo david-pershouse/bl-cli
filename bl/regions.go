@@ -16,37 +16,37 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// Region wraps godo Region.
+// Region wraps binarylane Region.
 type Region struct {
-	*godo.Region
+	*binarylane.Region
 }
 
 // Regions is a slice of Region.
 type Regions []Region
 
-// RegionsService is the godo RegionsService interface.
+// RegionsService is the binarylane RegionsService interface.
 type RegionsService interface {
 	List() (Regions, error)
 }
 
 type regionsService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ RegionsService = &regionsService{}
 
 // NewRegionsService builds an instance of RegionsService.
-func NewRegionsService(client *godo.Client) RegionsService {
+func NewRegionsService(client *binarylane.Client) RegionsService {
 	return &regionsService{
 		client: client,
 	}
 }
 
 func (rs *regionsService) List() (Regions, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := rs.client.Regions.List(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -67,7 +67,7 @@ func (rs *regionsService) List() (Regions, error) {
 
 	list := make(Regions, len(si))
 	for i := range si {
-		r := si[i].(godo.Region)
+		r := si[i].(binarylane.Region)
 		list[i] = Region{Region: &r}
 	}
 

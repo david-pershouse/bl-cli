@@ -16,7 +16,7 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
 // FloatingIPActionsService is an interface for interacting with
@@ -25,19 +25,19 @@ type FloatingIPActionsService interface {
 	Assign(ip string, serverID int) (*Action, error)
 	Unassign(ip string) (*Action, error)
 	Get(ip string, actionID int) (*Action, error)
-	List(ip string, opt *godo.ListOptions) ([]Action, error)
+	List(ip string, opt *binarylane.ListOptions) ([]Action, error)
 }
 
 type floatingIPActionsService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ FloatingIPActionsService = &floatingIPActionsService{}
 
 // NewFloatingIPActionsService builds a FloatingIPActionsService instance.
-func NewFloatingIPActionsService(godoClient *godo.Client) FloatingIPActionsService {
+func NewFloatingIPActionsService(client *binarylane.Client) FloatingIPActionsService {
 	return &floatingIPActionsService{
-		client: godoClient,
+		client: client,
 	}
 }
 
@@ -68,8 +68,8 @@ func (fia *floatingIPActionsService) Get(ip string, actionID int) (*Action, erro
 	return &Action{Action: a}, nil
 }
 
-func (fia *floatingIPActionsService) List(ip string, opt *godo.ListOptions) ([]Action, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+func (fia *floatingIPActionsService) List(ip string, opt *binarylane.ListOptions) ([]Action, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := fia.client.FloatingIPActions.List(context.TODO(), ip, opt)
 		if err != nil {
 			return nil, nil, err
@@ -90,7 +90,7 @@ func (fia *floatingIPActionsService) List(ip string, opt *godo.ListOptions) ([]A
 
 	list := make(Actions, len(si))
 	for i := range si {
-		a := si[i].(godo.Action)
+		a := si[i].(binarylane.Action)
 		list[i] = Action{Action: &a}
 	}
 

@@ -17,12 +17,12 @@ import (
 	"testing"
 
 	"github.com/binarylane/bl-cli/bl"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testSize     = bl.Size{Size: &godo.Size{Slug: "small"}}
+	testSize     = bl.Size{Size: &binarylane.Size{Slug: "small"}}
 	testSizeList = bl.Sizes{testSize}
 )
 

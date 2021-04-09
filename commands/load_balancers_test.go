@@ -6,21 +6,21 @@ import (
 
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 
 	"github.com/stretchr/testify/assert"
 )
 
 var (
 	testLoadBalancer = bl.LoadBalancer{
-		LoadBalancer: &godo.LoadBalancer{
+		LoadBalancer: &binarylane.LoadBalancer{
 			Algorithm: "round_robin",
-			Region: &godo.Region{
+			Region: &binarylane.Region{
 				Slug: "nyc1",
 			},
 			SizeSlug:       "lb-small",
-			StickySessions: &godo.StickySessions{},
-			HealthCheck:    &godo.HealthCheck{},
+			StickySessions: &binarylane.StickySessions{},
+			HealthCheck:    &binarylane.HealthCheck{},
 		}}
 
 	testLoadBalancerList = bl.LoadBalancers{
@@ -83,15 +83,15 @@ func TestLoadBalancerCreateWithMalformedForwardingRulesArgs(t *testing.T) {
 func TestLoadBalancerCreate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		vpcID := 2
-		r := godo.LoadBalancerRequest{
+		r := binarylane.LoadBalancerRequest{
 			Name:       "lb-name",
 			Region:     "nyc1",
 			SizeSlug:   "lb-small",
 			ServerIDs: []int{1, 2},
-			StickySessions: &godo.StickySessions{
+			StickySessions: &binarylane.StickySessions{
 				Type: "none",
 			},
-			HealthCheck: &godo.HealthCheck{
+			HealthCheck: &binarylane.HealthCheck{
 				Protocol:               "http",
 				Port:                   80,
 				CheckIntervalSeconds:   4,
@@ -99,7 +99,7 @@ func TestLoadBalancerCreate(t *testing.T) {
 				HealthyThreshold:       5,
 				UnhealthyThreshold:     10,
 			},
-			ForwardingRules: []godo.ForwardingRule{
+			ForwardingRules: []binarylane.ForwardingRule{
 				{
 					EntryProtocol:  "tcp",
 					EntryPort:      3306,
@@ -129,16 +129,16 @@ func TestLoadBalancerCreate(t *testing.T) {
 func TestLoadBalancerUpdate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		lbID := 1
-		r := godo.LoadBalancerRequest{
+		r := binarylane.LoadBalancerRequest{
 			Name:       "lb-name",
 			Region:     "nyc1",
 			ServerIDs: []int{1, 2},
-			StickySessions: &godo.StickySessions{
+			StickySessions: &binarylane.StickySessions{
 				Type:             "cookies",
 				CookieName:       "DO-LB",
 				CookieTtlSeconds: 5,
 			},
-			HealthCheck: &godo.HealthCheck{
+			HealthCheck: &binarylane.HealthCheck{
 				Protocol:               "http",
 				Port:                   80,
 				CheckIntervalSeconds:   4,
@@ -146,7 +146,7 @@ func TestLoadBalancerUpdate(t *testing.T) {
 				HealthyThreshold:       5,
 				UnhealthyThreshold:     10,
 			},
-			ForwardingRules: []godo.ForwardingRule{
+			ForwardingRules: []binarylane.ForwardingRule{
 				{
 					EntryProtocol:  "http",
 					EntryPort:      80,
@@ -242,7 +242,7 @@ func TestLoadBalancerRemoveServersNoID(t *testing.T) {
 func TestLoadBalancerAddForwardingRules(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		lbID := 1
-		forwardingRule := godo.ForwardingRule{
+		forwardingRule := binarylane.ForwardingRule{
 			EntryProtocol:  "http",
 			EntryPort:      80,
 			TargetProtocol: "http",
@@ -268,7 +268,7 @@ func TestLoadBalancerAddForwardingRulesNoID(t *testing.T) {
 func TestLoadBalancerRemoveForwardingRules(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
 		lbID := 1
-		forwardingRules := []godo.ForwardingRule{
+		forwardingRules := []binarylane.ForwardingRule{
 			{
 				EntryProtocol:  "http",
 				EntryPort:      80,

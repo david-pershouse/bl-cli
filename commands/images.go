@@ -20,7 +20,7 @@ import (
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
 	"github.com/binarylane/bl-cli/commands/displayers"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -223,7 +223,7 @@ func RunImagesUpdate(c *CmdConfig) error {
 		return err
 	}
 
-	req := &godo.ImageUpdateRequest{
+	req := &binarylane.ImageUpdateRequest{
 		Name: name,
 	}
 
@@ -270,7 +270,7 @@ func RunImagesDelete(c *CmdConfig) error {
 
 // RunImagesCreate creates a new custom image.
 func RunImagesCreate(c *CmdConfig) error {
-	r := new(godo.CustomImageCreateRequest)
+	r := new(binarylane.CustomImageCreateRequest)
 
 	if err := buildCustomImageRequestFromArgs(c, r); err != nil {
 		return err
@@ -286,7 +286,7 @@ func RunImagesCreate(c *CmdConfig) error {
 	return c.Display(item)
 }
 
-func buildCustomImageRequestFromArgs(c *CmdConfig, r *godo.CustomImageCreateRequest) error {
+func buildCustomImageRequestFromArgs(c *CmdConfig, r *binarylane.CustomImageCreateRequest) error {
 	if len(c.Args) != 1 {
 		return blcli.NewMissingArgsErr(fmt.Sprintf("%s.%s", c.NS, blcli.ArgImageName))
 	}

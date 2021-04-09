@@ -16,12 +16,12 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-//Action is a wrapper for godo.Action
+//Action is a wrapper for binarylane.Action
 type Action struct {
-	*godo.Action
+	*binarylane.Action
 }
 
 // Actions is a slice of Action.
@@ -34,20 +34,20 @@ type ActionsService interface {
 }
 
 type actionsService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ ActionsService = &actionsService{}
 
 // NewActionsService builds an ActionsService instance.
-func NewActionsService(godoClient *godo.Client) ActionsService {
+func NewActionsService(client *binarylane.Client) ActionsService {
 	return &actionsService{
-		client: godoClient,
+		client: client,
 	}
 }
 
 func (as *actionsService) List() (Actions, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := as.client.Actions.List(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -68,7 +68,7 @@ func (as *actionsService) List() (Actions, error) {
 
 	list := make(Actions, len(si))
 	for i := range si {
-		a := si[i].(godo.Action)
+		a := si[i].(binarylane.Action)
 		list[i] = Action{Action: &a}
 	}
 

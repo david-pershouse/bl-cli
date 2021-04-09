@@ -16,12 +16,12 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// BillingHistory is a wrapper for godo.BillingHistory
+// BillingHistory is a wrapper for binarylane.BillingHistory
 type BillingHistory struct {
-	*godo.BillingHistory
+	*binarylane.BillingHistory
 }
 
 // BillingHistoryService is an interface for interacting with BinaryLane's invoices api.
@@ -30,20 +30,20 @@ type BillingHistoryService interface {
 }
 
 type billingHistoryService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ BillingHistoryService = &billingHistoryService{}
 
 // NewBillingHistoryService builds an BillingHistoryService instance.
-func NewBillingHistoryService(client *godo.Client) BillingHistoryService {
+func NewBillingHistoryService(client *binarylane.Client) BillingHistoryService {
 	return &billingHistoryService{
 		client: client,
 	}
 }
 
 func (is *billingHistoryService) List() (*BillingHistory, error) {
-	listFn := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	listFn := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		historyList, resp, err := is.client.BillingHistory.List(context.Background(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -60,10 +60,10 @@ func (is *billingHistoryService) List() (*BillingHistory, error) {
 	if err != nil {
 		return nil, err
 	}
-	list := make([]godo.BillingHistoryEntry, len(paginatedList))
+	list := make([]binarylane.BillingHistoryEntry, len(paginatedList))
 	for i := range paginatedList {
-		list[i] = paginatedList[i].(godo.BillingHistoryEntry)
+		list[i] = paginatedList[i].(binarylane.BillingHistoryEntry)
 	}
 
-	return &BillingHistory{BillingHistory: &godo.BillingHistory{BillingHistory: list}}, nil
+	return &BillingHistory{BillingHistory: &binarylane.BillingHistory{BillingHistory: list}}, nil
 }

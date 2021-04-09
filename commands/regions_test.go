@@ -17,12 +17,12 @@ import (
 	"testing"
 
 	"github.com/binarylane/bl-cli/bl"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	testRegion     = bl.Region{Region: &godo.Region{Slug: "dev0"}}
+	testRegion     = bl.Region{Region: &binarylane.Region{Slug: "dev0"}}
 	testRegionList = bl.Regions{testRegion}
 )
 

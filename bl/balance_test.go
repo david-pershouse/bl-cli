@@ -19,7 +19,7 @@ import (
 	"testing"
 
 	"github.com/binarylane/bl-cli/bl"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
@@ -48,11 +48,11 @@ func (m *MockBalanceService) EXPECT() *MockBalanceServiceMockRecorder {
 }
 
 // Get mocks base method
-func (m *MockBalanceService) Get(arg0 context.Context) (*godo.Balance, *godo.Response, error) {
+func (m *MockBalanceService) Get(arg0 context.Context) (*binarylane.Balance, *binarylane.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", arg0)
-	ret0, _ := ret[0].(*godo.Balance)
-	ret1, _ := ret[1].(*godo.Response)
+	ret0, _ := ret[0].(*binarylane.Balance)
+	ret1, _ := ret[1].(*binarylane.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
 }
@@ -68,10 +68,10 @@ func TestBalanceServiceGet(t *testing.T) {
 
 	gBalanceSvc := NewMockBalanceService(ctrl)
 
-	gBalance := &godo.Balance{AccountBalance: "12.34"}
+	gBalance := &binarylane.Balance{AccountBalance: "12.34"}
 	gBalanceSvc.EXPECT().Get(context.TODO()).Return(gBalance, nil, nil)
 
-	client := &godo.Client{
+	client := &binarylane.Client{
 		Balance: gBalanceSvc,
 	}
 	as := bl.NewBalanceService(client)

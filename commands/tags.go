@@ -19,7 +19,7 @@ import (
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
 	"github.com/binarylane/bl-cli/commands/displayers"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/spf13/cobra"
 )
 
@@ -66,7 +66,7 @@ func RunCmdTagCreate(c *CmdConfig) error {
 	name := c.Args[0]
 	ts := c.Tags()
 
-	tcr := &godo.TagCreateRequest{Name: name}
+	tcr := &binarylane.TagCreateRequest{Name: name}
 	t, err := ts.Create(tcr)
 	if err != nil {
 		return err

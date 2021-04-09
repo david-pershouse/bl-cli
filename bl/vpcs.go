@@ -16,34 +16,34 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// VPC wraps a godo VPC.
+// VPC wraps a binarylane VPC.
 type VPC struct {
-	*godo.VPC
+	*binarylane.VPC
 }
 
 // VPCs is a slice of VPC.
 type VPCs []VPC
 
-// VPCsService is the godo VPCsService interface.
+// VPCsService is the binarylane VPCsService interface.
 type VPCsService interface {
 	Get(id int) (*VPC, error)
 	List() (VPCs, error)
-	Create(vpcr *godo.VPCCreateRequest) (*VPC, error)
-	Update(id int, vpcr *godo.VPCUpdateRequest) (*VPC, error)
+	Create(vpcr *binarylane.VPCCreateRequest) (*VPC, error)
+	Update(id int, vpcr *binarylane.VPCUpdateRequest) (*VPC, error)
 	Delete(id int) error
 }
 
 var _ VPCsService = &vpcsService{}
 
 type vpcsService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 // NewVPCsService builds an instance of VPCsService.
-func NewVPCsService(client *godo.Client) VPCsService {
+func NewVPCsService(client *binarylane.Client) VPCsService {
 	return &vpcsService{
 		client: client,
 	}
@@ -59,7 +59,7 @@ func (v *vpcsService) Get(id int) (*VPC, error) {
 }
 
 func (v *vpcsService) List() (VPCs, error) {
-	f := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	f := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := v.client.VPCs.List(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -80,14 +80,14 @@ func (v *vpcsService) List() (VPCs, error) {
 
 	list := make([]VPC, len(si))
 	for i := range si {
-		a := si[i].(*godo.VPC)
+		a := si[i].(*binarylane.VPC)
 		list[i] = VPC{VPC: a}
 	}
 
 	return list, nil
 }
 
-func (v *vpcsService) Create(vpcr *godo.VPCCreateRequest) (*VPC, error) {
+func (v *vpcsService) Create(vpcr *binarylane.VPCCreateRequest) (*VPC, error) {
 	vpc, _, err := v.client.VPCs.Create(context.TODO(), vpcr)
 	if err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func (v *vpcsService) Create(vpcr *godo.VPCCreateRequest) (*VPC, error) {
 	return &VPC{VPC: vpc}, nil
 }
 
-func (v *vpcsService) Update(id int, vpcr *godo.VPCUpdateRequest) (*VPC, error) {
+func (v *vpcsService) Update(id int, vpcr *binarylane.VPCUpdateRequest) (*VPC, error) {
 	vpc, _, err := v.client.VPCs.Update(context.TODO(), id, vpcr)
 	if err != nil {
 		return nil, err

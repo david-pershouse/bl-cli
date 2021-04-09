@@ -165,7 +165,7 @@ func (glv *GithubLatestVersioner) LatestVersion() (string, error) {
 
 // Config is an interface that represent doit's config.
 type Config interface {
-	GetGodoClient(trace bool, accessToken string) (*binarylane.Client, error)
+	GetClient(trace bool, accessToken string) (*binarylane.Client, error)
 	SSH(user, host, keyPath string, port int, opts ssh.Options) runner.Runner
 	Set(ns, key string, val interface{})
 	IsSet(key string) bool
@@ -185,8 +185,8 @@ type LiveConfig struct {
 
 var _ Config = &LiveConfig{}
 
-// GetGodoClient returns a GodoClient.
-func (c *LiveConfig) GetGodoClient(trace bool, accessToken string) (*binarylane.Client, error) {
+// GetClient returns a binarylane.Client.
+func (c *LiveConfig) GetClient(trace bool, accessToken string) (*binarylane.Client, error) {
 	if accessToken == "" {
 		return nil, fmt.Errorf("access token is required. (hint: run 'bl auth init')")
 	}
@@ -390,9 +390,9 @@ func NewTestConfig() *TestConfig {
 	}
 }
 
-// GetGodoClient mocks a GetGodoClient call. The returned binarylane client will
+// GetClient mocks a GetClient call. The returned binarylane client will
 // be nil.
-func (c *TestConfig) GetGodoClient(trace bool, accessToken string) (*binarylane.Client, error) {
+func (c *TestConfig) GetClient(trace bool, accessToken string) (*binarylane.Client, error) {
 	return &binarylane.Client{}, nil
 }
 

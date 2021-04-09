@@ -16,7 +16,7 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
 // ServerActionsService is an interface for interacting with BinaryLane's server action api.
@@ -52,19 +52,19 @@ type ServerActionsService interface {
 }
 
 type serverActionsService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ ServerActionsService = &serverActionsService{}
 
 // NewServerActionsService builds an instance of ServerActionsService.
-func NewServerActionsService(godoClient *godo.Client) ServerActionsService {
+func NewServerActionsService(client *binarylane.Client) ServerActionsService {
 	return &serverActionsService{
-		client: godoClient,
+		client: client,
 	}
 }
 
-func (sas *serverActionsService) handleActionResponse(a *godo.Action, err error) (*Action, error) {
+func (sas *serverActionsService) handleActionResponse(a *binarylane.Action, err error) (*Action, error) {
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (sas *serverActionsService) handleActionResponse(a *godo.Action, err error)
 	return &Action{Action: a}, nil
 }
 
-func (sas *serverActionsService) handleTagActionResponse(a []godo.Action, err error) (Actions, error) {
+func (sas *serverActionsService) handleTagActionResponse(a []binarylane.Action, err error) (Actions, error) {
 	if err != nil {
 		return nil, err
 	}

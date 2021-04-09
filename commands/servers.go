@@ -81,7 +81,7 @@ func Server() *Command {
 	AddBoolFlag(cmdServerCreate, blcli.ArgBackups, "", false, "Enables backups for the Server")
 	AddBoolFlag(cmdServerCreate, blcli.ArgIPv6, "", false, "Enables IPv6 support and assigns an IPv6 address")
 	AddBoolFlag(cmdServerCreate, blcli.ArgPrivateNetworking, "", false, "Enables private networking for the Server by provisioning it inside of your account's default VPC for the region")
-	AddBoolFlag(cmdServerCreate, blcli.ArgMonitoring, "", false, "Install the DigitalOcean agent for additional monitoring")
+	AddBoolFlag(cmdServerCreate, blcli.ArgMonitoring, "", false, "Install the BinaryLane agent for additional monitoring")
 	AddStringFlag(cmdServerCreate, blcli.ArgImage, "", "", "An ID or slug indicating the image the Server will be based-on (e.g. `ubuntu-20-04-lts`). Use the commands under `bl compute image` to find additional images.",
 		requiredOpt())
 	AddStringFlag(cmdServerCreate, blcli.ArgTagName, "", "", "A tag name to be applied to the Server")

@@ -16,24 +16,24 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
 // ImageActionsService is an interface for interacting with BinaryLane's image action api.
 type ImageActionsService interface {
 	Get(int, int) (*Action, error)
 	Convert(int) (*Action, error)
-	Transfer(int, *godo.ActionRequest) (*Action, error)
+	Transfer(int, *binarylane.ActionRequest) (*Action, error)
 }
 
 type imageActionsService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ ImageActionsService = &imageActionsService{}
 
 // NewImageActionsService builds an ImageActionsService instance.
-func NewImageActionsService(client *godo.Client) ImageActionsService {
+func NewImageActionsService(client *binarylane.Client) ImageActionsService {
 	return &imageActionsService{
 		client: client,
 	}
@@ -57,7 +57,7 @@ func (ia *imageActionsService) Convert(imageID int) (*Action, error) {
 	return &Action{Action: a}, nil
 }
 
-func (ia *imageActionsService) Transfer(imageID int, transferRequest *godo.ActionRequest) (*Action, error) {
+func (ia *imageActionsService) Transfer(imageID int, transferRequest *binarylane.ActionRequest) (*Action, error) {
 	a, _, err := ia.client.ImageActions.Transfer(context.TODO(), imageID, transferRequest)
 	if err != nil {
 		return nil, err

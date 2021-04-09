@@ -19,7 +19,7 @@ import (
 	"testing"
 
 	"github.com/binarylane/bl-cli/bl"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
@@ -48,11 +48,11 @@ func (m *MockAccountService) EXPECT() *MockAccountServiceMockRecorder {
 }
 
 // Get mocks base method
-func (m *MockAccountService) Get(arg0 context.Context) (*godo.Account, *godo.Response, error) {
+func (m *MockAccountService) Get(arg0 context.Context) (*binarylane.Account, *binarylane.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", arg0)
-	ret0, _ := ret[0].(*godo.Account)
-	ret1, _ := ret[1].(*godo.Response)
+	ret0, _ := ret[0].(*binarylane.Account)
+	ret1, _ := ret[1].(*binarylane.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
 }
@@ -69,10 +69,10 @@ func TestAccountServiceGet(t *testing.T) {
 
 	gAccountSvc := NewMockAccountService(ctrl)
 
-	gAccount := &godo.Account{UUID: "uuid"}
+	gAccount := &binarylane.Account{UUID: "uuid"}
 	gAccountSvc.EXPECT().Get(context.TODO()).Return(gAccount, nil, nil)
 
-	client := &godo.Client{
+	client := &binarylane.Client{
 		Account: gAccountSvc,
 	}
 	as := bl.NewAccountService(client)

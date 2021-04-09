@@ -20,7 +20,7 @@ import (
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
 	"github.com/binarylane/bl-cli/commands/displayers"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh"
 )
@@ -120,7 +120,7 @@ func RunKeyCreate(c *CmdConfig) error {
 		return err
 	}
 
-	kcr := &godo.KeyCreateRequest{
+	kcr := &binarylane.KeyCreateRequest{
 		Name:      name,
 		PublicKey: publicKey,
 	}
@@ -164,7 +164,7 @@ func RunKeyImport(c *CmdConfig) error {
 		keyName = comment
 	}
 
-	kcr := &godo.KeyCreateRequest{
+	kcr := &binarylane.KeyCreateRequest{
 		Name:      keyName,
 		PublicKey: string(keyFile),
 	}
@@ -216,7 +216,7 @@ func RunKeyUpdate(c *CmdConfig) error {
 		return err
 	}
 
-	req := &godo.KeyUpdateRequest{
+	req := &binarylane.KeyUpdateRequest{
 		Name: name,
 	}
 

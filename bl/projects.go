@@ -17,32 +17,32 @@ import (
 	"context"
 	"errors"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// Project wraps a godo Project.
+// Project wraps a binarylane Project.
 type Project struct {
-	*godo.Project
+	*binarylane.Project
 }
 
 // Projects is a slice of Project.
 type Projects []Project
 
-// ProjectResource wraps a godo ProjectResource
+// ProjectResource wraps a binarylane ProjectResource
 type ProjectResource struct {
-	*godo.ProjectResource
+	*binarylane.ProjectResource
 }
 
 // ProjectResources is a slice of ProjectResource.
 type ProjectResources []ProjectResource
 
-// ProjectsService is the godo ProjectsService interface.
+// ProjectsService is the binarylane ProjectsService interface.
 type ProjectsService interface {
 	List() (Projects, error)
 	GetDefault() (*Project, error)
 	Get(projectUUID string) (*Project, error)
-	Create(*godo.CreateProjectRequest) (*Project, error)
-	Update(projectUUID string, req *godo.UpdateProjectRequest) (*Project, error)
+	Create(*binarylane.CreateProjectRequest) (*Project, error)
+	Update(projectUUID string, req *binarylane.UpdateProjectRequest) (*Project, error)
 	Delete(projectUUID string) error
 
 	ListResources(projectUUID string) (ProjectResources, error)
@@ -50,14 +50,14 @@ type ProjectsService interface {
 }
 
 type projectsService struct {
-	client *godo.Client
+	client *binarylane.Client
 	ctx    context.Context
 }
 
 var _ ProjectsService = &projectsService{}
 
 // NewProjectsService builds an instance of ProjectsService.
-func NewProjectsService(client *godo.Client) ProjectsService {
+func NewProjectsService(client *binarylane.Client) ProjectsService {
 	return &projectsService{
 		client: client,
 		ctx:    context.Background(),
@@ -66,7 +66,7 @@ func NewProjectsService(client *godo.Client) ProjectsService {
 
 // List projects.
 func (ps *projectsService) List() (Projects, error) {
-	listFn := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	listFn := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := ps.client.Projects.List(ps.ctx, opt)
 		if err != nil {
 			return nil, nil, err
@@ -101,7 +101,7 @@ func (ps *projectsService) Get(projectUUID string) (*Project, error) {
 	return &Project{Project: f}, nil
 }
 
-func (ps *projectsService) Create(cr *godo.CreateProjectRequest) (*Project, error) {
+func (ps *projectsService) Create(cr *binarylane.CreateProjectRequest) (*Project, error) {
 	f, _, err := ps.client.Projects.Create(ps.ctx, cr)
 	if err != nil {
 		return nil, err
@@ -110,7 +110,7 @@ func (ps *projectsService) Create(cr *godo.CreateProjectRequest) (*Project, erro
 	return &Project{Project: f}, nil
 }
 
-func (ps *projectsService) Update(projectUUID string, ur *godo.UpdateProjectRequest) (*Project, error) {
+func (ps *projectsService) Update(projectUUID string, ur *binarylane.UpdateProjectRequest) (*Project, error) {
 	p, _, err := ps.client.Projects.Update(ps.ctx, projectUUID, ur)
 	if err != nil {
 		return nil, err
@@ -125,7 +125,7 @@ func (ps *projectsService) Delete(projectUUID string) error {
 }
 
 func (ps *projectsService) ListResources(projectUUID string) (ProjectResources, error) {
-	listFn := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	listFn := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := ps.client.Projects.ListResources(ps.ctx, projectUUID, opt)
 		if err != nil {
 			return nil, nil, err
@@ -161,7 +161,7 @@ func (ps *projectsService) AssignResources(projectUUID string, resources []strin
 	return prs, err
 }
 
-func projectsPaginatedListHelper(listFn func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error)) (Projects, error) {
+func projectsPaginatedListHelper(listFn func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error)) (Projects, error) {
 	si, err := PaginateResp(listFn)
 	if err != nil {
 		return nil, err
@@ -169,7 +169,7 @@ func projectsPaginatedListHelper(listFn func(opt *godo.ListOptions) ([]interface
 
 	list := make([]Project, len(si))
 	for i := range si {
-		a, ok := si[i].(godo.Project)
+		a, ok := si[i].(binarylane.Project)
 		if !ok {
 			return nil, errors.New("unexpected value in response")
 		}
@@ -180,7 +180,7 @@ func projectsPaginatedListHelper(listFn func(opt *godo.ListOptions) ([]interface
 	return list, nil
 }
 
-func projectResourcesPaginatedListHelper(listFn func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error)) (ProjectResources, error) {
+func projectResourcesPaginatedListHelper(listFn func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error)) (ProjectResources, error) {
 	si, err := PaginateResp(listFn)
 	if err != nil {
 		return nil, err
@@ -188,7 +188,7 @@ func projectResourcesPaginatedListHelper(listFn func(opt *godo.ListOptions) ([]i
 
 	list := make([]ProjectResource, len(si))
 	for i := range si {
-		a, ok := si[i].(godo.ProjectResource)
+		a, ok := si[i].(binarylane.ProjectResource)
 		if !ok {
 			return nil, errors.New("unexpected value in response")
 		}

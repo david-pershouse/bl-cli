@@ -16,18 +16,18 @@ package bl
 import (
 	"context"
 
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 )
 
-// Image is a werapper for godo.Image
+// Image is a werapper for binarylane.Image
 type Image struct {
-	*godo.Image
+	*binarylane.Image
 }
 
 // Images is a slice of Server.
 type Images []Image
 
-// ImagesService is the godo ImagesService interface.
+// ImagesService is the binarylane ImagesService interface.
 type ImagesService interface {
 	List(public bool) (Images, error)
 	ListDistribution(public bool) (Images, error)
@@ -35,19 +35,19 @@ type ImagesService interface {
 	ListUser(public bool) (Images, error)
 	GetByID(id int) (*Image, error)
 	GetBySlug(slug string) (*Image, error)
-	Update(id int, iur *godo.ImageUpdateRequest) (*Image, error)
+	Update(id int, iur *binarylane.ImageUpdateRequest) (*Image, error)
 	Delete(id int) error
-	Create(icr *godo.CustomImageCreateRequest) (*Image, error)
+	Create(icr *binarylane.CustomImageCreateRequest) (*Image, error)
 }
 
 type imagesService struct {
-	client *godo.Client
+	client *binarylane.Client
 }
 
 var _ ImagesService = &imagesService{}
 
 // NewImagesService builds an instance of ImagesService.
-func NewImagesService(client *godo.Client) ImagesService {
+func NewImagesService(client *binarylane.Client) ImagesService {
 	return &imagesService{
 		client: client,
 	}
@@ -87,7 +87,7 @@ func (is *imagesService) GetBySlug(slug string) (*Image, error) {
 	return &Image{Image: i}, nil
 }
 
-func (is *imagesService) Update(id int, iur *godo.ImageUpdateRequest) (*Image, error) {
+func (is *imagesService) Update(id int, iur *binarylane.ImageUpdateRequest) (*Image, error) {
 	i, _, err := is.client.Images.Update(context.TODO(), id, iur)
 	if err != nil {
 		return nil, err
@@ -101,7 +101,7 @@ func (is *imagesService) Delete(id int) error {
 	return err
 }
 
-func (is *imagesService) Create(icr *godo.CustomImageCreateRequest) (*Image, error) {
+func (is *imagesService) Create(icr *binarylane.CustomImageCreateRequest) (*Image, error) {
 	i, _, err := is.client.Images.Create(context.TODO(), icr)
 	if err != nil {
 		return nil, err
@@ -110,10 +110,10 @@ func (is *imagesService) Create(icr *godo.CustomImageCreateRequest) (*Image, err
 	return &Image{Image: i}, nil
 }
 
-type listFn func(context.Context, *godo.ListOptions) ([]godo.Image, *godo.Response, error)
+type listFn func(context.Context, *binarylane.ListOptions) ([]binarylane.Image, *binarylane.Response, error)
 
 func (is *imagesService) listImages(lFn listFn, public bool) (Images, error) {
-	fn := func(opt *godo.ListOptions) ([]interface{}, *godo.Response, error) {
+	fn := func(opt *binarylane.ListOptions) ([]interface{}, *binarylane.Response, error) {
 		list, resp, err := lFn(context.TODO(), opt)
 		if err != nil {
 			return nil, nil, err
@@ -136,7 +136,7 @@ func (is *imagesService) listImages(lFn listFn, public bool) (Images, error) {
 
 	var list Images
 	for i := range si {
-		image := si[i].(godo.Image)
+		image := si[i].(binarylane.Image)
 		list = append(list, Image{Image: &image})
 	}
 

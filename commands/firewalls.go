@@ -22,7 +22,7 @@ import (
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
 	"github.com/binarylane/bl-cli/commands/displayers"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 
 	"github.com/spf13/cobra"
 )
@@ -126,7 +126,7 @@ func RunFirewallGet(c *CmdConfig) error {
 
 // RunFirewallCreate creates a new Firewall with a given configuration.
 func RunFirewallCreate(c *CmdConfig) error {
-	r := new(godo.FirewallRequest)
+	r := new(binarylane.FirewallRequest)
 	if err := buildFirewallRequestFromArgs(c, r); err != nil {
 		return err
 	}
@@ -148,7 +148,7 @@ func RunFirewallUpdate(c *CmdConfig) error {
 	}
 	fID := c.Args[0]
 
-	r := new(godo.FirewallRequest)
+	r := new(binarylane.FirewallRequest)
 	if err := buildFirewallRequestFromArgs(c, r); err != nil {
 		return err
 	}
@@ -303,7 +303,7 @@ func RunFirewallAddRules(c *CmdConfig) error {
 	}
 	fID := c.Args[0]
 
-	rr := new(godo.FirewallRulesRequest)
+	rr := new(binarylane.FirewallRulesRequest)
 	if err := buildFirewallRulesRequestFromArgs(c, rr); err != nil {
 		return err
 	}
@@ -319,7 +319,7 @@ func RunFirewallRemoveRules(c *CmdConfig) error {
 	}
 	fID := c.Args[0]
 
-	rr := new(godo.FirewallRulesRequest)
+	rr := new(binarylane.FirewallRulesRequest)
 	if err := buildFirewallRulesRequestFromArgs(c, rr); err != nil {
 		return err
 	}
@@ -327,7 +327,7 @@ func RunFirewallRemoveRules(c *CmdConfig) error {
 	return c.Firewalls().RemoveRules(fID, rr)
 }
 
-func buildFirewallRequestFromArgs(c *CmdConfig, r *godo.FirewallRequest) error {
+func buildFirewallRequestFromArgs(c *CmdConfig, r *binarylane.FirewallRequest) error {
 	name, err := c.Doit.GetString(c.NS, blcli.ArgFirewallName)
 	if err != nil {
 		return err
@@ -376,7 +376,7 @@ func buildFirewallRequestFromArgs(c *CmdConfig, r *godo.FirewallRequest) error {
 	return nil
 }
 
-func buildFirewallRulesRequestFromArgs(c *CmdConfig, rr *godo.FirewallRulesRequest) error {
+func buildFirewallRulesRequestFromArgs(c *CmdConfig, rr *binarylane.FirewallRulesRequest) error {
 	ira, err := c.Doit.GetString(c.NS, blcli.ArgInboundRules)
 	if err != nil {
 		return err
@@ -402,7 +402,7 @@ func buildFirewallRulesRequestFromArgs(c *CmdConfig, rr *godo.FirewallRulesReque
 	return nil
 }
 
-func extractInboundRules(s string) (rules []godo.InboundRule, err error) {
+func extractInboundRules(s string) (rules []binarylane.InboundRule, err error) {
 	if len(s) == 0 {
 		return nil, nil
 	}
@@ -414,7 +414,7 @@ func extractInboundRules(s string) (rules []godo.InboundRule, err error) {
 			return nil, err
 		}
 		mr, _ := json.Marshal(rule)
-		ir := &godo.InboundRule{}
+		ir := &binarylane.InboundRule{}
 		json.Unmarshal(mr, ir)
 		rules = append(rules, *ir)
 	}
@@ -422,7 +422,7 @@ func extractInboundRules(s string) (rules []godo.InboundRule, err error) {
 	return rules, nil
 }
 
-func extractOutboundRules(s string) (rules []godo.OutboundRule, err error) {
+func extractOutboundRules(s string) (rules []binarylane.OutboundRule, err error) {
 	if len(s) == 0 {
 		return nil, nil
 	}
@@ -434,7 +434,7 @@ func extractOutboundRules(s string) (rules []godo.OutboundRule, err error) {
 			return nil, err
 		}
 		mr, _ := json.Marshal(rule)
-		or := &godo.OutboundRule{}
+		or := &binarylane.OutboundRule{}
 		json.Unmarshal(mr, or)
 		rules = append(rules, *or)
 	}

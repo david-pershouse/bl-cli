@@ -6,14 +6,14 @@ import (
 
 	"github.com/binarylane/bl-cli"
 	"github.com/binarylane/bl-cli/bl"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 
 	"github.com/stretchr/testify/assert"
 )
 
 var (
 	testVPC = bl.VPC{
-		VPC: &godo.VPC{
+		VPC: &binarylane.VPC{
 			Name:        "vpc-name",
 			RegionSlug:  "nyc1",
 			Description: "vpc description",
@@ -61,7 +61,7 @@ func TestVPCList(t *testing.T) {
 
 func TestVPCCreate(t *testing.T) {
 	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
-		r := godo.VPCCreateRequest{
+		r := binarylane.VPCCreateRequest{
 			Name:        "vpc-name",
 			RegionSlug:  "nyc1",
 			Description: "vpc description",
@@ -84,7 +84,7 @@ func TestVPCUpdate(t *testing.T) {
 		desc            string
 		setup           func(*CmdConfig)
 		expectedVPCId   int
-		expectedRequest *godo.VPCUpdateRequest
+		expectedRequest *binarylane.VPCUpdateRequest
 	}{
 		{
 			desc: "update vpc name",
@@ -94,7 +94,7 @@ func TestVPCUpdate(t *testing.T) {
 
 			},
 			expectedVPCId: 2,
-			expectedRequest: &godo.VPCUpdateRequest{
+			expectedRequest: &binarylane.VPCUpdateRequest{
 				Name: "update-vpc-name-test",
 			},
 		},
@@ -108,7 +108,7 @@ func TestVPCUpdate(t *testing.T) {
 
 			},
 			expectedVPCId: 2,
-			expectedRequest: &godo.VPCUpdateRequest{
+			expectedRequest: &binarylane.VPCUpdateRequest{
 				Name:        "update-vpc-name-test",
 				Description: "i am a new desc",
 			},
@@ -123,7 +123,7 @@ func TestVPCUpdate(t *testing.T) {
 				in.Doit.Set(in.NS, blcli.ArgVPCDefault, true)
 			},
 			expectedVPCId: 2,
-			expectedRequest: &godo.VPCUpdateRequest{
+			expectedRequest: &binarylane.VPCUpdateRequest{
 				Name:        "update-vpc-name-test",
 				Description: "i am a new desc",
 				Default:     boolPtr(true),

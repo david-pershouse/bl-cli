@@ -21,14 +21,14 @@ import (
 	"time"
 
 	"github.com/binarylane/bl-cli/bl"
-	godo "github.com/binarylane/go-binarylane"
+	"github.com/binarylane/go-binarylane"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
 var testInvoicesList = &bl.InvoiceList{
-	InvoiceList: &godo.InvoiceList{
-		Invoices: []godo.InvoiceListItem{
+	InvoiceList: &binarylane.InvoiceList{
+		Invoices: []binarylane.InvoiceListItem{
 			{
 				InvoiceUUID:   "example-invoice-uuid-1",
 				Amount:        "12.34",
@@ -40,7 +40,7 @@ var testInvoicesList = &bl.InvoiceList{
 				InvoicePeriod: "2019-12",
 			},
 		},
-		InvoicePreview: godo.InvoiceListItem{
+		InvoicePreview: binarylane.InvoiceListItem{
 			InvoiceUUID:   "example-invoice-uuid-preview",
 			Amount:        "34.56",
 			InvoicePeriod: "2020-02",
@@ -50,8 +50,8 @@ var testInvoicesList = &bl.InvoiceList{
 }
 
 var testInvoicesGet = &bl.Invoice{
-	Invoice: &godo.Invoice{
-		InvoiceItems: []godo.InvoiceItem{
+	Invoice: &binarylane.Invoice{
+		InvoiceItems: []binarylane.InvoiceItem{
 			{
 				Product:          "Servers",
 				ResourceID:       "1234",
@@ -85,12 +85,12 @@ var testInvoicesGet = &bl.Invoice{
 }
 
 var testInvoiceSummary = &bl.InvoiceSummary{
-	InvoiceSummary: &godo.InvoiceSummary{
+	InvoiceSummary: &binarylane.InvoiceSummary{
 		InvoiceUUID:   "example-invoice-uuid",
 		BillingPeriod: "2020-01",
 		Amount:        "27.13",
 		UserName:      "Frodo Baggins",
-		UserBillingAddress: godo.Address{
+		UserBillingAddress: binarylane.Address{
 			AddressLine1:    "101 Bagshot Row",
 			AddressLine2:    "#2",
 			City:            "Hobbiton",
@@ -102,10 +102,10 @@ var testInvoiceSummary = &bl.InvoiceSummary{
 		},
 		UserCompany: "BinaryLane",
 		UserEmail:   "fbaggins@example.com",
-		ProductCharges: godo.InvoiceSummaryBreakdown{
+		ProductCharges: binarylane.InvoiceSummaryBreakdown{
 			Name:   "Product usage charges",
 			Amount: "12.34",
-			Items: []godo.InvoiceSummaryBreakdownItem{
+			Items: []binarylane.InvoiceSummaryBreakdownItem{
 				{
 					Name:   "Spaces Subscription",
 					Amount: "10.00",
@@ -118,15 +118,15 @@ var testInvoiceSummary = &bl.InvoiceSummary{
 				},
 			},
 		},
-		Overages: godo.InvoiceSummaryBreakdown{
+		Overages: binarylane.InvoiceSummaryBreakdown{
 			Name:   "Overages",
 			Amount: "3.45",
 		},
-		Taxes: godo.InvoiceSummaryBreakdown{
+		Taxes: binarylane.InvoiceSummaryBreakdown{
 			Name:   "Taxes",
 			Amount: "4.56",
 		},
-		CreditsAndAdjustments: godo.InvoiceSummaryBreakdown{
+		CreditsAndAdjustments: binarylane.InvoiceSummaryBreakdown{
 			Name:   "Credits & adjustments",
 			Amount: "6.78",
 		},

@@ -73,6 +73,44 @@ func TestServerCreate(t *testing.T) {
 		volumeUUID := "00000000-0000-4000-8000-000000000000"
 		vpcID := 2
 		dcr := &binarylane.ServerCreateRequest{
+			Name:   "server",
+			Region: "dev0",
+			Size:   "1gb",
+			Image:  binarylane.ServerCreateImage{ID: 0, Slug: "image"},
+			Volumes: []binarylane.ServerCreateVolume{
+				{Name: "test-volume"},
+				{ID: volumeUUID},
+			},
+			Backups:           false,
+			IPv6:              false,
+			PrivateNetworking: false,
+			Monitoring:        false,
+			VPCID:             vpcID,
+			UserData:          "#cloud-config",
+			Tags:              []string{"one", "two"},
+		}
+		tm.servers.EXPECT().Create(dcr, false).Return(&testServer, nil)
+
+		config.Args = append(config.Args, "server")
+
+		config.Doit.Set(config.NS, blcli.ArgRegionSlug, "dev0")
+		config.Doit.Set(config.NS, blcli.ArgSizeSlug, "1gb")
+		config.Doit.Set(config.NS, blcli.ArgImage, "image")
+		config.Doit.Set(config.NS, blcli.ArgUserData, "#cloud-config")
+		config.Doit.Set(config.NS, blcli.ArgVPCID, vpcID)
+		config.Doit.Set(config.NS, blcli.ArgVolumeList, []string{"test-volume", volumeUUID})
+		config.Doit.Set(config.NS, blcli.ArgTagNames, []string{"one", "two"})
+
+		err := RunServerCreate(config)
+		assert.NoError(t, err)
+	})
+}
+
+func TestServerCreateWithNoneSSHKey(t *testing.T) {
+	withTestClient(t, func(config *CmdConfig, tm *tcMocks) {
+		volumeUUID := "00000000-0000-4000-8000-000000000000"
+		vpcID := 2
+		dcr := &binarylane.ServerCreateRequest{
 			Name:    "server",
 			Region:  "dev0",
 			Size:    "1gb",
@@ -99,6 +137,7 @@ func TestServerCreate(t *testing.T) {
 		config.Doit.Set(config.NS, blcli.ArgImage, "image")
 		config.Doit.Set(config.NS, blcli.ArgUserData, "#cloud-config")
 		config.Doit.Set(config.NS, blcli.ArgVPCID, vpcID)
+		config.Doit.Set(config.NS, blcli.ArgSSHKeys, []string{"none"})
 		config.Doit.Set(config.NS, blcli.ArgVolumeList, []string{"test-volume", volumeUUID})
 		config.Doit.Set(config.NS, blcli.ArgTagNames, []string{"one", "two"})
 
@@ -475,6 +514,14 @@ func Test_extractSSHKey(t *testing.T) {
 		{
 			in:       []string{"1", "fingerprint"},
 			expected: []binarylane.ServerCreateSSHKey{{ID: 1}, {Fingerprint: "fingerprint"}},
+		},
+		{
+			in:       []string{"none"},
+			expected: []binarylane.ServerCreateSSHKey{},
+		},
+		{
+			in:       []string{},
+			expected: nil,
 		},
 	}
 
